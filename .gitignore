@@ -1,0 +1,5 @@
+# 原始资料与生成物，不进入公开仓库
+*.docx
+*.png
+*.exe
+node_modules/

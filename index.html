@@ -1,0 +1,1240 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>你的 MBTI 是原装的吗？· 出厂检验</title>
+<style>
+:root{
+  --ink:#171410;
+  --ink2:#4c463c;
+  --paper:#ece4d4;
+  --card:#fffdf7;
+  --accent:#3b5b8c;
+  --accent-d:#28406a;
+  --tint:#e6ecf6;
+  --on:#ffffff;
+  --mono:"JetBrains Mono",ui-monospace,"Cascadia Mono","SFMono-Regular",Consolas,"Courier New",monospace;
+  --sans:"HarmonyOS Sans SC","MiSans","PingFang SC","Source Han Sans SC","Microsoft YaHei",system-ui,sans-serif;
+  --serif:"Source Han Serif SC","Songti SC","STSong",SimSun,serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:var(--sans);
+  color:var(--ink);
+  background-color:var(--paper);
+  background-image:radial-gradient(rgba(23,20,16,.055) 1px, transparent 1px);
+  background-size:5px 5px;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+::selection{background:var(--accent);color:var(--on)}
+
+/* ---------- top bar ---------- */
+.topbar{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  padding:13px clamp(16px,4vw,36px);
+  border-bottom:2px solid var(--ink);
+  background:var(--card);
+  position:sticky;top:0;z-index:20;
+}
+.brand{display:flex;align-items:center;gap:9px;font-size:13.5px;font-weight:900;letter-spacing:.02em;white-space:nowrap}
+.live{width:9px;height:9px;border-radius:50%;background:var(--accent);border:2px solid var(--ink);animation:pulse 2.4s infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.72);opacity:.55}}
+.topmeta{font-family:var(--mono);font-size:10px;letter-spacing:.13em;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ---------- shell ---------- */
+.wrap{max-width:780px;margin:0 auto;padding:clamp(20px,5vw,46px) clamp(15px,4vw,28px) 90px}
+.screen{display:none}
+.screen.on{display:block;animation:rise .45s cubic-bezier(.2,.8,.25,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.mono{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)}
+.eyebrow{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink2);margin:0}
+.eyebrow::before{content:"";width:22px;height:2px;background:var(--accent);flex:0 0 auto}
+
+/* ---------- intro ---------- */
+.intro{padding-top:clamp(6px,3vw,26px)}
+.title{
+  font-size:clamp(42px,9.4vw,76px);line-height:.99;letter-spacing:-.04em;font-weight:900;
+  margin:20px 0 22px;
+}
+.mark{position:relative;display:inline-block;z-index:0}
+.mark::after{content:"";position:absolute;left:-1%;right:-1%;bottom:.06em;height:.32em;background:var(--accent);opacity:.25;transform:rotate(-.7deg);z-index:-1}
+.lede{font-size:clamp(15px,2vw,17px);line-height:1.9;color:var(--ink2);margin:0 0 30px;max-width:33em}
+.cta-row{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.cta-note{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--ink2)}
+
+.btn{
+  font-family:var(--sans);font-weight:900;font-size:16px;
+  padding:14px 24px;border:2.5px solid var(--ink);border-radius:14px;
+  background:var(--card);color:var(--ink);cursor:pointer;
+  box-shadow:5px 5px 0 var(--ink);
+  transition:transform .13s ease, box-shadow .13s ease, background .2s;
+  display:inline-flex;align-items:center;gap:9px;
+}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)}
+.btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.btn-primary{background:var(--accent);color:var(--on)}
+.btn-ghost{font-size:13px;padding:9px 15px;border-width:2px;border-radius:11px;box-shadow:3px 3px 0 var(--ink)}
+.btn-ghost:hover{box-shadow:5px 5px 0 var(--ink)}
+.arr{transition:transform .15s}
+.btn:hover .arr{transform:translateX(4px)}
+
+.strip{margin:38px 0 16px;border:2px solid var(--ink);border-radius:16px;background:var(--card);overflow:hidden;padding:10px 0;position:relative}
+.strip::before,.strip::after{content:"";position:absolute;top:0;bottom:0;width:46px;z-index:2;pointer-events:none}
+.strip::before{left:0;background:linear-gradient(90deg,var(--card),transparent)}
+.strip::after{right:0;background:linear-gradient(-90deg,var(--card),transparent)}
+.strip-track{display:flex;gap:4px;width:max-content;animation:marquee 46s linear infinite}
+.strip:hover .strip-track{animation-play-state:paused}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.strip-item{width:78px;flex:0 0 auto;display:flex;flex-direction:column;align-items:center;opacity:.9}
+.strip-item svg{width:62px;height:auto}
+.strip-item b{font-family:var(--mono);font-size:9px;letter-spacing:.08em;margin-top:-2px;color:var(--ink2)}
+
+.intro-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.intro-tags span{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;border:1.5px solid rgba(23,20,16,.25);border-radius:99px;padding:5px 11px;color:var(--ink2)}
+
+/* ---------- picker ---------- */
+.head{margin-bottom:8px}
+.head h2{font-size:clamp(28px,5vw,40px);letter-spacing:-.03em;line-height:1.15;margin:14px 0 10px;font-weight:900}
+.sub{color:var(--ink2);font-size:14.5px;line-height:1.75;margin:0}
+#pickGroups{display:flex;flex-direction:column;gap:22px;margin-top:26px}
+.gblock{--g:var(--accent);--tg:var(--tint);--og:var(--on);border:2.5px solid var(--ink);border-radius:18px;background:var(--card);padding:15px;box-shadow:6px 6px 0 var(--ink)}
+.gblock-head{display:flex;align-items:center;gap:10px;margin-bottom:13px}
+.gkey{font-family:var(--mono);font-weight:700;font-size:12px;padding:3px 8px;border-radius:6px;background:var(--g);color:var(--og);border:2px solid var(--ink);letter-spacing:.05em}
+.gcn{font-weight:900;font-size:16.5px;letter-spacing:.01em}
+.gnote{margin-left:auto;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:var(--ink2)}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+@media (max-width:600px){.grid4{grid-template-columns:repeat(2,1fr)}}
+.tcard{
+  background:var(--tg);border:2px solid var(--ink);border-radius:13px;
+  padding:9px 7px 11px;display:flex;flex-direction:column;align-items:center;gap:5px;
+  cursor:pointer;transition:transform .15s ease, box-shadow .15s ease;
+  font-family:var(--sans);color:var(--ink);
+}
+.tcard:hover{transform:translateY(-3px);box-shadow:0 7px 0 rgba(23,20,16,.16)}
+.tcard:active{transform:translateY(0)}
+.tcard svg{width:100%;max-width:92px;height:auto;display:block}
+.tcard b{font-size:15.5px;font-weight:900;letter-spacing:.02em}
+.tcard span{font-size:10.5px;color:var(--ink2);letter-spacing:.02em}
+.linkbtn{background:none;border:none;font-family:var(--mono);font-size:11px;letter-spacing:.09em;color:var(--ink2);cursor:pointer;padding:6px 0;margin-top:22px;text-transform:uppercase}
+.linkbtn:hover{color:var(--ink);text-decoration:underline}
+
+/* ---------- quiz ---------- */
+.quiz-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.quiz-head .mono{color:var(--ink)}
+.progress{height:9px;border:2px solid var(--ink);border-radius:99px;overflow:hidden;background:var(--card);margin-bottom:24px}
+.progress span{display:block;height:100%;width:0;background:var(--accent);transition:width .4s cubic-bezier(.2,.8,.25,1)}
+.q-card{border:2.5px solid var(--ink);border-radius:20px;background:var(--card);padding:clamp(20px,4vw,32px);box-shadow:8px 8px 0 var(--ink)}
+.q-tag{margin:0 0 12px}
+.q-title{font-size:clamp(20px,4.2vw,27px);line-height:1.5;font-weight:900;letter-spacing:-.012em;margin:0 0 22px}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{
+  display:flex;gap:14px;align-items:center;text-align:left;
+  padding:14px 15px;border:2px solid var(--ink);border-radius:13px;
+  background:var(--card);font-family:var(--sans);font-size:15px;line-height:1.55;
+  cursor:pointer;color:var(--ink);
+  transition:background .14s, transform .14s, box-shadow .14s;
+}
+.opt:hover{background:var(--tint);transform:translateX(4px)}
+.opt.sel{background:var(--tint);box-shadow:3px 3px 0 var(--ink);transform:translateX(2px)}
+.ob{
+  flex:0 0 30px;height:30px;border:2px solid var(--ink);border-radius:8px;
+  display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:13px;
+  background:var(--card);transition:background .14s,color .14s;
+}
+.opt.sel .ob{background:var(--accent);color:var(--on)}
+.quiz-note{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--ink2);text-align:center;margin-top:22px}
+
+/* ---------- result ---------- */
+.result-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:30px}
+.result-head h2{font-size:clamp(26px,4.6vw,38px);letter-spacing:-.03em;margin:12px 0 0;font-weight:900;line-height:1.15}
+.res-actions{display:flex;gap:9px;flex-wrap:wrap}
+#posters{display:flex;flex-direction:column;gap:30px}
+
+.poster{
+  position:relative;max-width:560px;width:100%;margin:0 auto;
+  border:2.5px solid var(--ink);border-radius:22px;
+  box-shadow:9px 9px 0 var(--ink);
+  padding:24px 24px 22px;
+  background:var(--card);
+}
+.poster::before{
+  content:"";position:absolute;top:-13px;left:50%;transform:translateX(-50%) rotate(-2deg);
+  width:104px;height:25px;background:rgba(255,253,247,.62);
+  border:1px solid rgba(23,20,16,.18);border-radius:2px;
+}
+.p-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px;position:relative;z-index:1}
+.p-head .eyebrow{font-size:10px}
+
+/* hero */
+.hero{background:var(--tint);overflow:hidden}
+.hero::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(rgba(23,20,16,.10) 1px, transparent 1.4px);
+  background-size:11px 11px;
+  opacity:.30;
+  mask-image:linear-gradient(180deg,#000 0%,transparent 62%);
+  -webkit-mask-image:linear-gradient(180deg,#000 0%,transparent 62%);
+}
+.hero-top{display:flex;justify-content:space-between;align-items:center;gap:10px;position:relative;z-index:2}
+.hero-top .mono{color:var(--ink2);font-size:9.5px}
+.hero-row{display:flex;justify-content:space-between;align-items:flex-end;gap:4px;margin:14px 0 4px;position:relative;z-index:2}
+.hero-copy{min-width:0}
+.hero-code{font-size:clamp(54px,13vw,78px);line-height:.86;letter-spacing:-.055em;font-weight:900}
+.hero-cn{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--ink2);margin-top:9px;text-transform:uppercase}
+.hero-fig{width:clamp(118px,32vw,176px);flex:0 0 auto;margin-right:-4px;margin-bottom:-6px}
+.hero-fig svg{width:100%;height:auto;display:block}
+.hero-ver{position:relative;z-index:2;margin-top:14px}
+.hero-pre{font-size:13px;letter-spacing:.06em;color:var(--ink2);margin:0 0 2px;font-weight:700}
+.hero-name{
+  font-size:clamp(42px,10.5vw,62px);line-height:1.02;letter-spacing:-.045em;font-weight:900;
+  margin:0;display:inline-block;position:relative;
+}
+.hero-name::after{content:"";position:absolute;left:-1%;right:-1%;bottom:.02em;height:.22em;background:var(--accent);opacity:.3;z-index:-1}
+.hero-def{font-size:13px;line-height:1.65;color:var(--ink2);margin:10px 0 0;max-width:24em}
+.hero-quote{
+  position:relative;z-index:2;
+  background:var(--card);border:2px solid var(--ink);border-radius:14px;
+  padding:16px 17px;margin:18px 0 16px;
+  font-family:var(--serif);font-size:15.5px;line-height:1.85;letter-spacing:.005em;
+  box-shadow:4px 4px 0 rgba(23,20,16,.13);
+}
+.hero-foot{position:relative;z-index:2;display:flex;align-items:flex-end;gap:12px}
+.barcode{
+  flex:1 1 auto;min-width:0;height:38px;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);
+  background:repeating-linear-gradient(90deg,
+    var(--ink) 0 2px, transparent 2px 4px,
+    var(--ink) 4px 5px, transparent 5px 9px,
+    var(--ink) 9px 12px, transparent 12px 14px,
+    var(--ink) 14px 15px, transparent 15px 19px);
+  opacity:.85;
+}
+.chips{display:grid;grid-template-columns:auto auto;gap:4px;flex:0 0 auto}
+.chip{
+  font-family:var(--mono);font-size:9px;letter-spacing:.04em;
+  border:1.5px solid var(--ink);border-radius:5px;padding:3px 5px;background:var(--card);white-space:nowrap;
+}
+.stamp{
+  position:absolute;right:14px;bottom:64px;z-index:3;
+  transform:rotate(-12deg);
+  border:3px double var(--accent-d);color:var(--accent-d);
+  padding:5px 10px 4px;border-radius:7px;text-align:center;
+  font-weight:900;font-size:15px;line-height:1.05;letter-spacing:.16em;
+  opacity:.72;mix-blend-mode:multiply;
+  background:rgba(255,255,255,.12);
+}
+.stamp small{display:block;font-family:var(--mono);font-size:7px;letter-spacing:.16em;margin-top:3px;opacity:.85}
+
+/* table poster */
+.dim-list{display:flex;flex-direction:column}
+.dim-row{display:grid;grid-template-columns:56px 1fr;gap:14px;padding:16px 0;border-top:1.5px dashed rgba(23,20,16,.25)}
+.dim-row:first-child{border-top:none;padding-top:4px}
+.dim-letter{
+  width:56px;height:56px;border:2px solid var(--ink);border-radius:13px;
+  display:grid;place-items:center;font-weight:900;font-size:27px;
+  background:var(--tint);letter-spacing:-.02em;
+}
+.dim-main{min-width:0}
+.dim-line{display:flex;align-items:flex-start;gap:10px;justify-content:space-between}
+.dim-trait{font-weight:900;font-size:14.5px;line-height:1.5}
+.pill{
+  flex:0 0 auto;font-family:var(--mono);font-size:9.5px;letter-spacing:.04em;
+  border:2px solid var(--ink);border-radius:99px;padding:2px 8px;white-space:nowrap;margin-top:2px;
+}
+.pill.lv0{background:var(--ink);color:var(--card)}
+.pill.lv1{background:var(--tint);color:var(--ink)}
+.pill.lv2{background:repeating-linear-gradient(45deg,var(--tint) 0 4px,var(--card) 4px 8px);color:var(--ink)}
+.pill.lv3{background:var(--accent-d);color:var(--on)}
+.dim-diag{font-size:12.5px;line-height:1.65;color:var(--ink2);margin:7px 0 0}
+.meter{display:flex;gap:3px;margin-top:9px}
+.meter i{width:22px;height:6px;border:1px solid var(--ink);border-radius:2px;background:transparent}
+.meter i.on{background:var(--accent);border-color:var(--accent)}
+.conclusion{
+  margin:18px 0 0;padding:14px 15px;border:2px solid var(--ink);border-radius:12px;
+  background:var(--tint);font-size:13px;line-height:1.8;
+}
+.conclusion b{font-weight:900;font-size:16px;padding:0 1px}
+.nw{white-space:nowrap}
+
+/* insight */
+.dark{background:#191510;color:#f3ead8;border-color:var(--ink);box-shadow:9px 9px 0 var(--ink)}
+.dark .eyebrow{color:rgba(243,234,216,.62)}
+.dark .eyebrow::before{background:var(--accent)}
+.dark .mono{color:rgba(243,234,216,.5)}
+.insight{
+  font-family:var(--serif);font-size:clamp(17px,3.4vw,21px);line-height:1.95;
+  margin:6px 0 26px;letter-spacing:.01em;
+}
+.insight::first-letter{color:var(--accent);font-size:1.4em;font-weight:700}
+.dark-foot{display:flex;justify-content:space-between;border-top:1px solid rgba(243,234,216,.22);padding-top:12px;font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;color:rgba(243,234,216,.55)}
+
+/* caption */
+.caption{background:var(--card)}
+.cap-text{font-size:clamp(15px,2.6vw,17px);line-height:1.9;font-weight:700;letter-spacing:.005em;margin:6px 0 20px}
+.cap-hint{font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;color:var(--ink2);margin:12px 0 0}
+.caption .btn{width:100%;justify-content:center}
+.cap-chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:16px}
+
+/* toast */
+.toast{
+  position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);
+  background:var(--ink);color:var(--card);font-family:var(--mono);font-size:11px;
+  letter-spacing:.1em;padding:10px 18px;border-radius:99px;
+  opacity:0;pointer-events:none;transition:.25s;z-index:60;
+}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* scan overlay */
+.scan{
+  position:fixed;inset:0;z-index:50;display:grid;place-items:center;
+  background:rgba(236,228,212,.93);
+  opacity:0;pointer-events:none;transition:opacity .22s;
+}
+.scan.on{opacity:1;pointer-events:auto}
+.scan-card{
+  width:min(310px,84vw);border:2.5px solid var(--ink);border-radius:20px;
+  background:var(--card);padding:24px 24px 26px;text-align:center;
+  box-shadow:8px 8px 0 var(--ink);position:relative;overflow:hidden;
+}
+.scan-figure svg{width:130px;height:auto;display:block;margin:0 auto}
+.scan-figure{position:relative;display:inline-block}
+.scan-beam{
+  position:absolute;left:0;right:0;height:3px;top:0;
+  background:var(--accent);
+  box-shadow:0 0 14px 3px var(--accent);
+  animation:beam 1.15s ease-in-out infinite;
+}
+@keyframes beam{0%,100%{top:8%;opacity:.9}50%{top:88%;opacity:.6}}
+.scan-label{margin:16px 0 12px;color:var(--ink);font-size:10px}
+.scan-track{height:7px;border:2px solid var(--ink);border-radius:99px;overflow:hidden;background:var(--paper)}
+.scan-track i{display:block;height:100%;width:0;background:var(--accent);animation:fill 1.25s cubic-bezier(.3,.9,.4,1) forwards}
+@keyframes fill{to{width:100%}}
+
+.foot{max-width:780px;margin:0 auto;padding:0 24px 44px;text-align:center;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:#8a8272}
+.hidden{display:none!important}
+
+@media (max-width:420px){
+  .poster{padding:20px 18px 18px;border-radius:18px;box-shadow:6px 6px 0 var(--ink)}
+  .chips{display:none}
+  .stamp{font-size:13px;right:10px;bottom:58px}
+  .hero-quote{font-size:14.5px;padding:14px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><span class="live"></span> MBTI 出厂检验室</div>
+  <div class="topmeta">QC · 11 QUESTIONS · VOL.01</div>
+</header>
+
+<main class="wrap">
+
+  <!-- ================= INTRO ================= -->
+  <section class="screen on" id="s-intro">
+    <div class="intro">
+      <p class="eyebrow">人格出厂检验 / 第 01 期</p>
+      <h1 class="title">你的 MBTI<br><span class="mark">是原装的吗</span></h1>
+      <p class="lede">四个字母，逐个验货。<br>有的原装，有的租来，有的已经被某段经历重装了系统。</p>
+      <div class="cta-row">
+        <button class="btn btn-primary" id="startBtn">开始验货 <span class="arr">→</span></button>
+        <span class="cta-note">11 题 · 约 2 分钟 · 凭第一反应</span>
+      </div>
+      <div class="strip"><div class="strip-track" id="stripTrack"></div></div>
+      <div class="intro-tags">
+        <span># 精装正版</span><span># 拼多多版</span><span># 组装机</span><span># 翻新版</span><span># 盗版预警</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PICK ================= -->
+  <section class="screen" id="s-pick">
+    <div class="head">
+      <p class="eyebrow">STEP 01 / 选择类型</p>
+      <h2>先选你的 MBTI</h2>
+      <p class="sub">只选类型，不用解释。选错了也不影响——反正都要验。</p>
+    </div>
+    <div id="pickGroups"></div>
+    <button class="linkbtn" id="backIntro">← 返回上一页</button>
+  </section>
+
+  <!-- ================= QUIZ ================= -->
+  <section class="screen" id="s-quiz">
+    <div class="quiz-head">
+      <button class="linkbtn" style="margin:0" id="quitQuiz">← 重选类型</button>
+      <span class="mono" id="qCount">01 / 11</span>
+    </div>
+    <div class="progress"><span id="qBar"></span></div>
+    <div class="q-card">
+      <p class="q-tag mono" id="qTag">QUESTION</p>
+      <h2 class="q-title" id="qTitle"></h2>
+      <div class="opts" id="qOpts"></div>
+    </div>
+    <p class="quiz-note">凭第一反应选 · 不用想太久</p>
+  </section>
+
+  <!-- ================= RESULT ================= -->
+  <section class="screen" id="s-result">
+    <div class="result-head">
+      <div>
+        <p class="eyebrow">STEP 03 / 验货结果</p>
+        <h2 id="resTitle">验货完成</h2>
+      </div>
+      <div class="res-actions">
+        <button class="btn btn-ghost" id="againBtn">重新验货</button>
+        <button class="btn btn-ghost" id="copyTop">复制配文</button>
+      </div>
+    </div>
+    <div id="posters"></div>
+  </section>
+
+</main>
+
+<footer class="foot">本测试仅供娱乐 · 所有结论都是一种观察，不是判决</footer>
+
+<div class="scan" id="scan" aria-hidden="true">
+  <div class="scan-card">
+    <div class="scan-figure">
+      <div id="scanFig"></div>
+      <div class="scan-beam"></div>
+    </div>
+    <p class="scan-label mono">INSPECTING · 四维拆解中</p>
+    <div class="scan-track"><i></i></div>
+  </div>
+</div>
+
+<div class="toast" id="toast">已复制</div>
+
+<script>
+/* =========================================================
+   DATA
+   ========================================================= */
+const GROUPS = {
+  NT:{key:'NT', cn:'分析家', color:'#6D4AB8', dark:'#4A2E8C', tint:'#EFE9FB', on:'#ffffff', note:'战略 · 系统 · 理性'},
+  NF:{key:'NF', cn:'外交家', color:'#2E8B6B', dark:'#1E654B', tint:'#E7F4EC', on:'#ffffff', note:'共情 · 理想 · 意义'},
+  SJ:{key:'SJ', cn:'守护者', color:'#2F6FB2', dark:'#1E4E80', tint:'#E8F0FA', on:'#ffffff', note:'秩序 · 责任 · 稳定'},
+  SP:{key:'SP', cn:'探险家', color:'#C9860E', dark:'#8F5D00', tint:'#FBF0D8', on:'#171410', note:'现场 · 体验 · 自由'}
+};
+
+const TYPES = {
+  INTJ:{group:'NT', cn:'建筑师', traits:['独处充电，社交后需恢复','看长远和可能性','逻辑优先，对事不对人','计划驱动，有时间表']},
+  INTP:{group:'NT', cn:'逻辑学家', traits:['独处思考，社交耗电','好奇抽象概念','分析优先，爱拆解','灵活随性，讨厌被框']},
+  ENTJ:{group:'NT', cn:'指挥官', traits:['主动掌控场面','看战略和大局','效率优先，果断','目标驱动，强执行']},
+  ENTP:{group:'NT', cn:'辩论家', traits:['享受碰撞和辩论','联想跳跃，脑洞多','逻辑拆解，爱挑战','多线程，随时切换']},
+  INFJ:{group:'NF', cn:'提倡者', traits:['深度独处，选择性社交','洞察本质和意义','共情优先，在意感受','有内在秩序和计划']},
+  INFP:{group:'NF', cn:'调停者', traits:['内省，需要大量独处','理想主义和想象','真实感受优先，敏感','随性，不喜欢被安排']},
+  ENFJ:{group:'NF', cn:'主人公', traits:['感染力，主动连接','看人的潜力和可能','关怀优先，照顾他人','组织驱动，有安排']},
+  ENFP:{group:'NF', cn:'竞选者', traits:['热情社交，能量外放','创意联想，发散','情感连接优先','自由灵活，讨厌约束']},
+  ISTJ:{group:'SJ', cn:'物流师', traits:['独处恢复，低调','务实，关注具体细节','逻辑和事实优先','秩序和计划驱动']},
+  ISFJ:{group:'SJ', cn:'守卫者', traits:['安静，选择性社交','关注具体和实际','照顾他人感受','稳定，有 routine']},
+  ESTJ:{group:'SJ', cn:'总经理', traits:['主动组织，直接','务实，看具体执行','效率优先，果断','强执行，重秩序']},
+  ESFJ:{group:'SJ', cn:'执政官', traits:['社交驱动，热心','关注实际需求','和谐优先，关怀','组织，有安排']},
+  ISTP:{group:'SP', cn:'鉴赏家', traits:['独立，动手解决','实用，关注当下','冷静分析，效率','灵活，随情况调整']},
+  ISFP:{group:'SP', cn:'探险家', traits:['安静，内心丰富','感官体验，具体','真实感受优先','随性，自由']},
+  ESTP:{group:'SP', cn:'企业家', traits:['行动驱动，主动','现实，关注当下','实用逻辑，直接','灵活，冒险']},
+  ESFP:{group:'SP', cn:'表演者', traits:['活力社交，外放','体验当下，具体','情感连接，热情','自由，随性']}
+};
+
+const ORDER = {
+  NT:['INTJ','INTP','ENTJ','ENTP'],
+  NF:['INFJ','INFP','ENFJ','ENFP'],
+  SJ:['ISTJ','ISFJ','ESTJ','ESFJ'],
+  SP:['ISTP','ISFP','ESTP','ESFP']
+};
+
+const QUOTES = {
+  INTJ:{
+    '精装正版':'你的INTJ是原装正品。冷是真的冷，不是装的；计划是真的在走，不是给别人看的。',
+    '拼多多版':'你的J是租来的。计划本写了三页就放弃了，但对外还说“我在按计划走”。I和N是真的，T偶尔会被人情临时征用。',
+    '组装机':'你的T是后天练出来的。以前可能更在意别人感受，被职场格式化之后学会了“对事不对人”，但偶尔还会在半夜复盘自己是不是太冷了。',
+    '翻新版':'你以前不是INTJ。是某段经历把你从更感性的版本重装成了现在这个配置，旧版本的bug偶尔还会弹出来——比如突然想给某个人发一段很长的话，打完又删了。',
+    '盗版预警':'你在不同场合运行不同版本。开会时是INTJ，回家之后是另一个系统。你已经分不清哪个是出厂设置，哪个是临时安装的。'
+  },
+  INTP:{
+    '精装正版':'你的INTP是原装正品。抽离是真的抽离，不是装的；脑子里那些没做完的推导，也是真的没做完。',
+    '拼多多版':'你的P是租来的。嘴上说“随性就好”，其实收藏夹里躺着七个没打开的计划模板。I和N是真的，T在遇到在意的人时会临时下线。',
+    '组装机':'你的T是加装的。你本来更靠直觉和感受活着，是某个阶段逼你学会了“先分析再说话”，但分析完之后你经常不想说了。',
+    '翻新版':'你以前不是INTP。你曾经更外向、更愿意表达，是某次碰壁之后把系统重装成了“先想清楚再说”，但偶尔还会怀念那个张嘴就说的旧版本。',
+    '盗版预警':'你对外运行的是一个“随和好说话”的版本，对内运行的是“刚才那句话逻辑有问题”的版本。两个版本切换太多次，原始参数已经找不到了。'
+  },
+  ENTJ:{
+    '精装正版':'你的ENTJ是原装正品。目标感是真的，不是演的；效率优先也是真的，不是冷血。',
+    '拼多多版':'你的E是租来的。你其实没那么享受掌控场面，只是发现“不站出来就没人站出来”，于是练出了一套指挥官外壳。N和T是真的，J在周末会临时失灵。',
+    '组装机':'你的T是加装的。你原本更在意关系和感受，是职场把你逼成了“先谈效率再谈人情”，但你偶尔会在深夜怀疑自己是不是变成了曾经讨厌的那种人。',
+    '翻新版':'你以前不是ENTJ。你曾经更温和、更愿意等别人，是某段经历让你把系统重装成了“先推进再说”，旧版本的犹豫偶尔还会闪回。',
+    '盗版预警':'你对外运行的是“一切尽在掌握”，对内运行的是“我也不知道下一步该往哪走”。两个版本切换太多次，你已经分不清哪个是出厂设置。'
+  },
+  ENTP:{
+    '精装正版':'你的ENTP是原装正品。脑洞是真的多，不是装的；辩论是真的享受，不是要赢。',
+    '拼多多版':'你的E是租来的。你其实需要大量独处来消化那些脑洞，但对外呈现的是“随时能聊”。N和T是真的，P是彻底放弃治疗。',
+    '组装机':'你的T是加装的。你本来更靠直觉和感受活着，是辩论和碰撞逼你学会了“先拆逻辑再表态”，但拆完之后你经常觉得没意思。',
+    '翻新版':'你以前不是ENTP。你曾经更安静、更愿意顺着别人，是某次“不表达就被忽略”的经历让你把系统重装成了现在这个配置，旧版本的沉默偶尔还会回来。',
+    '盗版预警':'你对外运行的是“什么都能聊、什么都能杠”，对内运行的是“刚才那句话是不是说重了”。切换太多次，原始参数已经找不到了。'
+  },
+  INFJ:{
+    '精装正版':'你的INFJ是原装正品。洞察是真的，不是装的；共情也是真的，不是讨好。',
+    '拼多多版':'你的F是租来的。你其实早就看穿了某些人的意图，但还是选择用“理解”的方式回应，因为冲突太耗能。I和N是真的，J在独处时会临时失灵。',
+    '组装机':'你的J是加装的。你本来更随性、更愿意等事情自己展开，是某个阶段逼你学会了“先做计划再行动”，但计划做完你经常觉得累。',
+    '翻新版':'你以前不是INFJ。你曾经更外放、更愿意表达，是某段经历把你重装成了“先观察再开口”，旧版本的表达欲偶尔还会闪回。',
+    '盗版预警':'你对外运行的是“我理解你”，对内运行的是“我其实已经累了”。切换太多次，你已经分不清哪个是出厂设置。'
+  },
+  INFP:{
+    '精装正版':'你的INFP是原装正品。敏感是真的，不是矫情；理想主义也是真的，不是逃避。',
+    '拼多多版':'你的F是租来的。你其实有很多尖锐的判断，但对外呈现的是“我都行”，因为表达真实立场太耗能。I和N是真的，P是彻底放弃。',
+    '组装机':'你的N是加装的。你本来更关注具体和当下，是阅读和思考把你逼成了“先想意义再做事”，但想完之后你经常不想做了。',
+    '翻新版':'你以前不是INFP。你曾经更务实、更愿意按部就班，是某段经历把你重装成了“先感受再判断”，旧版本的务实偶尔还会回来。',
+    '盗版预警':'你对外运行的是“温柔好相处”，对内运行的是“我已经在忍了”。切换太多次，原始参数已经找不到了。'
+  },
+  ENFJ:{
+    '精装正版':'你的ENFJ是原装正品。感染力是真的，不是演的；关怀也是真的，不是控制。',
+    '拼多多版':'你的E是租来的。你其实需要大量独处来恢复，但对外呈现的是“随时都在”。N和F是真的，J在周末会临时下线。',
+    '组装机':'你的F是加装的。你本来更直接、更讲效率，是某个角色逼你学会了“先照顾情绪再谈事”，但照顾完你经常觉得亏。',
+    '翻新版':'你以前不是ENFJ。你曾经更安静、更愿意被安排，是某次“不站出来就没人管”的经历让你重装成了现在这个配置。',
+    '盗版预警':'你对外运行的是“大家跟我来”，对内运行的是“我其实也不知道往哪走”。切换太多次，你已经分不清哪个是出厂设置。'
+  },
+  ENFP:{
+    '精装正版':'你的ENFP是原装正品。热情是真的，不是装的；自由也是真的，不是逃避责任。',
+    '拼多多版':'你的E是租来的。社交完回家需要瘫两天，但对外呈现的是“我随时能出门”。N和F是真的，P是彻底放弃治疗。',
+    '组装机':'你的F是加装的。你本来更直接、更爱辩论，是某段关系逼你学会了“先共情再表达”，但共情完你经常觉得累。',
+    '翻新版':'你以前不是ENFP。你曾经更安静、更内敛，是某段经历把你重装成了“先连接再想”，旧版本的沉默偶尔还会回来。',
+    '盗版预警':'你对外运行的是“快乐小狗”，对内运行的是“我其实需要一个人待着”。切换太多次，原始参数已经找不到了。'
+  },
+  ISTJ:{
+    '精装正版':'你的ISTJ是原装正品。靠谱是真的，不是装的；秩序也是真的，不是控制。',
+    '拼多多版':'你的J是租来的。你其实也有想摆烂的时候，但对外呈现的是“一切按计划”。I和S是真的，T在遇到在意的人时会临时失灵。',
+    '组装机':'你的T是加装的。你本来更在意关系和感受，是职场把你逼成了“先讲事实再讲人情”，但讲完你偶尔会觉得冷。',
+    '翻新版':'你以前不是ISTJ。你曾经更随性、更愿意试错，是某次教训把你重装成了“先规划再行动”，旧版本的随性偶尔还会闪回。',
+    '盗版预警':'你对外运行的是“一切尽在掌握”，对内运行的是“我也不知道这么撑对不对”。切换太多次，你已经分不清哪个是出厂设置。'
+  },
+  ISFJ:{
+    '精装正版':'你的ISFJ是原装正品。细心是真的，不是讨好；忠诚也是真的，不是没底线。',
+    '拼多多版':'你的F是租来的。你其实有很多没说出口的不满，但对外呈现的是“我都行”。I和S是真的，J在独处时会临时失灵。',
+    '组装机':'你的J是加装的。你本来更随性、更愿意等事情自己展开，是某个角色逼你学会了“先安排再行动”，但安排完你经常觉得累。',
+    '翻新版':'你以前不是ISFJ。你曾经更外放、更愿意表达，是某段经历把你重装成了“先照顾再开口”，旧版本的表达欲偶尔还会回来。',
+    '盗版预警':'你对外运行的是“我没事你们先”，对内运行的是“为什么总是我”。切换太多次，原始参数已经找不到了。'
+  },
+  ESTJ:{
+    '精装正版':'你的ESTJ是原装正品。执行力是真的，不是装的；直接也是真的，不是没礼貌。',
+    '拼多多版':'你的E是租来的。你其实也没那么享受组织场面，只是发现“不站出来就没人管”，于是练出了一套总管外壳。S和T是真的，J在周末会临时下线。',
+    '组装机':'你的T是加装的。你本来更在意关系和感受，是职场把你逼成了“先谈效率再谈人情”，但谈完你偶尔会怀疑自己是不是太硬了。',
+    '翻新版':'你以前不是ESTJ。你曾经更温和、更愿意等别人，是某段经历让你重装成了“先推进再说”，旧版本的犹豫偶尔还会闪回。',
+    '盗版预警':'你对外运行的是“按规矩来”，对内运行的是“规矩是不是有问题”。切换太多次，你已经分不清哪个是出厂设置。'
+  },
+  ESFJ:{
+    '精装正版':'你的ESFJ是原装正品。热心是真的，不是讨好；和谐优先也是真的，不是没原则。',
+    '拼多多版':'你的E是租来的。你其实也需要独处来恢复，但对外呈现的是“随时都在”。S和F是真的，J在周末会临时失灵。',
+    '组装机':'你的F是加装的。你本来更直接、更讲效率，是某个角色逼你学会了“先照顾情绪再谈事”，但照顾完你经常觉得亏。',
+    '翻新版':'你以前不是ESFJ。你曾经更安静、更愿意被安排，是某次“不站出来就没人管”的经历让你重装成了现在这个配置。',
+    '盗版预警':'你对外运行的是“大家都好我就好”，对内运行的是“我其实也想被照顾”。切换太多次，原始参数已经找不到了。'
+  },
+  ISTP:{
+    '精装正版':'你的ISTP是原装正品。冷静是真的，不是装的；动手解决也是真的，不是逃避沟通。',
+    '拼多多版':'你的P是租来的。嘴上说“到时候再说”，其实手机备忘录里藏着一份没打开的清单。I和S是真的，T在遇到在意的人时会临时下线。',
+    '组装机':'你的T是加装的。你本来更靠直觉和感受活着，是某个阶段逼你学会了“先分析再动手”，但分析完你经常觉得不如直接干。',
+    '翻新版':'你以前不是ISTP。你曾经更愿意表达、更愿意参与，是某次碰壁之后把系统重装成了“先观察再说”，旧版本的表达欲偶尔还会回来。',
+    '盗版预警':'你对外运行的是“无所谓都行”，对内运行的是“其实我有所谓但不想说”。切换太多次，原始参数已经找不到了。'
+  },
+  ISFP:{
+    '精装正版':'你的ISFP是原装正品。真实是真的，不是任性；随性也是真的，不是没方向。',
+    '拼多多版':'你的F是租来的。你其实有很多尖锐的判断，但对外呈现的是“我都行”，因为表达真实立场太耗能。I和S是真的，P是彻底放弃。',
+    '组装机':'你的S是加装的。你本来更关注可能性和意义，是现实逼你学会了“先看具体再谈感受”，但看完你经常觉得没劲。',
+    '翻新版':'你以前不是ISFP。你曾经更务实、更愿意按部就班，是某段经历把你重装成了“先感受再判断”，旧版本的务实偶尔还会回来。',
+    '盗版预警':'你对外运行的是“随性就好”，对内运行的是“我其实很在意别人怎么看”。切换太多次，原始参数已经找不到了。'
+  },
+  ESTP:{
+    '精装正版':'你的ESTP是原装正品。行动力是真的，不是冲动；现实感也是真的，不是短视。',
+    '拼多多版':'你的E是租来的。你其实也需要独处来消化，但对外呈现的是“随时能上”。S和T是真的，P是彻底放弃治疗。',
+    '组装机':'你的T是加装的。你本来更靠直觉和感受活着，是竞争逼你学会了“先算利弊再行动”，但算完你经常觉得不如直接冲。',
+    '翻新版':'你以前不是ESTP。你曾经更谨慎、更愿意等，是某次“不冲就没了”的经历让你重装成了现在这个配置，旧版本的犹豫偶尔还会闪回。',
+    '盗版预警':'你对外运行的是“什么都不怕”，对内运行的是“其实我也会慌”。切换太多次，原始参数已经找不到了。'
+  },
+  ESFP:{
+    '精装正版':'你的ESFP是原装正品。活力是真的，不是装的；体验当下也是真的，不是逃避未来。',
+    '拼多多版':'你的E是租来的。社交完回家需要瘫两天，但对外呈现的是“我随时能出门”。S和F是真的，P是彻底放弃治疗。',
+    '组装机':'你的F是加装的。你本来更直接、更爱行动，是某段关系逼你学会了“先照顾情绪再行动”，但照顾完你经常觉得累。',
+    '翻新版':'你以前不是ESFP。你曾经更安静、更内敛，是某段经历把你重装成了“先连接再想”，旧版本的沉默偶尔还会回来。',
+    '盗版预警':'你对外运行的是“开心果”，对内运行的是“我其实需要一个人待着”。切换太多次，原始参数已经找不到了。'
+  }
+};
+
+const VERSIONS = {
+  '精装正版':{
+    code:'ORIGINAL / 100%',
+    def:'四个字母，全部原装。不缩水、不硬撑、不演。',
+    insight:'在一个所有人都在经营人设的时代，不装本身就是一种稀缺能力。你的问题从来不是“不够讨喜”，是你早就看穿了讨喜的成本，然后选择了不付。'
+  },
+  '拼多多版':{
+    code:'RENTED / 1-2 PCS',
+    def:'类型选对了，但有一两个字母是租来的。到期要还的。',
+    insight:'虚标不是造假。你只是把某个字母调高了一档，因为那个场合需要你那样。问题不在于你调了参数，在于你调完之后忘了调回来。'
+  },
+  '组装机':{
+    code:'ASSEMBLED',
+    def:'有些参数是原装的，有些是后天加装的。你自己也分不清哪个是哪个了。',
+    insight:'组装机不是残次品。你只是比大多数人更早发现：出厂设置不够用的时候，自己加装是一种生存能力。你唯一需要确认的是——加装的零件，有没有反过来在消耗原装的那部分你。'
+  },
+  '翻新版':{
+    code:'REFURBISHED',
+    def:'你以前不是这个类型的。是某段经历把你重新格式化了一遍。',
+    insight:'翻新版不是“原来的你丢了”。是你扛过了一次系统重装，旧数据还在，只是换了一种方式运行。你比精装正版多一样东西：你知道自己是怎么变成现在这样的。'
+  },
+  '盗版预警':{
+    code:'PIRATED / WARNING',
+    def:'不是测错了，是你切换了太多次版本，原始参数已经找不到了。',
+    insight:'能切换版本不是问题，问题是切换完之后没有地方卸妆。你缺的不是“真实的自己”，是一个可以不用运行任何版本的空间。'
+  }
+};
+
+const STATUS = {
+  A:{name:'原装正品', level:0, short:'原装', suffix:'是真的，不费力。'},
+  B:{name:'半原装', level:1, short:'半原装', suffix:'有一部分是真的，但特定场合会临时失灵。'},
+  C:{name:'拼多多版', level:2, short:'虚标', suffix:'是练出来的/租来的，维持需要额外耗能。'},
+  D:{name:'盗版预警', level:3, short:'失踪', suffix:'已经找不到原装的样子了。'}
+};
+
+const DIM_INDEX = [
+  {idx:[0,4,7],  key:'EI'},
+  {idx:[1,10],   key:'NS'},
+  {idx:[2,3,5],  key:'TF'},
+  {idx:[6,8],    key:'JP'}
+];
+
+const QUESTIONS = [
+  {q:'朋友约你周末出去，你答应了。出门前一小时，你在做什么？', o:['已经收拾好了，在等人','在算还有多久能回家，但脸上不会表现出来','查了一下能不能改时间，但没说出口','已经在想找个什么理由推掉']},
+  {q:'看到一个陌生概念，你第一反应更接近？', o:['先查定义和具体细节','先联想它还能扯出哪些可能性','看别人怎么用，再决定自己怎么理解','先放着，等它自己变得重要']},
+  {q:'开会时你不同意某个方案，你会？', o:['直接说出来，对事不对人','先观察气氛，再决定说不说','在脑内排练了五遍反驳，最后只说了“我补充一点”','点头表示同意，回工位在备忘录里写“下次一定要说”']},
+  {q:'有人当面否定你的观点，你第一反应是？', o:['觉得正常，讨论嘛','表面点头，心里在组织语言准备反击','先怀疑自己是不是真的错了','立刻说“你说得对”，然后一整天都在想这件事']},
+  {q:'一个人待着的时候，你更接近哪种？', o:['充电，很舒服','在复盘今天说过的话','在规划明天的事，但经常不执行','刷手机到半夜，不知道自己在找什么']},
+  {q:'你难过的时候，最可能？', o:['找信任的人说','发一条不明显的动态，等人来问','自己消化，但会留下一点痕迹','看起来一切正常，甚至比平时更活跃']},
+  {q:'做重要决定时，你更依赖？', o:['自己的判断，想清楚就做','问一圈人的意见，但最后听自己的','列 pros and cons，列完更纠结','拖到最后一刻，让时间替我做决定']},
+  {q:'你觉得自己在社交中的形象是？', o:['基本就是真实的我','比真实的我稍微外向/热情一点','根据不同场合切换不同版本','我也不知道哪个版本是真的']},
+  {q:'累了一天，你更可能？', o:['做点喜欢的事，恢复得挺快','瘫着刷手机，越刷越累','计划早睡，然后熬夜到两点','已经连续一周这样了，不知道从哪开始改']},
+  {q:'如果有人问你“你是什么样的人”，你？', o:['能比较清楚地说出来','说的和实际做的有时候对不上','要看场合，不同场合的我像不同的人','已经不太确定哪个才是真实的我了']},
+  {q:'面对一个全新任务，你更先做什么？', o:['先搞清楚步骤和标准','先想它可能变成什么样','先看别人怎么做，再套自己的','先拖一下，等 deadline 逼出思路']}
+];
+
+/* 每个 MBTI 的形象配置：发型 / 发色 / 表情 / 道具 / 点缀色 */
+const AVATARS = {
+  INTJ:{hair:'slick',   hairColor:'#221b2e', accent:'#8f74e8', mood:'focused', prop:'telescope'},
+  INTP:{hair:'messy',   hairColor:'#3a2b4d', accent:'#a68bff', mood:'calm',    prop:'gear'},
+  ENTJ:{hair:'short',   hairColor:'#241a1a', accent:'#b9a3ff', mood:'focused', prop:'megaphone'},
+  ENTP:{hair:'curly',   hairColor:'#2e2036', accent:'#ffd34d', mood:'smirk',   prop:'bulb'},
+  INFJ:{hair:'long',    hairColor:'#1f2a24', accent:'#ffcf6b', mood:'calm',    prop:'lantern'},
+  INFP:{hair:'bob',     hairColor:'#3a2b2b', accent:'#9fe0c0', mood:'dreamy',  prop:'book'},
+  ENFJ:{hair:'wavy',    hairColor:'#2a2119', accent:'#ff9db4', mood:'smile',   prop:'heart'},
+  ENFP:{hair:'ponytail',hairColor:'#3b2a1f', accent:'#7fe0b0', mood:'bright',  prop:'balloons'},
+  ISTJ:{hair:'short',   hairColor:'#2b2b2b', accent:'#8fc4f0', mood:'calm',    prop:'clipboard'},
+  ISFJ:{hair:'bun',     hairColor:'#332a24', accent:'#a8d4ff', mood:'smile',   prop:'tray'},
+  ESTJ:{hair:'short',   hairColor:'#1f1f1f', accent:'#7fb3ec', mood:'focused', prop:'stamp'},
+  ESFJ:{hair:'bob',     hairColor:'#2f2622', accent:'#ffb3c7', mood:'smile',   prop:'pot'},
+  ISTP:{hair:'messy',   hairColor:'#2a2a2a', accent:'#ffd166', mood:'calm',    prop:'wrench'},
+  ISFP:{hair:'wavy',    hairColor:'#3a2a28', accent:'#ff9f6e', mood:'dreamy',  prop:'brush'},
+  ESTP:{hair:'short',   hairColor:'#1d1d1d', accent:'#ffbe3d', mood:'smirk',   prop:'skateboard'},
+  ESFP:{hair:'curly',   hairColor:'#33221c', accent:'#ffd166', mood:'bright',  prop:'camera'}
+};
+
+/* =========================================================
+   MASCOT SVG
+   ========================================================= */
+function propSVG(name, ac, gc, gcd, ink){
+  const map = {
+    telescope:`<g transform="translate(140,124) rotate(-22)" stroke="${ink}" stroke-width="3" stroke-linejoin="round">
+      <path d="M16 20 l-9 16 M16 20 l9 16 M16 20 v16" fill="none" stroke-width="2.4"/>
+      <rect x="0" y="6" width="38" height="13" rx="6.5" fill="${gcd}"/>
+      <rect x="26" y="0" width="18" height="25" rx="6" fill="${gc}"/>
+      <circle cx="44" cy="12.5" r="6.5" fill="${ac}" stroke-width="2"/>
+      <path d="M4 12.5 h14" stroke-width="2" opacity=".3"/>
+    </g>`,
+    gear:`<g transform="translate(161,150)" stroke="${ink}" stroke-width="3">
+      <g fill="${ac}">${[0,45,90,135].map(a=>`<rect x="-3.5" y="-25" width="7" height="9" rx="2.5" transform="rotate(${a})"/>`).join('')}</g>
+      <circle r="18" fill="${ac}"/>
+      <circle r="7" fill="#fffdf7" stroke-width="2.5"/>
+    </g>`,
+    megaphone:`<g transform="translate(146,136) rotate(-8)" stroke="${ink}" stroke-width="3" stroke-linejoin="round">
+      <path d="M0 6 L30 -8 L30 32 L0 18 Z" fill="${ac}"/>
+      <rect x="-12" y="8" width="14" height="8" rx="3" fill="${gcd}"/>
+      <path d="M35 -3 q10 14 0 29" fill="none" stroke-width="2.5"/>
+    </g>`,
+    bulb:`<g transform="translate(160,64)">
+      <circle r="15" fill="${ac}" stroke="${ink}" stroke-width="3"/>
+      <path d="M-5 12 h10 v7 h-10 z" fill="#8d8d99" stroke="${ink}" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M14 -14 l6 -6 M0 -20 v-6 M-14 -14 l-6 -6" stroke="${ink}" stroke-width="3" stroke-linecap="round" fill="none"/>
+    </g>`,
+    lantern:`<g transform="translate(149,126)" stroke="${ink}" stroke-width="3" stroke-linejoin="round">
+      <path d="M8 8 q5 -8 10 0" fill="none" stroke-width="3"/>
+      <rect x="0" y="10" width="26" height="34" rx="6" fill="${ac}"/>
+      <rect x="4" y="2" width="18" height="9" rx="4" fill="#5a5145"/>
+      <circle cx="13" cy="27" r="6.5" fill="#fff6d2" stroke-width="2"/>
+      <path d="M8 14 v26 M18 14 v26" stroke-width="1.6" opacity=".4"/>
+    </g>`,
+    book:`<g transform="translate(144,150)" stroke="${ink}" stroke-width="3" stroke-linejoin="round">
+      <path d="M0 8 Q13 -2 26 8 L26 32 Q13 22 0 32 Z" fill="#fffdf7"/>
+      <path d="M26 8 Q39 -2 52 8 L52 32 Q39 22 26 32 Z" fill="#fffdf7"/>
+      <path d="M7 15 h13 M7 21 h13 M32 15 h13 M32 21 h13" stroke-width="2" opacity=".35"/>
+    </g>`,
+    heart:`<g transform="translate(145,138)"><path d="M19 38 C-6 21 2 -2 19 8 C36 -2 44 21 19 38 Z" fill="${ac}" stroke="${ink}" stroke-width="3" stroke-linejoin="round"/></g>`,
+    balloons:`<g transform="translate(155,68)" stroke="${ink}" stroke-width="3">
+      <ellipse cx="0" cy="0" rx="11" ry="14" fill="${ac}"/>
+      <path d="M0 14 q-3 16 5 30" fill="none" stroke-width="2"/>
+      <ellipse cx="19" cy="-15" rx="9" ry="12" fill="#9ae0c4"/>
+      <path d="M19 0 q5 13 -1 24" fill="none" stroke-width="2"/>
+    </g>`,
+    clipboard:`<g transform="translate(147,132) rotate(6)" stroke="${ink}" stroke-width="3" stroke-linejoin="round">
+      <rect x="0" y="0" width="38" height="50" rx="5" fill="#fffdf7"/>
+      <rect x="12" y="-6" width="14" height="11" rx="4" fill="#5a5a66"/>
+      <path d="M7 16 h24 M7 26 h18 M7 36 h22" stroke-width="2" opacity=".35"/>
+      <path d="M6 43 l4 4 7 -8" fill="none" stroke="${ac}" stroke-width="3"/>
+    </g>`,
+    tray:`<g transform="translate(150,158)" stroke="${ink}" stroke-width="3">
+      <ellipse cx="0" cy="26" rx="30" ry="8" fill="#dbe7f5"/>
+      <ellipse cx="0" cy="20" rx="30" ry="8" fill="#fffdf7"/>
+      <rect x="-11" y="2" width="22" height="18" rx="5" fill="#fffdf7"/>
+      <path d="M11 6 q9 4 0 11" fill="none"/>
+      <ellipse cx="0" cy="2" rx="11" ry="3.5" fill="${ac}"/>
+    </g>`,
+    stamp:`<g transform="translate(149,128) rotate(-8)" stroke="${ink}" stroke-width="3" stroke-linejoin="round">
+      <rect x="4" y="26" width="34" height="16" rx="4" fill="${gcd}"/>
+      <rect x="14" y="6" width="14" height="22" rx="5" fill="#3d3a44"/>
+      <rect x="8" y="0" width="26" height="8" rx="4" fill="#3d3a44"/>
+    </g>`,
+    pot:`<g transform="translate(150,144)" stroke="${ink}" stroke-width="3" stroke-linejoin="round">
+      <path d="M4 24 h34 l-6 24 h-22 z" fill="#e0a06a"/>
+      <path d="M21 24 v-12" stroke-width="2"/>
+      <circle cx="21" cy="6" r="7" fill="#ffd1e0"/>
+      <circle cx="9" cy="12" r="6" fill="#ffd1e0"/>
+      <circle cx="33" cy="12" r="6" fill="#ffd1e0"/>
+    </g>`,
+    wrench:`<g transform="translate(146,130) rotate(-22)" stroke="${ink}" stroke-width="3" stroke-linejoin="round">
+      <rect x="0" y="13" width="40" height="11" rx="5.5" fill="#b7c1cc"/>
+      <path d="M40 3 A14 14 0 1 0 40 34 L40 25 A6 6 0 0 1 40 12 Z" fill="#b7c1cc"/>
+      <path d="M8 18.5 h22" stroke-width="2" opacity=".35"/>
+    </g>`,
+    brush:`<g transform="translate(146,124)" stroke="${ink}" stroke-width="3" stroke-linejoin="round">
+      <path d="M10 26 L30 6 l6 6 -20 20 z" fill="#d9a05b"/>
+      <path d="M30 6 l6 -6 l6 6 -6 6 z" fill="${ac}"/>
+      <ellipse cx="15" cy="55" rx="17" ry="13" fill="#fffdf7" transform="rotate(-12 15 55)"/>
+      <circle cx="8" cy="50" r="3.2" fill="#ef6f8e" stroke="none"/>
+      <circle cx="21" cy="49" r="3.2" fill="#6ac1a0" stroke="none"/>
+      <circle cx="16" cy="61" r="3.2" fill="#7a8fe0" stroke="none"/>
+    </g>`,
+    skateboard:`<g transform="translate(141,192) rotate(-5)" stroke="${ink}" stroke-width="3">
+      <rect x="0" y="0" width="48" height="11" rx="5.5" fill="${ac}"/>
+      <circle cx="12" cy="15" r="5" fill="#3b3640"/>
+      <circle cx="36" cy="15" r="5" fill="#3b3640"/>
+    </g>`,
+    camera:`<g transform="translate(146,140)" stroke="${ink}" stroke-width="3" stroke-linejoin="round">
+      <rect x="0" y="8" width="46" height="32" rx="7" fill="#3b3a44"/>
+      <rect x="30" y="1" width="12" height="8" rx="3" fill="#3b3a44"/>
+      <circle cx="23" cy="24" r="12" fill="#8a95a6"/>
+      <circle cx="23" cy="24" r="6" fill="#d8ecff"/>
+    </g>`
+  };
+  return map[name] || '';
+}
+
+function faceSVG(mood, ink){
+  const ey = 94, L = 86, R = 114;
+  const hl = x => `<circle cx="${x+1.7}" cy="${ey-2.4}" r="1.5" fill="#fff"/>`;
+  let eyes = '', brows = '', mouth = '';
+  switch(mood){
+    case 'focused':
+      eyes = `<ellipse cx="${L}" cy="${ey}" rx="4" ry="5" fill="${ink}"/>${hl(L)}
+              <ellipse cx="${R}" cy="${ey}" rx="4" ry="5" fill="${ink}"/>${hl(R)}`;
+      brows = `<path d="M78 80 l14 4" stroke="${ink}" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+               <path d="M122 80 l-14 4" stroke="${ink}" stroke-width="2.6" stroke-linecap="round" fill="none"/>`;
+      mouth = `<path d="M94 113 h12" stroke="${ink}" stroke-width="2.6" stroke-linecap="round" fill="none"/>`;
+      break;
+    case 'smile':
+      eyes = `<path d="M80 96 q6 -7 12 0" stroke="${ink}" stroke-width="3" stroke-linecap="round" fill="none"/>
+              <path d="M108 96 q6 -7 12 0" stroke="${ink}" stroke-width="3" stroke-linecap="round" fill="none"/>`;
+      mouth = `<path d="M92 110 q8 9 16 0" stroke="${ink}" stroke-width="2.6" stroke-linecap="round" fill="none"/>`;
+      break;
+    case 'dreamy':
+      eyes = `<path d="M80 94 q6 5 12 0" stroke="${ink}" stroke-width="3" stroke-linecap="round" fill="none"/>
+              <path d="M108 94 q6 5 12 0" stroke="${ink}" stroke-width="3" stroke-linecap="round" fill="none"/>`;
+      brows = `<path d="M78 82 q7 -3 14 0" stroke="${ink}" stroke-width="2.2" stroke-linecap="round" fill="none" opacity=".55"/>
+               <path d="M108 82 q7 -3 14 0" stroke="${ink}" stroke-width="2.2" stroke-linecap="round" fill="none" opacity=".55"/>`;
+      mouth = `<path d="M95 112 q5 4 10 0" stroke="${ink}" stroke-width="2.6" stroke-linecap="round" fill="none"/>`;
+      break;
+    case 'smirk':
+      eyes = `<ellipse cx="${L}" cy="${ey}" rx="4.4" ry="5.6" fill="${ink}"/>${hl(L)}
+              <ellipse cx="${R}" cy="${ey}" rx="4.4" ry="5.6" fill="${ink}"/>${hl(R)}`;
+      brows = `<path d="M77 79 q8 -4 15 -1" stroke="${ink}" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+               <path d="M108 80 q8 -1 14 -5" stroke="${ink}" stroke-width="2.6" stroke-linecap="round" fill="none"/>`;
+      mouth = `<path d="M92 111 q9 6 16 -3" stroke="${ink}" stroke-width="2.6" stroke-linecap="round" fill="none"/>`;
+      break;
+    case 'bright':
+      eyes = `<ellipse cx="${L}" cy="${ey}" rx="5.4" ry="6.8" fill="${ink}"/>
+              <circle cx="${L+2}" cy="${ey-2.6}" r="1.9" fill="#fff"/>
+              <circle cx="${L-1.6}" cy="${ey+2}" r="1" fill="#fff" opacity=".8"/>
+              <ellipse cx="${R}" cy="${ey}" rx="5.4" ry="6.8" fill="${ink}"/>
+              <circle cx="${R+2}" cy="${ey-2.6}" r="1.9" fill="#fff"/>
+              <circle cx="${R-1.6}" cy="${ey+2}" r="1" fill="#fff" opacity=".8"/>`;
+      mouth = `<path d="M91 107 q9 11 18 0 q-9 5 -18 0 z" fill="${ink}"/>`;
+      break;
+    default: /* calm */
+      eyes = `<ellipse cx="${L}" cy="${ey}" rx="4.5" ry="6" fill="${ink}"/>${hl(L)}
+              <ellipse cx="${R}" cy="${ey}" rx="4.5" ry="6" fill="${ink}"/>${hl(R)}`;
+      mouth = `<path d="M94 112 q6 5 12 0" stroke="${ink}" stroke-width="2.6" stroke-linecap="round" fill="none"/>`;
+  }
+  return eyes + brows + mouth;
+}
+
+function avatarSVG(type){
+  const t = TYPES[type], g = GROUPS[t.group], a = AVATARS[type];
+  const ink = '#171410';
+  const skin = '#f7d7bd';
+  const gc = g.color, gcd = g.dark, hair = a.hairColor, ac = a.accent;
+  const s = [];
+  const add = x => s.push(x);
+
+  add(`<ellipse cx="100" cy="247" rx="44" ry="7" fill="#171410" opacity=".12"/>`);
+
+  /* 后发 */
+  if(['long','bob','wavy'].includes(a.hair)){
+    add(`<path d="M54 86 C54 46 74 28 100 28 C126 28 146 46 146 86 L151 158 C152 170 137 173 133 161 L131 112 L69 112 L67 161 C63 173 48 170 49 158 Z"
+      fill="${hair}" stroke="${ink}" stroke-width="3" stroke-linejoin="round"/>`);
+  }
+  if(a.hair === 'ponytail'){
+    add(`<path d="M139 90 C160 82 172 104 162 130 C157 144 144 150 137 141 C149 128 152 110 138 101 Z"
+      fill="${hair}" stroke="${ink}" stroke-width="3" stroke-linejoin="round"/>`);
+  }
+
+  /* 腿脚 */
+  add(`<rect x="81" y="204" width="15" height="38" rx="7.5" fill="#292430" stroke="${ink}" stroke-width="3"/>`);
+  add(`<rect x="104" y="204" width="15" height="38" rx="7.5" fill="#292430" stroke="${ink}" stroke-width="3"/>`);
+  add(`<ellipse cx="87" cy="244" rx="15" ry="7" fill="#171410"/>`);
+  add(`<ellipse cx="113" cy="244" rx="15" ry="7" fill="#171410"/>`);
+
+  /* 手臂 */
+  add(`<rect x="53" y="148" width="14" height="52" rx="7" fill="${gcd}" stroke="${ink}" stroke-width="3" transform="rotate(10 60 174)"/>`);
+  add(`<rect x="133" y="148" width="14" height="52" rx="7" fill="${gcd}" stroke="${ink}" stroke-width="3" transform="rotate(-10 140 174)"/>`);
+  add(`<circle cx="58" cy="202" r="7.5" fill="${skin}" stroke="${ink}" stroke-width="3"/>`);
+  add(`<circle cx="142" cy="202" r="7.5" fill="${skin}" stroke="${ink}" stroke-width="3"/>`);
+
+  /* 身体 */
+  add(`<path d="M72 140 C72 129 80 122 90 120 L110 120 C120 122 128 129 128 140 L137 206 C138 214 132 218 125 218 L75 218 C68 218 62 214 63 206 Z"
+    fill="${gc}" stroke="${ink}" stroke-width="3" stroke-linejoin="round"/>`);
+  add(`<path d="M90 120 L100 138 L110 120" fill="none" stroke="${ink}" stroke-width="3" stroke-linejoin="round"/>`);
+  add(`<path d="M100 138 L100 214" stroke="${ink}" stroke-width="2" opacity=".22"/>`);
+
+  /* 脖子 */
+  add(`<rect x="92" y="110" width="16" height="14" rx="4" fill="${skin}" stroke="${ink}" stroke-width="3"/>`);
+
+  /* 耳朵与头 */
+  add(`<circle cx="56" cy="92" r="8" fill="${skin}" stroke="${ink}" stroke-width="3"/>`);
+  add(`<circle cx="144" cy="92" r="8" fill="${skin}" stroke="${ink}" stroke-width="3"/>`);
+  add(`<circle cx="100" cy="88" r="44" fill="${skin}" stroke="${ink}" stroke-width="3"/>`);
+
+  /* 腮红 */
+  add(`<ellipse cx="74" cy="104" rx="8" ry="4" fill="${ac}" opacity=".32"/>`);
+  add(`<ellipse cx="126" cy="104" rx="8" ry="4" fill="${ac}" opacity=".32"/>`);
+
+  /* 表情 */
+  add(faceSVG(a.mood, ink));
+
+  /* 前发 */
+  const cap = `<path d="M57 84 C57 48 75 31 100 31 C125 31 143 48 143 84 C137 67 121 59 100 59 C79 59 63 67 57 84 Z"
+    fill="${hair}" stroke="${ink}" stroke-width="3" stroke-linejoin="round"/>`;
+  if(a.hair === 'messy'){
+    add(`<path d="M58 82 L63 50 L75 64 L84 36 L96 60 L107 33 L118 58 L131 44 L141 66 L142 84 C135 66 120 58 100 58 C80 58 66 66 58 82 Z"
+      fill="${hair}" stroke="${ink}" stroke-width="3" stroke-linejoin="round"/>`);
+  } else if(a.hair === 'curly'){
+    add(cap);
+    [[66,58,15],[84,42,16],[104,38,17],[124,48,15],[137,64,13]].forEach(([cx,cy,r])=>{
+      add(`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${hair}" stroke="${ink}" stroke-width="3"/>`);
+    });
+  } else {
+    add(cap);
+    if(a.hair === 'slick'){
+      add(`<path d="M64 72 C74 56 92 50 116 54" fill="none" stroke="${ink}" stroke-width="2" opacity=".25" stroke-linecap="round"/>`);
+    }
+    if(a.hair === 'bun'){
+      add(`<circle cx="100" cy="27" r="15" fill="${hair}" stroke="${ink}" stroke-width="3"/>`);
+    }
+    if(a.hair === 'wavy'){
+      add(`<path d="M59 78 C51 96 57 116 65 128" fill="none" stroke="${hair}" stroke-width="13" stroke-linecap="round"/>`);
+      add(`<path d="M141 78 C149 96 143 116 135 128" fill="none" stroke="${hair}" stroke-width="13" stroke-linecap="round"/>`);
+    }
+  }
+
+  /* 配件 */
+  switch(a.hair){
+    /* 帽类配件与发型解耦 */
+  }
+  const extraFor = {INTJ:'glasses', INTP:'headphones', ISTJ:'glasses', ESTJ:'cap', ESTP:'cap',
+                    ISFJ:'none', ESFP:'headphones', INFP:'star', ISFP:'beret'};
+  const extra = extraFor[type] || 'none';
+  if(extra === 'glasses'){
+    add(`<g stroke="${ink}" stroke-width="3" fill="rgba(255,255,255,.28)">
+      <rect x="71" y="83" width="25" height="21" rx="6"/>
+      <rect x="104" y="83" width="25" height="21" rx="6"/>
+      <path d="M96 93 h8" fill="none"/>
+      <path d="M71 90 l-9 -3" fill="none"/>
+      <path d="M129 90 l9 -3" fill="none"/>
+    </g>`);
+  }
+  if(extra === 'headphones'){
+    add(`<g>
+      <path d="M56 86 A44 44 0 0 1 144 86" fill="none" stroke="${ac}" stroke-width="9" stroke-linecap="round"/>
+      <rect x="46" y="80" width="16" height="28" rx="8" fill="${ac}" stroke="${ink}" stroke-width="3"/>
+      <rect x="138" y="80" width="16" height="28" rx="8" fill="${ac}" stroke="${ink}" stroke-width="3"/>
+    </g>`);
+  }
+  if(extra === 'cap'){
+    add(`<g>
+      <path d="M58 66 C58 30 142 30 142 66 Z" fill="${gcd}" stroke="${ink}" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M133 56 C152 54 162 60 162 67 L133 72 Z" fill="${gcd}" stroke="${ink}" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M100 31 v33" stroke="${ink}" stroke-width="2" opacity=".28"/>
+      <circle cx="100" cy="31" r="4" fill="${gcd}" stroke="${ink}" stroke-width="2.5"/>
+    </g>`);
+  }
+  if(extra === 'beret'){
+    add(`<g>
+      <ellipse cx="98" cy="50" rx="37" ry="13" fill="${ac}" stroke="${ink}" stroke-width="3" transform="rotate(-7 98 50)"/>
+      <circle cx="98" cy="33" r="5.5" fill="${ac}" stroke="${ink}" stroke-width="3"/>
+    </g>`);
+  }
+  if(extra === 'star'){
+    add(`<path d="M131 57 l3.1 6.6 7.2 1 -5.3 5.1 1.3 7.2 -6.3 -3.4 -6.3 3.4 1.3 -7.2 -5.3 -5.1 7.2 -1 z"
+      fill="${ac}" stroke="${ink}" stroke-width="2" stroke-linejoin="round"/>`);
+  }
+
+  /* 道具 */
+  add(propSVG(a.prop, ac, gc, gcd, ink));
+
+  return `<svg viewBox="0 0 200 260" role="img" aria-label="${type}">${s.join('')}</svg>`;
+}
+
+/* =========================================================
+   STATE / RENDER
+   ========================================================= */
+const $ = (sel, el=document) => el.querySelector(sel);
+const state = { type:null, answers:[], q:0, busy:false };
+
+const screens = {
+  intro: $('#s-intro'), pick: $('#s-pick'), quiz: $('#s-quiz'), result: $('#s-result')
+};
+function show(name){
+  Object.values(screens).forEach(s => s.classList.remove('on'));
+  screens[name].classList.add('on');
+  window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
+}
+
+function applyGroup(key){
+  const g = GROUPS[key];
+  const r = document.documentElement.style;
+  r.setProperty('--accent', g.color);
+  r.setProperty('--accent-d', g.dark);
+  r.setProperty('--tint', g.tint);
+  r.setProperty('--on', g.on);
+}
+
+/* --- intro marquee --- */
+function renderStrip(){
+  const track = $('#stripTrack');
+  const list = Object.keys(TYPES);
+  const build = list.map(t=>`<div class="strip-item">${avatarSVG(t)}<b>${t}</b></div>`).join('');
+  track.innerHTML = build + build;
+}
+
+/* --- picker --- */
+function renderPicker(){
+  const wrap = $('#pickGroups');
+  wrap.innerHTML = Object.keys(GROUPS).map(k=>{
+    const g = GROUPS[k];
+    return `<div class="gblock" style="--g:${g.color};--tg:${g.tint};--og:${g.on}">
+      <div class="gblock-head">
+        <span class="gkey">${g.key}</span>
+        <span class="gcn">${g.cn}</span>
+        <span class="gnote">${g.note}</span>
+      </div>
+      <div class="grid4">
+        ${ORDER[k].map(t=>`
+          <button class="tcard" data-type="${t}" aria-label="选择 ${t}">
+            ${avatarSVG(t)}
+            <b>${t}</b>
+            <span>${TYPES[t].cn}</span>
+          </button>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+
+  wrap.querySelectorAll('.tcard').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const type = btn.dataset.type;
+      applyGroup(TYPES[type].group);
+      startQuiz(type);
+    });
+  });
+}
+
+/* --- quiz --- */
+function startQuiz(type){
+  state.type = type;
+  state.answers = [];
+  state.q = 0;
+  $('#resTitle').textContent = '验货完成';
+  show('quiz');
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const i = state.q;
+  const q = QUESTIONS[i];
+  $('#qCount').textContent = String(i+1).padStart(2,'0') + ' / ' + String(QUESTIONS.length).padStart(2,'0');
+  $('#qBar').style.width = ((i) / QUESTIONS.length * 100) + '%';
+  $('#qTag').textContent = 'QUESTION ' + String(i+1).padStart(2,'0');
+  $('#qTitle').textContent = q.q;
+  const opts = $('#qOpts');
+  opts.innerHTML = ['A','B','C','D'].map((L,idx)=>`
+    <button class="opt" data-i="${idx}">
+      <span class="ob">${L}</span>
+      <span>${q.o[idx]}</span>
+    </button>`).join('');
+  opts.querySelectorAll('.opt').forEach(btn=>{
+    btn.addEventListener('click', ()=>choose(parseInt(btn.dataset.i,10), btn));
+  });
+}
+
+function choose(idx, btn){
+  if(state.busy) return;
+  state.busy = true;
+  btn.classList.add('sel');
+  state.answers[state.q] = ['A','B','C','D'][idx];
+  setTimeout(()=>{
+    state.busy = false;
+    if(state.q < QUESTIONS.length - 1){
+      state.q++;
+      renderQuestion();
+      window.scrollTo({top:0, behavior:'smooth'});
+    } else {
+      $('#qBar').style.width = '100%';
+      finish();
+    }
+  }, 260);
+}
+
+/* --- scoring --- */
+function statusOf(answers, indices){
+  const counts = {A:0,B:0,C:0,D:0};
+  indices.forEach(i=>{ counts[answers[i]]++; });
+  const max = Math.max(counts.A, counts.B, counts.C, counts.D);
+  const cands = ['A','B','C','D'].filter(k => counts[k] === max);
+  // 并列时取更“虚标”的状态
+  cands.sort((a,b)=> STATUS[b].level - STATUS[a].level);
+  return cands[0];
+}
+
+function computeResult(){
+  const type = state.type;
+  const letters = type.split('');
+  const dims = DIM_INDEX.map((d, i)=>{
+    const st = statusOf(state.answers, d.idx);
+    return {
+      letter: letters[i],
+      status: st,
+      trait: TYPES[type].traits[i],
+      name: STATUS[st].name,
+      suffix: STATUS[st].suffix,
+      level: STATUS[st].level
+    };
+  });
+
+  const X = dims.filter(d=>d.status==='A').length;
+  const Y = dims.filter(d=>d.status==='B').length;
+  const Z = dims.filter(d=>d.status==='C').length;
+  const W = dims.filter(d=>d.status==='D').length;
+
+  let version;
+  if(W === 0 && Z === 0) version = '精装正版';
+  else if(W >= 2) version = '盗版预警';
+  else if(W === 1 && X >= 2) version = '翻新版';
+  else if(Z + W >= 2 && X >= 1) version = '组装机';
+  else if(Z >= 1 && W === 0) version = '拼多多版';
+  else version = W > 0 ? '盗版预警' : (Z > 0 ? '拼多多版' : '精装正版');
+
+  return {type, dims, X, Y, Z, W, version};
+}
+
+/* --- result --- */
+function todayStr(){
+  const d = new Date();
+  const p = n => String(n).padStart(2,'0');
+  return d.getFullYear() + '.' + p(d.getMonth()+1) + '.' + p(d.getDate());
+}
+
+function renderResult(r){
+  const {type, dims, X, Y, Z, W, version} = r;
+  const g = GROUPS[TYPES[type].group];
+  applyGroup(g.key);
+
+  const serial = 'QC-' + type + '-' + String(Math.floor(Math.random()*9000)+1000);
+  const dateStr = todayStr();
+  const quote = QUOTES[type][version];
+  const v = VERSIONS[version];
+  const caption = `今日验货：${type}${version}。` + dims.map(d=>`${d.letter}${d.name}`).join('，') + '。';
+
+  $('#resTitle').textContent = `你的 ${type} 是 ${version}`;
+  $('#posters').innerHTML = `
+    <article class="poster hero">
+      <div class="hero-top">
+        <span class="mono">QC · ${g.key} / ${serial}</span>
+        <span class="mono">${dateStr}</span>
+      </div>
+      <div class="hero-row">
+        <div class="hero-copy">
+          <div class="hero-code">${type}</div>
+          <div class="hero-cn">${TYPES[type].cn} · ${g.key} ${g.cn}</div>
+        </div>
+        <div class="hero-fig">${avatarSVG(type)}</div>
+      </div>
+      <div class="hero-ver">
+        <p class="hero-pre">你的 ${type} 是</p>
+        <h2 class="hero-name">${version}</h2>
+        <p class="hero-def">${v.def}</p>
+        <div class="stamp">已验货<small>QC PASS</small></div>
+      </div>
+      <blockquote class="hero-quote">“${quote}”</blockquote>
+      <div class="hero-foot">
+        <div class="barcode"></div>
+        <div class="chips">
+          ${dims.map(d=>`<span class="chip">${d.letter}·${STATUS[d.status].short}</span>`).join('')}
+        </div>
+      </div>
+    </article>
+
+    <article class="poster">
+      <div class="p-head"><span class="eyebrow">02 / 四维验货表</span><span class="mono">FOUR DIMENSIONS</span></div>
+      <div class="dim-list">
+        ${dims.map(d=>`
+          <div class="dim-row">
+            <div class="dim-letter">${d.letter}</div>
+            <div class="dim-main">
+              <div class="dim-line">
+                <span class="dim-trait">${d.trait}</span>
+                <span class="pill lv${d.level}">${d.name}</span>
+              </div>
+              <p class="dim-diag">${d.suffix}</p>
+              <div class="meter">${[0,1,2,3].map(n=>`<i class="${n===d.level?'on':''}"></i>`).join('')}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+      <p class="conclusion">结论：你的 ${type}，四个字母里 <span class="nw"><b>${X}</b> 个原装</span>，<span class="nw"><b>${Y}</b> 个半原装</span>，<span class="nw"><b>${Z}</b> 个虚标</span>，<span class="nw"><b>${W}</b> 个已经找不到出厂设置</span>。</p>
+    </article>
+
+    <article class="poster dark">
+      <div class="p-head"><span class="eyebrow">03 / 清醒洞察</span><span class="mono">${v.code}</span></div>
+      <p class="insight">${v.insight}</p>
+      <div class="dark-foot"><span>${type} / ${version}</span><span>${dateStr}</span></div>
+    </article>
+
+    <article class="poster caption">
+      <div class="p-head"><span class="eyebrow">04 / 截图配文</span><span class="mono">SHARE</span></div>
+      <p class="cap-text">“${caption}”</p>
+      <button class="btn btn-primary" id="copyBtn">复制配文 <span class="arr">→</span></button>
+      <p class="cap-hint">截图四屏，配这段文字发出去。</p>
+      <div class="cap-chips">
+        ${dims.map(d=>`<span class="chip">${d.letter} · ${d.name}</span>`).join('')}
+      </div>
+    </article>
+  `;
+
+  $('#copyBtn').addEventListener('click', ()=> copyText(caption));
+  show('result');
+}
+
+function finish(){
+  state.busy = true;
+  const scan = $('#scan');
+  $('#scanFig').innerHTML = avatarSVG(state.type);
+  scan.classList.add('on');
+  scan.setAttribute('aria-hidden','false');
+
+  setTimeout(()=>{
+    const r = computeResult();
+    renderResult(r);
+    scan.classList.remove('on');
+    scan.setAttribute('aria-hidden','true');
+    state.busy = false;
+  }, 1450);
+}
+
+/* --- copy / toast --- */
+function copyText(text){
+  const done = ()=>{ toast('已复制 · 可以直接发'); };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(()=>fallbackCopy(text, done));
+  } else {
+    fallbackCopy(text, done);
+  }
+}
+function fallbackCopy(text, done){
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try{ document.execCommand('copy'); done(); }catch(e){}
+  document.body.removeChild(ta);
+}
+let toastTimer;
+function toast(msg){
+  const el = $('#toast');
+  el.textContent = msg;
+  el.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=> el.classList.remove('on'), 1800);
+}
+
+/* --- events --- */
+$('#startBtn').addEventListener('click', ()=>{
+  applyGroup('NT');
+  show('pick');
+});
+$('#backIntro').addEventListener('click', ()=>{
+  applyGroup('NT');
+  show('intro');
+});
+$('#quitQuiz').addEventListener('click', ()=>{
+  applyGroup('NT');
+  show('pick');
+});
+$('#againBtn').addEventListener('click', ()=>{
+  state.type = null;
+  state.answers = [];
+  state.q = 0;
+  applyGroup('NT');
+  show('pick');
+});
+$('#copyTop').addEventListener('click', ()=>{
+  if(!state.type){ return; }
+  const r = computeResult();
+  const caption = `今日验货：${r.type}${r.version}。` + r.dims.map(d=>`${d.letter}${d.name}`).join('，') + '。';
+  copyText(caption);
+});
+
+document.addEventListener('keydown', e=>{
+  if(!screens.quiz.classList.contains('on')) return;
+  const k = e.key.toUpperCase();
+  if(['A','B','C','D'].includes(k)){
+    const idx = ['A','B','C','D'].indexOf(k);
+    const btn = document.querySelector(`.opt[data-i="${idx}"]`);
+    if(btn) choose(idx, btn);
+  }
+});
+
+/* --- boot --- */
+renderStrip();
+renderPicker();
+applyGroup('NT');
+</script>
+</body>
+</html>
