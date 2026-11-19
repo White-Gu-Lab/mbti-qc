@@ -54,6 +54,27 @@ body{
 .eyebrow::before{content:"";width:22px;height:2px;background:var(--accent);flex:0 0 auto}
 .mono{font-family:var(--mono);font-size:10px;letter-spacing:.13em;color:var(--ink2)}
 
+/* ---------- 首页 ---------- */
+.intro{padding-top:clamp(6px,3vw,24px)}
+.intro-title{font-size:clamp(40px,8.8vw,72px);line-height:1;letter-spacing:-.04em;font-weight:900;margin:18px 0 18px}
+.intro-title .mark{position:relative;display:inline-block;z-index:0}
+.intro-title .mark::after{content:"";position:absolute;left:-1%;right:-1%;bottom:.06em;height:.3em;background:var(--tint);z-index:-1;transform:rotate(-.6deg)}
+.intro-lede{font-size:clamp(14.5px,2vw,16.5px);line-height:1.85;color:var(--ink2);margin:0 0 26px}
+.intro-cta{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.intro-note{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--ink2)}
+.strip{margin:34px 0 16px;border:2px dashed var(--ink);border-radius:16px;background:var(--card);overflow:hidden;padding:10px 0;position:relative}
+.strip::before,.strip::after{content:"";position:absolute;top:0;bottom:0;width:44px;z-index:2;pointer-events:none}
+.strip::before{left:0;background:linear-gradient(90deg,var(--card),transparent)}
+.strip::after{right:0;background:linear-gradient(-90deg,var(--card),transparent)}
+.strip-track{display:flex;gap:2px;width:max-content;animation:marquee 44s linear infinite}
+.strip:hover .strip-track{animation-play-state:paused}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.strip-item{width:76px;flex:0 0 auto;display:flex;flex-direction:column;align-items:center;opacity:.92}
+.strip-item svg{width:60px;height:auto;display:block}
+.strip-item b{font-family:var(--mono);font-size:8.5px;letter-spacing:.06em;margin-top:-2px;color:var(--ink2)}
+.intro-tags{display:flex;flex-wrap:wrap;gap:7px}
+.intro-tags span{font-family:var(--mono);font-size:9.5px;letter-spacing:.05em;border:1.5px dashed rgba(22,19,15,.3);border-radius:99px;padding:5px 10px;color:var(--ink2)}
+
 /* ---------- 选择页 ---------- */
 .pick-head h1{font-size:clamp(32px,6.4vw,50px);line-height:1.08;letter-spacing:-.035em;font-weight:900;margin:16px 0 10px}
 .pick-head .sub{color:var(--ink2);font-size:14.5px;line-height:1.7;margin:0}
@@ -116,6 +137,9 @@ body{
 }
 .opt.sel .ob{background:var(--accent);color:var(--on)}
 .quiz-note{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:var(--ink2);text-align:center;margin-top:20px}
+.q-foot{margin-top:16px;padding-top:12px;border-top:1px dashed rgba(22,19,15,.22);display:flex;justify-content:space-between;align-items:center}
+#prevBtn{font-family:var(--mono);font-size:10px;letter-spacing:.08em}
+#prevBtn[disabled]{opacity:.3;cursor:default;text-decoration:none}
 
 /* ---------- 结果页 ---------- */
 .res-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:26px}
@@ -305,8 +329,25 @@ body{
 
 <main class="wrap">
 
+  <!-- ============ 首页 ============ -->
+  <section class="screen on" id="s-intro">
+    <div class="intro">
+      <p class="eyebrow">MBTI 出厂检验 / 第 02 期</p>
+      <h1 class="intro-title">你的 MBTI<br><span class="mark">是原装的吗</span></h1>
+      <p class="intro-lede">四个字母，逐个验货。<br>有的原装，有的租来，有的已经被某段经历重装了系统。</p>
+      <div class="intro-cta">
+        <button class="btn btn-primary" id="startBtn">开始验货 <span>→</span></button>
+        <span class="intro-note">11 题 · 约 2 分钟 · 凭第一反应</span>
+      </div>
+      <div class="strip"><div class="strip-track" id="strip"></div></div>
+      <div class="intro-tags">
+        <span># 精装正版</span><span># 拼多多版</span><span># 组装机</span><span># 翻新版</span><span># 盗版预警</span>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ STEP 01 选择 ============ -->
-  <section class="screen on" id="s-pick">
+  <section class="screen" id="s-pick">
     <div class="pick-head">
       <p class="eyebrow">STEP 01 / 选择类型</p>
       <h1>先选你的 MBTI</h1>
@@ -327,6 +368,10 @@ body{
       <p class="q-no" id="qNo">QUESTION 01</p>
       <h2 class="q-title" id="qTitle"></h2>
       <div class="opts" id="qOpts"></div>
+      <div class="q-foot">
+        <button class="linkbtn" id="prevBtn" disabled>← 返回上一题</button>
+        <span class="mono" id="qHint">凭第一反应</span>
+      </div>
     </div>
     <p class="quiz-note">凭第一反应选 · 不用想太久</p>
   </section>
@@ -903,7 +948,7 @@ function avatarSVG(type){
    ========================================================= */
 const $ = (sel, el=document) => el.querySelector(sel);
 const state = { type:null, answers:[], q:0, busy:false };
-const screens = { pick:$('#s-pick'), quiz:$('#s-quiz'), result:$('#s-result') };
+const screens = { intro:$('#s-intro'), pick:$('#s-pick'), quiz:$('#s-quiz'), result:$('#s-result') };
 
 function show(name){
   Object.values(screens).forEach(s=>s.classList.remove('on'));
@@ -917,6 +962,13 @@ function applyGroup(key){
   r.setProperty('--accent-d', g.dark);
   r.setProperty('--tint', g.tint);
   r.setProperty('--on', g.on);
+}
+
+/* 首页滚动条 */
+function renderStrip(){
+  const list = Object.keys(TYPES);
+  const build = list.map(t=>`<div class="strip-item">${avatarSVG(t)}<b>${t}</b></div>`).join('');
+  $('#strip').innerHTML = build + build;
 }
 
 /* 选择页 */
@@ -971,6 +1023,24 @@ function renderQuestion(){
   $('#qOpts').querySelectorAll('.opt').forEach(btn=>{
     btn.addEventListener('click', ()=>choose(parseInt(btn.dataset.i,10), btn));
   });
+
+  // 返回上一题
+  const prev = $('#prevBtn');
+  prev.disabled = i === 0;
+  prev.onclick = goPrev;
+  const existing = state.answers[i];
+  if(existing){
+    const idx = ['A','B','C','D'].indexOf(existing);
+    const sel = $(`.opt[data-i="${idx}"]`, $('#qOpts'));
+    if(sel) sel.classList.add('sel');
+  }
+}
+
+function goPrev(){
+  if(state.busy || state.q === 0) return;
+  state.q--;
+  renderQuestion();
+  window.scrollTo({top:0, behavior:'smooth'});
 }
 function choose(idx, btn){
   if(state.busy) return;
@@ -1162,9 +1232,15 @@ function toast(msg){
 }
 
 /* 事件 */
+$('#startBtn').addEventListener('click', ()=>show('pick'));
 $('#quitBtn').addEventListener('click', reset);
 document.addEventListener('keydown', e=>{
   if(!screens.quiz.classList.contains('on')) return;
+  if(e.key === 'ArrowLeft' || e.key === 'Backspace'){
+    e.preventDefault();
+    goPrev();
+    return;
+  }
   const k = e.key.toUpperCase();
   if(['A','B','C','D'].includes(k)){
     const idx = ['A','B','C','D'].indexOf(k);
@@ -1174,6 +1250,7 @@ document.addEventListener('keydown', e=>{
 });
 
 /* 启动 */
+renderStrip();
 renderPicker();
 applyGroup('NT');
 </script>
