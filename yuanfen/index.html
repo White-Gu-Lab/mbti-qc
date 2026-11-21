@@ -1,0 +1,814 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0E0B1A">
+<title>他到底怎么看你？· 星盘缘分测试</title>
+<style>
+:root{
+  --bg1:#0E0B1A;
+  --bg2:#1A1230;
+  --card:rgba(30,23,51,.75);
+  --line:rgba(255,255,255,.08);
+  --accent:#B8A6FF;
+  --gold:#FFD9A0;
+  --text:#E8E4F5;
+  --muted:#8E86A8;
+  --tc:#C9A6FF;
+  --tcg:rgba(201,166,255,.35);
+  --serif:"Noto Serif SC","Source Han Serif SC","Songti SC","STSong","SimSun",serif;
+  --sans:"Noto Sans SC","Source Han Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:linear-gradient(160deg,#0E0B1A 0%,#1A1230 58%,#120D22 100%);
+  color:var(--text);
+  font-family:var(--sans);
+  font-weight:300;
+  line-height:1.8;
+  min-height:100vh;
+  overflow-x:hidden;
+  -webkit-tap-highlight-color:transparent;
+  -webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:"";
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(620px 420px at 18% 8%, rgba(126,84,226,.26), transparent 62%),
+    radial-gradient(520px 520px at 88% 32%, rgba(52,74,186,.22), transparent 62%),
+    radial-gradient(640px 520px at 46% 104%, rgba(148,92,200,.16), transparent 66%);
+}
+.stars{position:fixed;inset:0;z-index:0;pointer-events:none}
+.star{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--d) ease-in-out infinite;animation-delay:var(--delay)}
+@keyframes twinkle{0%,100%{opacity:.12;transform:scale(.8)}50%{opacity:.75;transform:scale(1)}}
+.app{position:relative;z-index:1;max-width:480px;margin:0 auto;min-height:100vh;padding:22px 20px 42px}
+.screen{display:none}
+.screen.on{display:block;animation:fadeUp .5s cubic-bezier(.2,.7,.3,1) both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+button{font-family:var(--sans);-webkit-tap-highlight-color:transparent}
+
+/* ---------- 封面 ---------- */
+.cover{
+  min-height:calc(100vh - 90px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:10px 0 30px;
+}
+.zrow{
+  display:flex;justify-content:center;flex-wrap:wrap;gap:clamp(4px,1.5vw,9px);
+  color:var(--accent);opacity:.66;
+  font-size:clamp(13px,3.4vw,17px);
+  margin-bottom:36px;letter-spacing:.04em;
+  font-family:"Segoe UI Symbol","Noto Sans Symbols 2",var(--serif);
+}
+.cover h1{
+  font-family:var(--serif);font-weight:600;
+  font-size:clamp(34px,9.6vw,44px);line-height:1.35;letter-spacing:.02em;
+  margin:0 0 18px;
+  background:linear-gradient(115deg,#FFE4BC 0%,#FFD9A0 30%,#D9C7FF 68%,#B8A6FF 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 20px rgba(201,166,255,.22));
+}
+.cover .sub{font-size:14px;line-height:2;color:var(--muted);margin:0;max-width:320px}
+.btn-start{
+  margin:36px auto 0;min-height:52px;padding:0 48px;border-radius:999px;
+  border:1px solid rgba(184,166,255,.62);background:rgba(184,166,255,.08);
+  color:var(--accent);font-size:15px;letter-spacing:.18em;
+  box-shadow:0 0 26px rgba(184,166,255,.18), inset 0 0 18px rgba(184,166,255,.07);
+  cursor:pointer;transition:transform .18s, background .18s;
+}
+.btn-start:active{transform:scale(.98);background:rgba(184,166,255,.16)}
+.cover .fine{margin-top:22px;font-size:11px;letter-spacing:.12em;color:var(--muted);opacity:.8}
+
+/* ---------- 信息收集 ---------- */
+.info-top{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+.back{
+  width:44px;height:44px;flex:0 0 auto;border:none;background:transparent;
+  color:var(--muted);font-size:18px;cursor:pointer;border-radius:50%;
+}
+.back:active{background:rgba(255,255,255,.05)}
+.steps{flex:1;display:flex;gap:6px}
+.steps i{flex:1;height:2px;border-radius:2px;background:rgba(255,255,255,.1);transition:background .3s,box-shadow .3s}
+.steps i.done{background:var(--accent);box-shadow:0 0 9px rgba(184,166,255,.55)}
+.step-no{font-size:10.5px;letter-spacing:.12em;color:var(--muted);min-width:34px;text-align:right}
+.step-title{font-family:var(--serif);font-size:22px;font-weight:500;line-height:1.5;margin:0 0 8px;letter-spacing:.01em}
+.step-sub{font-size:12.5px;color:var(--muted);margin:0 0 24px}
+.opt-card{
+  width:100%;min-height:56px;text-align:left;padding:14px 16px;margin-bottom:10px;
+  background:var(--card);border:1px solid var(--line);border-radius:16px;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  color:var(--text);font-size:15px;font-weight:300;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  transition:border-color .18s, background .18s, box-shadow .18s;
+}
+.opt-card:active{transform:scale(.995)}
+.opt-card.sel{border-color:rgba(184,166,255,.68);background:rgba(184,166,255,.1);box-shadow:0 0 18px rgba(184,166,255,.13)}
+.opt-card .tick{color:var(--gold);opacity:0;font-size:12px}
+.opt-card.sel .tick{opacity:1}
+.zlabel{display:flex;align-items:baseline;gap:8px;margin:22px 0 8px;font-size:12.5px;color:var(--text);letter-spacing:.04em}
+.zlabel span{font-size:10.5px;color:var(--muted);letter-spacing:.04em}
+.zgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.zcell{
+  min-height:62px;border:1px solid var(--line);background:rgba(30,23,51,.62);
+  border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+  cursor:pointer;transition:border-color .16s, background .16s, box-shadow .16s;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+.zsym{font-family:"Segoe UI Symbol","Noto Sans Symbols 2",var(--serif);font-size:19px;line-height:1.2;color:var(--muted);transition:color .16s}
+.zname{font-size:10px;letter-spacing:.04em;color:var(--muted);transition:color .16s}
+.zcell.sel{border-color:rgba(184,166,255,.72);background:rgba(184,166,255,.12);box-shadow:0 0 16px rgba(184,166,255,.14)}
+.zcell.sel .zsym{color:var(--gold)}
+.zcell.sel .zname{color:var(--text)}
+.zcell.unknown .zsym{font-size:15px}
+.btn-next{
+  width:100%;min-height:50px;margin-top:26px;border-radius:999px;
+  border:1px solid rgba(184,166,255,.6);background:rgba(184,166,255,.1);
+  color:var(--accent);font-size:15px;letter-spacing:.12em;cursor:pointer;
+  transition:opacity .2s, background .2s;
+}
+.btn-next:active{background:rgba(184,166,255,.18)}
+.btn-next[disabled]{opacity:.3;cursor:default;background:rgba(184,166,255,.04)}
+
+/* ---------- 答题 ---------- */
+.quiz-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:10.5px;letter-spacing:.1em;color:var(--muted)}
+.qbar{height:2px;background:rgba(255,255,255,.09);border-radius:2px;overflow:hidden;margin-bottom:36px}
+.qbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width .4s ease}
+.qwrap{transition:opacity .22s ease, transform .22s ease}
+.qwrap.out{opacity:0;transform:translateY(-10px)}
+.qtext{font-family:var(--serif);font-size:21px;line-height:1.6;font-weight:500;letter-spacing:.01em;margin:0 0 28px}
+.qopts{display:flex;flex-direction:column;gap:10px}
+.qopt{
+  display:flex;align-items:center;gap:13px;min-height:58px;padding:12px 15px;
+  background:var(--card);border:1px solid var(--line);border-radius:16px;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  color:var(--text);font-size:14.5px;line-height:1.55;text-align:left;cursor:pointer;
+  transition:border-color .16s, background .16s, box-shadow .16s;
+}
+.qopt:active{transform:scale(.995)}
+.qopt.sel{border-color:rgba(184,166,255,.7);background:rgba(184,166,255,.1);box-shadow:0 0 18px rgba(184,166,255,.13)}
+.qletter{
+  width:28px;height:28px;flex:0 0 auto;border:1px solid rgba(255,255,255,.18);border-radius:50%;
+  display:grid;place-items:center;font-size:11px;letter-spacing:.04em;color:var(--muted);transition:.16s;
+}
+.qopt.sel .qletter{border-color:var(--accent);color:var(--accent)}
+.qtext-main{flex:1}
+.qstar{flex:0 0 auto;color:var(--gold);font-size:12px;opacity:0;transition:opacity .16s}
+.qopt.sel .qstar{opacity:1}
+
+/* ---------- 计算 ---------- */
+.calc-wrap{min-height:calc(100vh - 130px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.astro{width:176px;height:176px;opacity:.82;margin-bottom:40px;animation:spin 24s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.calc-line{font-family:var(--serif);font-size:15px;color:var(--muted);letter-spacing:.06em;margin:5px 0;opacity:0;animation:calcIn .9s ease forwards}
+.l1{animation-delay:.25s}.l2{animation-delay:1s}.l3{animation-delay:1.75s}
+@keyframes calcIn{to{opacity:1}}
+
+/* ---------- 结果 ---------- */
+.result{text-align:center;padding-top:6px}
+.rtype{
+  font-family:var(--serif);font-size:32px;font-weight:600;letter-spacing:.05em;
+  color:var(--tc);text-shadow:0 0 28px var(--tcg);margin:6px 0 12px;
+}
+.rpill{
+  display:inline-block;font-size:10.5px;letter-spacing:.14em;color:var(--muted);
+  border:1px solid var(--line);border-radius:999px;padding:4px 13px;margin-bottom:28px;
+}
+.ring-wrap{position:relative;width:170px;height:170px;margin:0 auto 4px}
+.ring-wrap svg{width:100%;height:100%;display:block}
+.ring-num{
+  position:absolute;inset:0;display:grid;place-items:center;
+  font-family:var(--serif);font-size:46px;color:var(--gold);
+  text-shadow:0 0 22px rgba(255,217,160,.35);letter-spacing:.02em;
+}
+.ring-fg{transition:stroke-dashoffset 1s cubic-bezier(.3,.8,.3,1)}
+.ring-cap{font-size:10.5px;letter-spacing:.16em;color:var(--muted);margin-bottom:28px}
+.tone{
+  font-family:var(--serif);font-size:17px;line-height:1.95;color:var(--tc);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  padding:18px 6px;margin:0 0 28px;text-align:center;
+}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:16px;
+  padding:18px 18px 17px;margin-bottom:13px;text-align:left;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+}
+.card h3{
+  font-size:10.5px;font-weight:400;letter-spacing:.18em;color:var(--gold);
+  margin:0 0 9px;display:flex;align-items:center;gap:8px;
+}
+.card h3::before{content:"✦";font-size:9px;color:var(--tc)}
+.card p{font-size:14px;line-height:1.95;color:var(--text);margin:0;font-weight:300}
+.share{
+  position:relative;width:min(100%,360px);aspect-ratio:4/5;margin:26px auto 10px;
+  border:1px solid var(--tc);border-radius:18px;overflow:hidden;
+  background:linear-gradient(170deg,rgba(20,15,36,.97),rgba(11,8,22,.99));
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:34px 26px;text-align:center;
+}
+.share::before{
+  content:"";position:absolute;width:240px;height:240px;border-radius:50%;
+  background:var(--tc);filter:blur(90px);opacity:.16;top:-70px;
+}
+.share .sname{position:relative;font-size:10.5px;letter-spacing:.24em;color:var(--tc);margin-bottom:20px}
+.share .sq{position:relative;font-family:var(--serif);font-size:19px;line-height:1.95;color:var(--text);margin:0;letter-spacing:.02em}
+.share .sf{position:absolute;bottom:18px;left:0;right:0;font-size:9px;letter-spacing:.16em;color:var(--muted)}
+.share-hint{text-align:center;font-size:10.5px;letter-spacing:.1em;color:var(--muted);margin:2px 0 28px}
+.hook{text-align:center;font-size:11.5px;line-height:1.95;color:var(--muted);margin:0 0 26px}
+.btn-again{
+  display:block;width:100%;min-height:50px;border-radius:999px;
+  border:1px solid rgba(184,166,255,.45);background:transparent;
+  color:var(--accent);font-size:14px;letter-spacing:.14em;cursor:pointer;
+  transition:background .2s;
+}
+.btn-again:active{background:rgba(184,166,255,.1)}
+.reveal{opacity:0;animation:fadeUp .72s cubic-bezier(.2,.7,.3,1) forwards}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+}
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars" aria-hidden="true"></div>
+
+<main class="app">
+
+  <!-- ============ 封面 ============ -->
+  <section class="screen on" id="scr-cover">
+    <div class="cover">
+      <div class="zrow" id="zrow"></div>
+      <h1>他到底怎么看你？</h1>
+      <p class="sub">输入你知道的关于他的那一点信息<br>看看你们之间，是宿命牵绊还是露水情缘</p>
+      <button class="btn-start" id="startBtn">开 始 测 试</button>
+      <p class="fine">约 3 分钟 · 12 道题 · 基于星盘逻辑推演</p>
+    </div>
+  </section>
+
+  <!-- ============ 信息收集 ============ -->
+  <section class="screen" id="scr-info">
+    <div class="info-top">
+      <button class="back" id="infoBack" aria-label="返回">←</button>
+      <div class="steps"><i></i><i></i><i></i></div>
+      <span class="step-no" id="stepNo">1 / 3</span>
+    </div>
+    <div id="stepBody"></div>
+  </section>
+
+  <!-- ============ 答题 ============ -->
+  <section class="screen" id="scr-quiz">
+    <div class="quiz-top">
+      <span id="qIdx">第 1 题 / 共 12 题</span>
+      <span>凭第一感觉</span>
+    </div>
+    <div class="qbar"><i id="qbarFill"></i></div>
+    <div class="qwrap" id="qwrap">
+      <h2 class="qtext" id="qtext"></h2>
+      <div class="qopts" id="qopts"></div>
+    </div>
+  </section>
+
+  <!-- ============ 计算 ============ -->
+  <section class="screen" id="scr-calc">
+    <div class="calc-wrap">
+      <svg class="astro" viewBox="0 0 200 200" aria-hidden="true">
+        <g fill="none" stroke="rgba(184,166,255,.55)" stroke-width="1">
+          <circle cx="100" cy="100" r="86"/>
+          <circle cx="100" cy="100" r="66" opacity=".7"/>
+          <circle cx="100" cy="100" r="30" opacity=".5"/>
+          <path d="M100 14 V186 M14 100 H186" opacity=".35"/>
+          <path d="M39 39 L161 161 M161 39 L39 161" opacity=".22"/>
+        </g>
+        <g stroke="rgba(255,217,160,.7)" stroke-width="1.4" stroke-linecap="round">
+          <path d="M100 14 v8"/><path d="M100 178 v8"/><path d="M14 100 h8"/><path d="M178 100 h8"/>
+          <path d="M139 20 l-4 7"/><path d="M180 61 l-7 4"/>
+          <path d="M180 139 l-7 -4"/><path d="M139 180 l-4 -7"/>
+          <path d="M61 180 l4 -7"/><path d="M20 139 l7 -4"/>
+          <path d="M20 61 l7 4"/><path d="M61 20 l4 7"/>
+        </g>
+      </svg>
+      <p class="calc-line l1">正在读取你们的星座链接…</p>
+      <p class="calc-line l2">正在比对行星落点…</p>
+      <p class="calc-line l3">正在计算缘分深度…</p>
+    </div>
+  </section>
+
+  <!-- ============ 结果 ============ -->
+  <section class="screen" id="scr-result">
+    <div id="resultBody"></div>
+  </section>
+
+</main>
+
+<script>
+/* =========================================================
+   数据
+   ========================================================= */
+const ZODIAC = [
+  {key:'aries',     name:'白羊', sym:'♈', el:'fire'},
+  {key:'taurus',    name:'金牛', sym:'♉', el:'earth'},
+  {key:'gemini',    name:'双子', sym:'♊', el:'air'},
+  {key:'cancer',    name:'巨蟹', sym:'♋', el:'water'},
+  {key:'leo',       name:'狮子', sym:'♌', el:'fire'},
+  {key:'virgo',     name:'处女', sym:'♍', el:'earth'},
+  {key:'libra',     name:'天秤', sym:'♎', el:'air'},
+  {key:'scorpio',   name:'天蝎', sym:'♏', el:'water'},
+  {key:'sagittarius',name:'射手',sym:'♐', el:'fire'},
+  {key:'capricorn', name:'摩羯', sym:'♑', el:'earth'},
+  {key:'aquarius',  name:'水瓶', sym:'♒', el:'air'},
+  {key:'pisces',    name:'双鱼', sym:'♓', el:'water'}
+];
+
+const STATUS_OPTS = ['暗恋','暧昧','crush','刚分开','失去联系'];
+
+const BIRTH_OPTS = [
+  {label:'完整年月日', v:2},
+  {label:'只知道星座', v:1},
+  {label:'大概月份',  v:1},
+  {label:'完全不知道', v:0}
+];
+
+const QUESTIONS = [
+  {q:'你们第一次有交集，是怎么开始的？', opts:[
+    {t:'自然而然就认识了，好像本来就该认识', tag:'NorthNode', w:3},
+    {t:'一方主动搭话/制造机会', tag:'Mars/Sun', w:2},
+    {t:'通过朋友/场合被动认识', tag:'Moon/Venus', w:1},
+    {t:'记不清了，很模糊', tag:'Neptune', w:1}
+  ]},
+  {q:'和他相处时，你最常有的感觉是？', opts:[
+    {t:'很熟悉，像认识了很久', tag:'SunMoon', w:3},
+    {t:'心跳加速，有点紧张', tag:'Venus/Mars', w:2},
+    {t:'舒服但平静，没什么波澜', tag:'MoonVenus', w:1},
+    {t:'说不上来，就是放不下', tag:'Pluto', w:1}
+  ]},
+  {q:'你们之间有没有过“只有你们俩懂”的默契？', opts:[
+    {t:'有，而且很明显', tag:'Mercury/Moon', w:3},
+    {t:'有过一两次', tag:'Mercury', w:2},
+    {t:'好像有，但不确定', tag:'Neptune', w:1},
+    {t:'没有', tag:'Weak', w:0}
+  ]},
+  {q:'如果你们断了联系，你觉得他会？', opts:[
+    {t:'会主动找我', tag:'Sun/Mars', w:3},
+    {t:'可能会，但不一定', tag:'Moon/Venus', w:2},
+    {t:'大概率不会', tag:'Saturn/Uranus', w:1},
+    {t:'我不知道，也不敢想', tag:'Pluto/Neptune', w:0}
+  ]},
+  {q:'他有没有夸过你，或者对你表达过欣赏？', opts:[
+    {t:'经常，而且很具体', tag:'VenusStrong', w:3},
+    {t:'偶尔，比较含蓄', tag:'VenusMid', w:2},
+    {t:'几乎没有', tag:'VenusWeak', w:0},
+    {t:'他用行动代替语言', tag:'Mars/Moon', w:2}
+  ]},
+  {q:'你们聊天时，谁更容易“上头”？', opts:[
+    {t:'他更主动/更热情', tag:'HisMars/Sun', w:3},
+    {t:'我更主动', tag:'MyVenus/Mars', w:1},
+    {t:'差不多，互相拉扯', tag:'MutualVenusMars', w:3},
+    {t:'都很克制', tag:'Saturn', w:0}
+  ]},
+  {q:'他有没有做过让你觉得“他是不是也有点意思”的事？', opts:[
+    {t:'有，而且不止一次', tag:'VenusMarsMutual', w:3},
+    {t:'有过，但很模糊', tag:'Neptune/Moon', w:1},
+    {t:'我觉得是我多想', tag:'Neptune/12th', w:0},
+    {t:'完全没有', tag:'Weak', w:0}
+  ]},
+  {q:'你们现在最大的障碍是？', opts:[
+    {t:'我不敢开口/不敢推进', tag:'Saturn', w:2},
+    {t:'他忽冷忽热，我摸不透', tag:'Uranus/Pluto', w:2},
+    {t:'时机不对，错过了', tag:'Saturn/NorthNode', w:3},
+    {t:'已经断了，但放不下', tag:'Pluto/12th', w:1}
+  ]},
+  {q:'你发消息给他，通常多久回？', opts:[
+    {t:'很快，基本秒回', tag:'Mars/Mercury', w:3},
+    {t:'几小时内', tag:'Normal', w:2},
+    {t:'隔天/看心情', tag:'Uranus/Saturn', w:1},
+    {t:'经常不回', tag:'Weak/Saturn', w:0}
+  ]},
+  {q:'你们之间有没有“明明很近却隔着一层”的感觉？', opts:[
+    {t:'经常有', tag:'Saturn/Neptune', w:2},
+    {t:'偶尔', tag:'SaturnLight', w:1},
+    {t:'没有，很自然', tag:'Smooth', w:3},
+    {t:'说不清', tag:'Neptune', w:1}
+  ]},
+  {q:'你每天会想起他几次？', opts:[
+    {t:'几乎一直', tag:'MoonVenusStrong', w:3},
+    {t:'一天几次', tag:'MoonVenusMid', w:2},
+    {t:'偶尔', tag:'Light', w:1},
+    {t:'尽量不想', tag:'SaturnAvoid', w:0}
+  ]},
+  {q:'如果他现在给你一个明确的答案，你会？', opts:[
+    {t:'立刻接住', tag:'MarsVenusStrong', w:3},
+    {t:'开心但会犹豫', tag:'Moon/Saturn', w:2},
+    {t:'反而害怕', tag:'Saturn/Pluto', w:1},
+    {t:'不知道', tag:'Neptune', w:0}
+  ]}
+];
+
+const TYPES = [
+  {
+    name:'宿命牵绊型', min:85, max:100, color:'#C9A6FF',
+    tone:'有些人不是你想放就能放的。你们之间有一条线，不是你自己系上去的，是星盘里本来就画好的。哪怕现在松了、断了、隔了很远，那条痕迹还在。',
+    linkPoint:'你和他之间，有一种“解释不清”的熟悉。不是聊得多、不是认识久，而是第一次有交集的时候，你心里就有一个很轻的声音说：这个人不一样。你们的链接不在“聊得来”这一层，在更深的地方——可能是他一个眼神你就懂，可能是你说半句话他就接得上，可能是你们沉默着也不尴尬。这种链接，星盘里叫“宿命牵动”，通俗点说：你们不是偶然遇见的，是本来就该遇见的。',
+    blockPoint:'但宿命感最残忍的地方在于——它只保证“遇见”，不保证“在一起”。你们之间卡的，往往不是感情不够，是时机、现实、或者两个人都不敢先伸手。你可能无数次想过“如果当时我开口了”“如果我们早一点遇到”“如果他没有先遇到别人”。这些“如果”不是你想多了，是那条线在提醒你：它存在过。',
+    advice:'你不需要逼自己“放下”。宿命型的人，放不下是正常的，因为那条线是真的。你要做的不是切断它，是承认它存在，然后继续往前走。他可能是你生命里一个重要的人，但不一定是陪你到最后的人。有些人出现，是为了让你知道“原来我可以这样心动”，而不是为了留下来。你可以记得他，但别停在原地等他。',
+    shareQuote:'「你们不是偶然遇见的，是本来就该遇见的。」'
+  },
+  {
+    name:'灵魂熟悉型', min:72, max:84, color:'#8FB8E8',
+    tone:'心动会退，熟悉不会。你对他最特别的感觉，不是“我好喜欢他”，而是“我好像早就认识他”。',
+    linkPoint:'你们之间最珍贵的，是那种不用费力就能相处的舒服。别人面前你要演、要撑、要找话题，在他面前你不用。你可能跟他聊过一些你很少跟别人说的事，也可能什么都没聊，但就是觉得“他在，我安心”。这种链接在星盘里叫“月亮/水星牵动”——他接住了你的情绪，而不只是你的话题。这比心动稀有得多，因为心动是火花，熟悉是底色。',
+    blockPoint:'灵魂熟悉型最大的陷阱，是太舒服了，反而不敢往前一步。你怕一开口就打破现在的好，怕“做朋友”变成“做不成朋友”，怕他其实只是把你当“很聊得来的人”。所以你选择不说，选择维持，选择在心里反复确认“他是不是也有感觉”。你不是胆小，你是太珍惜。但你要知道：有些关系，不往前走，就会慢慢停在原地，然后被时间冲淡。',
+    advice:'熟悉感是很好的开始，但它不会自己变成爱情。你可以继续享受这种舒服，但如果你心里想要的不止是“聊得来”，那你得给他一个信号。不用表白，不用摊牌，只需要让他知道“你对他而言不是随便一个人”。灵魂熟悉型的人，最怕的不是被拒绝，是多年以后想起来，发现自己从来没试过。',
+    shareQuote:'「心动会退，熟悉不会。你对他最特别的感觉，是一见如故。」'
+  },
+  {
+    name:'双向试探型', min:60, max:71, color:'#F2A0C0',
+    tone:'你们之间不是没有火花，是火花点着了，两个人都在假装没看见。',
+    linkPoint:'你们之间有一种心照不宣的拉扯。他找你的频率不高不低，刚好让你觉得“他是不是有点意思”；你回他的速度不快不慢，刚好让他觉得“她是不是没那么在意”。你们都在试探，都在留后路，都在等一个“安全”的时机。这种链接在星盘里叫“金星/火星双向牵动”——吸引力是双向的，只是两个人都太会保护自己。你不是没感觉到，你是感觉到了但不敢确认。',
+    blockPoint:'卡住你们的，不是不喜欢，是“谁先认真谁就输”的心理。你怕自己先动心会显得掉价，他怕自己先开口会被拒绝。于是你们把一段本来可以开始的关系，拖成了一场谁也不肯先亮的牌局。你以为你在保护自己，其实你在消耗这段关系里最珍贵的东西——那点“刚好的心动”是有保质期的。',
+    advice:'双向试探型是最可惜的一种。不是没感觉，是感觉被两个人的“聪明”耗掉了。你不需要一下子表白，但你可以先撤掉一点点防备：回消息快一点，主动找他一次，说一句稍微越界的话。你不用赌上全部，你只需要让他知道“我这边门是开着的”。如果他也有意，他会走进来；如果他没动，你至少不用再猜了。猜来猜去最累，给个信号最省事。',
+    shareQuote:'「不是没有火花，是火花点着了，两个人都假装没看见。」'
+  },
+  {
+    name:'心动难落地型', min:48, max:59, color:'#F2B48C',
+    tone:'你们之间有心跳，有暧昧，有那种“就差一点”的感觉。但“就差一点”这四个字，有时候就是差了一辈子。',
+    linkPoint:'你对他是有真实吸引力的，不是错觉。可能是他看你的眼神，可能是他偶尔的一句关心，可能是你们之间那种“说不上来但就是有”的氛围。这种链接在星盘里叫“金星/火星牵动”——有火花，但没有粘合剂。火花能让两个人靠近，但粘合剂才能让两个人留下。你们缺的不是心动，是让心动变成“关系”的那个东西：稳定的回应、明确的信号、或者一个双方都愿意往前走的理由。',
+    blockPoint:'卡住你们的，往往是“他有心动，但没有行动”。或者说，他自己也没想清楚。他可能享受和你在一起的氛围，但他没准备好为这段关系负责。你不是没感觉出来，你是感觉到了但不愿意承认。你一直在用“他可能是慢热”“他可能只是害羞”“他可能还没准备好”来安慰自己。但你心里其实知道：一个人如果真的很想要你，他不会让你一直猜。',
+    advice:'心动难落地型，最怕的不是他不喜欢你，是他有点喜欢你，但没喜欢到要为你行动。这种“差一点”的关系，最消耗人。你不用逼他表态，但你要给自己一个期限：如果再过一段时间，他还是这样不温不火，你要允许自己把这份心动收回来。你不是他的备选，你也不该把自己活成“等他准备好”的样子。心动是好事，但心动不该是你一个人的事。',
+    shareQuote:'「你们之间有心跳，有暧昧，但‘就差一点’，有时候就是差了一辈子。」'
+  },
+  {
+    name:'单方面牵动型', min:36, max:47, color:'#A99BC9',
+    tone:'这段关系里，你是感受更深的那一个。不是因为你不够好，是因为星盘里，你的行星落在了他的月亮上——你被他牵动，比他被你牵动，多得多。',
+    linkPoint:'你对他的感觉，是真实的、强烈的、反复的。你会记得他随口说的话，会反复看你们的聊天记录，会因为他一个表情想一整天。但他对你的感觉，可能只是“还不错”“挺聊得来”“不讨厌”。这不是你的错觉，是这段关系里感受的重量本来就不对等。你在这段关系里投入的情绪，比他能接住的多。你不是太敏感，你是太认真。',
+    blockPoint:'卡住你们的，不是他不喜欢你，是你在他心里的位置，没有他在你心里的位置那么重。你可能一直在找证据：他今天主动找我了，他是不是有点意思？他昨天回消息很快，他是不是也在意我？但你心里其实知道，那些“证据”加起来，也抵不过他从来没有明确走向你。你不是在等一个答案，你是在等一个奇迹。',
+    advice:'单方面牵动型，是最让人心疼的一种。因为你没有做错什么，你只是喜欢上了一个“感受比你轻”的人。这不是你的失败，是这段关系从一开始就不对等。你可以继续喜欢他，但你要把“他喜不喜欢我”这个问题的权重，从你生活里调低一点。你还有你自己的事要做，有你自己的人要见，有你自己的人生要过。他没有不好，只是他不该是你世界的中心。你值得一个“你想起他的时候，他也正在想你”的人。',
+    shareQuote:'「你被他牵动，比他被你牵动，多得多。这不是你的错，是重量不对等。」'
+  },
+  {
+    name:'错过时机型', min:22, max:35, color:'#7FB8B0',
+    tone:'你们之间不是没有过可能，是那个可能，刚好落在了两个人都没准备好的时候。',
+    linkPoint:'你们之间是有过东西的，不是全然的空白。可能是一个对视、一句玩笑、一段聊到深夜的对话，可能是某个瞬间你感觉到“他好像也有一点点”。但那些瞬间太短了，短到还没长成“关系”，就被时间、距离、或者各自的处境冲散了。这种链接在星盘里叫“土星/北交点时机议题”——缘分来过，但没赶上你们都在的时候。',
+    blockPoint:'卡住你们的，不是谁不够喜欢谁，是时机。可能你遇见他的时候，他心里还有别人；可能他遇见你的时候，你还没准备好；可能你们都在等一个“更好的时机”，结果那个时机一直没来。你不是没努力过，你只是在错的时间，遇到了一个对的人。“错的时间”这四个字，比“他不喜欢你”更让人难受，因为它意味着：如果换个时间，结果可能不一样。',
+    advice:'错过时机型的人，最容易陷在“如果当时”里。如果当时我主动一点，如果当时他没走，如果当时我们早一点遇到……但你要知道：时机也是缘分的一部分。一段需要“如果”才能成立的关系，本身就已经说明了它的分量。你不用否定那段感觉，它真实存在过。但你也不用一直回头看了。有些人出现，是为了陪你走一段，不是为了陪你走到底。你可以遗憾，但别让遗憾变成你停在原地的理由。',
+    shareQuote:'「不是没感觉，是那个可能，刚好落在了两个人都没准备好的时候。」'
+  },
+  {
+    name:'露水情缘型', min:0, max:21, color:'#BFC4D4',
+    tone:'有些人，遇见了，聊过了，然后就没有然后了。这不是谁的错，是星盘里本来就没画那条线。',
+    linkPoint:'你们之间可能有过短暂的靠近，可能有过来往，可能有过让你误以为“有戏”的瞬间。但那些东西，经不起细看。你回想一下，是不是大部分时候，都是你在主动？是不是他回应你的时候，礼貌多过热情？是不是你们之间，从来没有过那种“只有你们俩懂”的默契？这不是你不够好，是你们之间没有那条“非你不可”的线。露水情缘，听起来残忍，但它其实是在帮你省时间。',
+    blockPoint:'卡住你们的，不是误会，不是时机，是本来就没有足够的链接。你可能一直在给这段关系找理由：他可能只是害羞，他可能只是忙，他可能只是不擅长表达。但你心里其实清楚，一个人如果对你有感觉，再害羞、再忙、再不擅长，也会露出一点痕迹。你不是没感觉到“没有”，你是不愿意承认“没有”。',
+    advice:'露水情缘型，是最需要被温柔对待的一种。因为你可能会觉得“是不是我不够好”“是不是我做错了什么”。不是的。感情里最残忍也最公平的一点是：不喜欢就是不喜欢，跟你好不好没关系。你不用为一个“没有”的关系否定自己。你要做的，是把给出去的那份注意力，收回来一点，放回自己身上。你值得一个“不用你猜、不用你追、不用你证明”的人。那个人可能还没出现，但你得先把自己留给他。',
+    shareQuote:'「不是他不好，是你们之间没有那条‘非你不可’的线。这不是你的错。」'
+  }
+];
+
+const SUFFIX = {
+  Saturn:'土星卡点：现实与时机',
+  Uranus:'天王卡点：忽冷忽热',
+  Pluto:'冥王卡点：执念拉扯',
+  Neptune:'海王卡点：模糊幻想'
+};
+
+/* =========================================================
+   状态
+   ========================================================= */
+const $ = (s, el=document) => el.querySelector(s);
+const $$ = (s, el=document) => Array.from(el.querySelectorAll(s));
+
+const state = {
+  status:null,
+  precision:0,
+  myZodiac:null,
+  hisZodiac:null,
+  answers:[],
+  step:1,
+  q:0,
+  busy:false
+};
+
+const SCREENS = ['scr-cover','scr-info','scr-quiz','scr-calc','scr-result'];
+function show(id){
+  SCREENS.forEach(s=>document.getElementById(s).classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  window.scrollTo(0,0);
+}
+
+/* =========================================================
+   背景
+   ========================================================= */
+(function stars(){
+  const wrap = $('#stars');
+  for(let i=0;i<36;i++){
+    const d = document.createElement('div');
+    d.className = 'star';
+    const size = (Math.random()*1.8 + 1).toFixed(1);
+    d.style.width = size + 'px';
+    d.style.height = size + 'px';
+    d.style.left = (Math.random()*100).toFixed(2) + '%';
+    d.style.top = (Math.random()*100).toFixed(2) + '%';
+    d.style.setProperty('--d', (Math.random()*4 + 3).toFixed(2) + 's');
+    d.style.setProperty('--delay', (Math.random()*4.5).toFixed(2) + 's');
+    wrap.appendChild(d);
+  }
+  $('#zrow').innerHTML = ZODIAC.map(z=>`<span>${z.sym}︎</span>`).join('');
+})();
+
+/* =========================================================
+   信息收集
+   ========================================================= */
+function renderInfo(){
+  $('#stepNo').textContent = state.step + ' / 3';
+  $$('.steps i').forEach((el,i)=>el.classList.toggle('done', i < state.step));
+  $('#infoBack').style.visibility = state.step === 1 ? 'hidden' : 'visible';
+
+  const body = $('#stepBody');
+
+  if(state.step === 1){
+    body.innerHTML = `
+      <h2 class="step-title">你们现在是什么状态？</h2>
+      <p class="step-sub">选一个最接近的，答案会更准一点。</p>
+      ${STATUS_OPTS.map(s=>`
+        <button class="opt-card" data-status="${s}">
+          <span>${s}</span><span class="tick">✦</span>
+        </button>`).join('')}`;
+    $$('.opt-card', body).forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        state.status = btn.dataset.status;
+        btn.classList.add('sel');
+        setTimeout(()=>{ state.step = 2; renderInfo(); }, 180);
+      });
+    });
+    return;
+  }
+
+  if(state.step === 2){
+    body.innerHTML = `
+      <h2 class="step-title">他的生日，你知道多少？</h2>
+      <p class="step-sub">知道得越多，推演越细。</p>
+      ${BIRTH_OPTS.map((o,i)=>`
+        <button class="opt-card" data-i="${i}">
+          <span>${o.label}</span><span class="tick">✦</span>
+        </button>`).join('')}`;
+    $$('.opt-card', body).forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        state.precision = BIRTH_OPTS[parseInt(btn.dataset.i,10)].v;
+        btn.classList.add('sel');
+        setTimeout(()=>{ state.step = 3; renderInfo(); }, 180);
+      });
+    });
+    return;
+  }
+
+  /* step 3 */
+  const myGrid = ZODIAC.map(z=>`
+    <button class="zcell ${state.myZodiac===z.key?'sel':''}" data-side="my" data-key="${z.key}">
+      <span class="zsym">${z.sym}︎</span><span class="zname">${z.name}</span>
+    </button>`).join('');
+  const hisGrid = ZODIAC.map(z=>`
+    <button class="zcell ${state.hisZodiac===z.key?'sel':''}" data-side="his" data-key="${z.key}">
+      <span class="zsym">${z.sym}︎</span><span class="zname">${z.name}</span>
+    </button>`).join('') + `
+    <button class="zcell unknown ${state.hisZodiac==='unknown'?'sel':''}" data-side="his" data-key="unknown">
+      <span class="zsym">?</span><span class="zname">不确定</span>
+    </button>`;
+
+  body.innerHTML = `
+    <h2 class="step-title">你们的星座</h2>
+    <p class="step-sub">选得越准，元素匹配越细。</p>
+    <div class="zlabel">你的星座 <span>必选</span></div>
+    <div class="zgrid" id="myGrid">${myGrid}</div>
+    <div class="zlabel">他的星座 <span>不确定也没关系</span></div>
+    <div class="zgrid" id="hisGrid">${hisGrid}</div>
+    <button class="btn-next" id="nextBtn" disabled>下一步</button>`;
+
+  $$('.zcell', body).forEach(cell=>{
+    cell.addEventListener('click', ()=>{
+      const side = cell.dataset.side, key = cell.dataset.key;
+      if(side === 'my'){
+        state.myZodiac = key;
+        $$('#myGrid .zcell', body).forEach(c=>c.classList.toggle('sel', c.dataset.key===key));
+      } else {
+        state.hisZodiac = key;
+        $$('#hisGrid .zcell', body).forEach(c=>c.classList.toggle('sel', c.dataset.key===key));
+      }
+      const ok = !!state.myZodiac && !!state.hisZodiac;
+      const nb = $('#nextBtn', body);
+      nb.disabled = !ok;
+    });
+  });
+
+  $('#nextBtn', body).addEventListener('click', ()=>{
+    if(!state.myZodiac || !state.hisZodiac) return;
+    startQuiz();
+  });
+}
+
+/* =========================================================
+   答题
+   ========================================================= */
+function startQuiz(){
+  state.answers = [];
+  state.q = 0;
+  state.busy = false;
+  show('scr-quiz');
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const i = state.q;
+  const q = QUESTIONS[i];
+  $('#qIdx').textContent = `第 ${i+1} 题 / 共 12 题`;
+  $('#qbarFill').style.width = ((i+1) / QUESTIONS.length * 100) + '%';
+  $('#qtext').textContent = q.q;
+  $('#qopts').innerHTML = q.opts.map((o,idx)=>`
+    <button class="qopt" data-i="${idx}">
+      <span class="qletter">${'ABCD'[idx]}</span>
+      <span class="qtext-main">${o.t}</span>
+      <span class="qstar">✦</span>
+    </button>`).join('');
+  $$('.qopt').forEach(btn=>{
+    btn.addEventListener('click', ()=>choose(parseInt(btn.dataset.i,10), btn));
+  });
+}
+
+function choose(idx, btn){
+  if(state.busy) return;
+  state.busy = true;
+  btn.classList.add('sel');
+  state.answers[state.q] = idx;
+  setTimeout(()=>{
+    const wrap = $('#qwrap');
+    wrap.classList.add('out');
+    setTimeout(()=>{
+      state.busy = false;
+      if(state.q < QUESTIONS.length - 1){
+        state.q++;
+        renderQuestion();
+        void wrap.offsetWidth;
+        wrap.classList.remove('out');
+      } else {
+        startCalc();
+      }
+    }, 230);
+  }, 280);
+}
+
+/* =========================================================
+   计算
+   ========================================================= */
+function elementScore(a, b){
+  if(!a || !b || a === 'unknown' || b === 'unknown') return 50;
+  const za = ZODIAC.find(z=>z.key===a), zb = ZODIAC.find(z=>z.key===b);
+  if(!za || !zb) return 50;
+  if(za.el === zb.el) return 85;
+  const pair = [za.el, zb.el].sort().join('-');
+  if(pair === 'air-fire' || pair === 'earth-water') return 78;
+  if(pair === 'earth-fire' || pair === 'air-water') return 62;
+  return 55;
+}
+
+function blockerSuffix(){
+  const planets = {Saturn:-1, Uranus:-1, Pluto:-1, Neptune:-1};
+  [7,8,9].forEach(qi=>{
+    const opt = QUESTIONS[qi].opts[state.answers[qi]];
+    if(!opt) return;
+    opt.tag.split('/').forEach(tok=>{
+      let key = null;
+      if(tok.indexOf('Saturn') === 0) key = 'Saturn';
+      else if(tok.indexOf('Uranus') === 0) key = 'Uranus';
+      else if(tok.indexOf('Pluto') === 0) key = 'Pluto';
+      else if(tok.indexOf('Neptune') === 0) key = 'Neptune';
+      if(key && opt.w > planets[key]) planets[key] = opt.w;
+    });
+  });
+  let best = 'Saturn', bw = -1;
+  ['Saturn','Uranus','Pluto','Neptune'].forEach(p=>{
+    if(planets[p] > bw){ bw = planets[p]; best = p; }
+  });
+  return SUFFIX[best];
+}
+
+function computeResult(){
+  const w = i => QUESTIONS[i].opts[state.answers[i]] ? QUESTIONS[i].opts[state.answers[i]].w : 0;
+  const dimA = w(0)+w(1)+w(2)+w(3);
+  const dimB = w(4)+w(5)+w(6);
+  const dimC = w(7)+w(8)+w(9);
+  const dimD = w(10)+w(11);
+
+  const linkScore = (dimA/12)*60 + (dimB/9)*40;
+  const elemScore = elementScore(state.myZodiac, state.hisZodiac);
+  let score = Math.round(linkScore * 0.7 + elemScore * 0.3);
+  score = Math.max(0, Math.min(100, score));
+
+  const type = TYPES.find(t=> score >= t.min && score <= t.max) || TYPES[TYPES.length-1];
+  return {dimA, dimB, dimC, dimD, linkScore, elemScore, score, type, blocker: blockerSuffix()};
+}
+
+function startCalc(){
+  show('scr-calc');
+  setTimeout(()=>{
+    const r = computeResult();
+    renderResult(r);
+    show('scr-result');
+  }, 2800);
+}
+
+/* =========================================================
+   结果
+   ========================================================= */
+function renderResult(r){
+  const t = r.type;
+  const C = 2 * Math.PI * 64;
+  document.documentElement.style.setProperty('--tc', t.color);
+  document.documentElement.style.setProperty('--tcg', t.color + '55');
+
+  $('#resultBody').innerHTML = `
+    <div class="result">
+      <h1 class="rtype reveal" style="animation-delay:.05s">${t.name}</h1>
+      <div class="rpill reveal" style="animation-delay:.12s">${r.blocker}</div>
+
+      <div class="ring-wrap reveal" style="animation-delay:.2s">
+        <svg viewBox="0 0 160 160">
+          <defs>
+            <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#FFEFD6"/>
+              <stop offset="50%" stop-color="#FFD9A0"/>
+              <stop offset="100%" stop-color="#E2AE5F"/>
+            </linearGradient>
+          </defs>
+          <circle cx="80" cy="80" r="64" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="6"/>
+          <circle id="ringFg" class="ring-fg" cx="80" cy="80" r="64" fill="none"
+            stroke="url(#goldGrad)" stroke-width="6" stroke-linecap="round"
+            stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${C.toFixed(1)}"
+            transform="rotate(-90 80 80)"/>
+        </svg>
+        <div class="ring-num">${r.score}</div>
+      </div>
+      <div class="ring-cap reveal" style="animation-delay:.26s">缘分链接深度</div>
+
+      <p class="tone reveal" style="animation-delay:.32s">${t.tone}</p>
+
+      <div class="card reveal" style="animation-delay:.46s">
+        <h3>你们的链接点</h3><p>${t.linkPoint}</p>
+      </div>
+      <div class="card reveal" style="animation-delay:.61s">
+        <h3>卡住你们的东西</h3><p>${t.blockPoint}</p>
+      </div>
+      <div class="card reveal" style="animation-delay:.76s">
+        <h3>给你的话</h3><p>${t.advice}</p>
+      </div>
+
+      <div class="share reveal" style="animation-delay:.92s">
+        <div class="sname">${t.name}</div>
+        <p class="sq">${t.shareQuote}</p>
+        <div class="sf">星盘缘分测试 · 他到底怎么看你</div>
+      </div>
+      <p class="share-hint">截图保存，分享给懂你的人</p>
+
+      <p class="hook">以上基于你提供的信息做简化推演<br>如果你有他准确的出生时间，可解锁完整合盘</p>
+      <button class="btn-again" id="againBtn">重 新 测 试</button>
+    </div>`;
+
+  const fg = $('#ringFg');
+  const target = C * (1 - r.score / 100);
+  requestAnimationFrame(()=>{
+    setTimeout(()=>{ fg.style.strokeDashoffset = target.toFixed(1); }, 120);
+  });
+
+  $('#againBtn').addEventListener('click', reset);
+}
+
+/* =========================================================
+   重置与事件
+   ========================================================= */
+function reset(){
+  state.status = null;
+  state.precision = 0;
+  state.myZodiac = null;
+  state.hisZodiac = null;
+  state.answers = [];
+  state.step = 1;
+  state.q = 0;
+  state.busy = false;
+  show('scr-cover');
+}
+
+$('#startBtn').addEventListener('click', ()=>{
+  state.step = 1;
+  show('scr-info');
+  renderInfo();
+});
+
+$('#infoBack').addEventListener('click', ()=>{
+  if(state.step === 1){ show('scr-cover'); return; }
+  state.step--;
+  renderInfo();
+});
+
+/* 启动 */
+renderInfo();
+</script>
+</body>
+</html>
