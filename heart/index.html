@@ -1,0 +1,1030 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#080B10">
+<title>别猜了，你在TA心里到底算什么？</title>
+<style>
+:root{
+  --bg:#080B10;
+  --bg2:#0D121B;
+  --panel:#111824;
+  --panel2:#0E141E;
+  --line:#232C3B;
+  --text:#E8EEF6;
+  --muted:#8794A8;
+  --accent:#7CF5C8;
+  --accent2:#6EE7FF;
+  --gold:#FFC46B;
+  --sans:"HarmonyOS Sans SC","MiSans","PingFang SC","Source Han Sans SC","Microsoft YaHei",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"Cascadia Mono","SFMono-Regular",Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  color:var(--text);
+  font-family:var(--sans);
+  background:
+    radial-gradient(720px 520px at 12% -4%, rgba(110,231,255,.10), transparent 62%),
+    radial-gradient(620px 520px at 92% 18%, rgba(124,245,200,.07), transparent 62%),
+    linear-gradient(180deg,#0A0F16 0%,#080B10 55%,#06090D 100%);
+  min-height:100vh;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  -webkit-tap-highlight-color:transparent;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    linear-gradient(rgba(124,245,200,.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(124,245,200,.045) 1px,transparent 1px);
+  background-size:42px 42px;
+  mask-image:radial-gradient(ellipse at 50% 30%, #000 20%, transparent 78%);
+  -webkit-mask-image:radial-gradient(ellipse at 50% 30%, #000 20%, transparent 78%);
+}
+.app{position:relative;z-index:1;max-width:480px;margin:0 auto;min-height:100vh;padding:22px 20px 44px}
+.screen{display:none}
+.screen.on{display:block;animation:fadeUp .45s cubic-bezier(.2,.7,.3,1) both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+button{font-family:var(--sans);-webkit-tap-highlight-color:transparent}
+.mono{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.hud{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;color:var(--accent)}
+.hud i{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:.35}50%{opacity:1}}
+
+/* ---------- 封面 ---------- */
+.cover{min-height:calc(100vh - 90px);display:flex;flex-direction:column;justify-content:center;padding:8px 0 30px}
+.cover .topline{display:flex;justify-content:space-between;align-items:center;margin-bottom:52px}
+.cover h1{
+  font-size:clamp(36px,9.8vw,46px);line-height:1.28;font-weight:900;letter-spacing:-.04em;
+  margin:0 0 18px;
+}
+.cover h1 em{font-style:normal;color:var(--accent);position:relative;white-space:nowrap}
+.cover h1 em::after{
+  content:"";position:absolute;left:0;right:0;bottom:.04em;height:.28em;
+  background:rgba(124,245,200,.16);z-index:-1;
+}
+.cover .sub{font-size:15px;color:var(--text);margin:0 0 8px;font-weight:700;letter-spacing:.02em}
+.cover .desc{font-size:13.5px;line-height:1.9;color:var(--muted);margin:0;max-width:330px}
+.cover .cta{margin-top:38px}
+.btn{
+  min-height:52px;border-radius:12px;border:1px solid var(--line);
+  background:var(--panel);color:var(--text);font-size:15px;font-weight:800;
+  letter-spacing:.06em;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
+  padding:0 26px;transition:transform .15s, box-shadow .15s, background .15s;
+}
+.btn:active{transform:scale(.985)}
+.btn-primary{background:var(--accent);color:#04130D;border-color:var(--accent);box-shadow:0 10px 30px rgba(124,245,200,.16)}
+.btn-primary:disabled{background:var(--panel);color:var(--muted);border-color:var(--line);box-shadow:none;cursor:default}
+.btn-ghost{background:transparent}
+.btn-block{width:100%}
+.cover .fine{margin-top:16px;font-size:10px;letter-spacing:.12em;color:var(--muted)}
+
+/* ---------- 关系选择 ---------- */
+.page-head{margin:10px 0 24px}
+.page-head h2{font-size:26px;line-height:1.35;font-weight:900;letter-spacing:-.03em;margin:14px 0 8px}
+.page-head p{font-size:12.5px;color:var(--muted);line-height:1.8;margin:0}
+.rel{
+  width:100%;text-align:left;display:flex;gap:14px;align-items:flex-start;
+  padding:16px;margin-bottom:10px;border:1px solid var(--line);border-radius:14px;
+  background:var(--panel);color:var(--text);cursor:pointer;transition:.16s;
+}
+.rel .rk{
+  flex:0 0 34px;height:34px;border:1px solid var(--line);border-radius:8px;
+  display:grid;place-items:center;font-family:var(--mono);font-size:13px;color:var(--accent);
+  background:var(--panel2);
+}
+.rel .rt{flex:1;min-width:0}
+.rel .rt b{display:block;font-size:14.5px;margin-bottom:4px;letter-spacing:.01em}
+.rel .rt span{display:block;font-size:11.5px;line-height:1.7;color:var(--muted)}
+.rel.sel{border-color:var(--accent);background:#0F1B1A;box-shadow:0 0 0 1px rgba(124,245,200,.35) inset,0 8px 26px rgba(124,245,200,.07)}
+.rel.sel .rk{background:var(--accent);color:#04130D;border-color:var(--accent)}
+.rel:active{transform:scale(.995)}
+
+/* ---------- 答题 ---------- */
+.quiz-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+.quiz-top .mono{color:var(--accent)}
+.progress{height:6px;border-radius:99px;background:#121A26;overflow:hidden;margin-bottom:26px;border:1px solid var(--line)}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width .35s}
+.q-index{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.16em}
+.qtext{font-size:20px;line-height:1.6;font-weight:800;letter-spacing:-.01em;margin:0 0 22px}
+.qopts{display:flex;flex-direction:column;gap:9px}
+.qopt{
+  display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;
+  padding:14px;border:1px solid var(--line);border-radius:12px;background:var(--panel);
+  color:var(--text);font-size:14px;line-height:1.6;cursor:pointer;transition:.15s;
+}
+.qopt .ql{
+  flex:0 0 26px;height:26px;border:1px solid var(--line);border-radius:6px;
+  display:grid;place-items:center;font-family:var(--mono);font-size:11px;color:var(--muted);
+  background:var(--panel2);transition:.15s;
+}
+.qopt.sel{border-color:var(--accent);background:#0F1B1A;box-shadow:0 0 0 1px rgba(124,245,200,.3) inset}
+.qopt.sel .ql{background:var(--accent);color:#04130D;border-color:var(--accent)}
+.nav{display:flex;gap:9px;margin-top:22px}
+.nav .btn{flex:1}
+.nav .btn:disabled{opacity:.28;cursor:default}
+.quiz-note{margin-top:14px;text-align:center;font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--muted)}
+
+/* ---------- 结果 ---------- */
+.report{padding-top:4px}
+.rep-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:26px}
+.rep-kicker{font-size:11px;letter-spacing:.16em;color:var(--muted);margin:0 0 8px;font-family:var(--mono)}
+.rep-title{font-size:clamp(26px,6.8vw,34px);line-height:1.4;font-weight:900;letter-spacing:-.03em;margin:0 0 10px}
+.rep-title em{font-style:normal;color:var(--seg);text-shadow:0 0 26px var(--segglow)}
+.rep-explain{font-size:13px;line-height:1.85;color:var(--muted);margin:0 0 18px}
+.techline{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.techline .lbl{font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--muted)}
+.tech{
+  display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:8px;
+  border:1px solid var(--seg);color:var(--seg);background:rgba(255,255,255,.02);
+  font-weight:900;font-size:15px;letter-spacing:.04em;box-shadow:0 0 22px var(--segglow) inset;
+}
+.tech::before{content:"";width:7px;height:7px;border-radius:2px;background:var(--seg);box-shadow:0 0 8px var(--seg)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.chip{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;padding:4px 9px;border-radius:6px;border:1px solid var(--line);color:var(--muted)}
+.chip.key{border-color:rgba(255,196,107,.4);color:var(--gold);background:rgba(255,196,107,.05)}
+.chip.idx{border-color:rgba(110,231,255,.35);color:var(--accent2);background:rgba(110,231,255,.05)}
+.subline{font-size:12px;color:var(--muted);line-height:1.8;margin:0 0 22px;padding-left:10px;border-left:2px solid var(--seg)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px}
+.card .lbl{font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--muted);display:block;margin-bottom:8px}
+.card p{font-size:13.5px;line-height:1.95;color:var(--text);margin:0}
+.combo .name{font-size:18px;font-weight:900;color:var(--seg);margin:2px 0 6px;letter-spacing:.02em}
+.combo p{color:var(--muted)}
+.analysis h2{font-size:13px;font-family:var(--mono);letter-spacing:.16em;color:var(--accent);margin:26px 0 12px;font-weight:400}
+.ev-list{counter-reset:ev;list-style:none;padding:0;margin:0}
+.ev-list li{position:relative;padding:11px 0 11px 30px;border-top:1px dashed rgba(255,255,255,.08);font-size:13.5px;line-height:1.7}
+.ev-list li:first-child{border-top:none;padding-top:2px}
+.ev-list li::before{counter-increment:ev;content:"0" counter(ev);position:absolute;left:0;top:10px;font-family:var(--mono);font-size:10px;color:var(--seg)}
+.ev-list li:first-child::before{top:2px}
+.disclaimer{font-size:11px;line-height:1.9;color:var(--muted);border:1px dashed var(--line);border-radius:10px;padding:12px 14px;margin:20px 0 26px}
+.share{
+  position:relative;width:100%;max-width:360px;margin:0 auto 8px;aspect-ratio:4/5;
+  border:1px solid var(--seg);border-radius:18px;overflow:hidden;
+  background:linear-gradient(170deg,#0D141E,#080C12);
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  padding:34px 26px;text-align:center;
+}
+.share::before{
+  content:"";position:absolute;width:220px;height:220px;border-radius:50%;
+  background:var(--seg);filter:blur(90px);opacity:.14;top:-70px;
+}
+.share .s-top{position:absolute;top:18px;left:0;right:0;font-family:var(--mono);font-size:8.5px;letter-spacing:.2em;color:var(--muted)}
+.share .s-kicker{position:relative;font-family:var(--mono);font-size:9px;letter-spacing:.2em;color:var(--seg);margin-bottom:14px}
+.share .s-human{position:relative;font-size:21px;line-height:1.5;font-weight:900;letter-spacing:-.01em;margin:0 0 16px}
+.share .s-human em{font-style:normal;color:var(--seg)}
+.share .s-quote{position:relative;font-size:13px;line-height:1.9;color:var(--text);margin:0;opacity:.9}
+.share .s-foot{position:absolute;bottom:18px;left:0;right:0;font-family:var(--mono);font-size:8.5px;letter-spacing:.16em;color:var(--muted)}
+.share-hint{text-align:center;font-size:10.5px;color:var(--muted);letter-spacing:.08em;margin:10px 0 24px}
+.restart{display:flex;gap:9px}
+.restart .btn{flex:1}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+}
+</style>
+</head>
+<body>
+<main class="app">
+
+  <!-- ============ 封面 ============ -->
+  <section class="screen on" id="scr-cover">
+    <div class="cover">
+      <div class="topline">
+        <div class="hud"><i></i>PERMISSION SCAN</div>
+        <span class="mono">V2.0 / 12Q</span>
+      </div>
+      <h1>别猜了，<br>你在TA心里<br>到底<em>算什么</em>？</h1>
+      <p class="sub">权限与段位质检报告</p>
+      <p class="desc">你是TA的唯一、备胎，还是意难平？12题测出你的权限与段位。</p>
+      <div class="cta">
+        <button class="btn btn-primary btn-block" id="startBtn">开始质检</button>
+      </div>
+      <p class="fine">12 题 · 约 2 分钟 · 结果仅供娱乐</p>
+    </div>
+  </section>
+
+  <!-- ============ 关系选择 ============ -->
+  <section class="screen" id="scr-rel">
+    <div class="page-head">
+      <div class="hud"><i></i>STEP 01 / SELECT TARGET</div>
+      <h2>你们现在是什么关系？</h2>
+      <p>先选一个最接近的，后面的题只针对这段关系。</p>
+    </div>
+    <div id="relList"></div>
+    <button class="btn btn-primary btn-block" id="relNext" disabled style="margin-top:16px">进入质检</button>
+  </section>
+
+  <!-- ============ 答题 ============ -->
+  <section class="screen" id="scr-quiz">
+    <div class="quiz-top">
+      <span class="mono" id="qIdx">第 01 题 / 共 12 题</span>
+      <span class="q-index" id="qSeg">QUESTION</span>
+    </div>
+    <div class="progress"><i id="qBar"></i></div>
+    <h2 class="qtext" id="qText"></h2>
+    <div class="qopts" id="qOpts"></div>
+    <div class="nav">
+      <button class="btn btn-ghost" id="prevBtn">上一题</button>
+      <button class="btn btn-primary" id="nextBtn">下一题</button>
+    </div>
+    <p class="quiz-note">未选择不能进入下一题</p>
+  </section>
+
+  <!-- ============ 结果 ============ -->
+  <section class="screen" id="scr-result">
+    <div id="resultBody"></div>
+  </section>
+
+</main>
+
+<script>
+/* =========================================================
+   题库：关系 → 12 题 × 5 选项（选项顺序固定 A-E）
+   选项下标 0-4 对应段位 A-E；每题 evidence 用于结果页
+   ========================================================= */
+const BRANCHES = {
+  jia:{
+    key:'甲', name:'暗恋/暧昧未确定',
+    desc:'你会猜TA到底喜不喜欢你，但你们没确认关系。',
+    qs:[
+      {q:'你连续两天没主动找TA，TA最可能：', o:[
+        {t:'主动来找你，问你怎么了，或找理由约你', ev:'你两天没出现，TA主动来问。'},
+        {t:'等自己情绪上来才找你，一开口就倒苦水', ev:'TA憋到难受，才来找你倒苦水。'},
+        {t:'完全没发现，等你再找TA时像没事发生', ev:'你停聊两天，TA像没发现。'},
+        {t:'突然发一句阴阳怪气/试探的话，又撤回', ev:'TA发一句阴阳话，又撤回。'},
+        {t:'在共同群@你，私聊却装没事', ev:'TA在群里@你，私聊装没事。'}
+      ]},
+      {q:'你暗示“最近有人追你”，TA反应：', o:[
+        {t:'明显紧张，追问细节，甚至吃醋', ev:'你一提有人追，TA立刻紧张。'},
+        {t:'说“那挺好啊”，转头跟你聊自己的烦恼', ev:'TA说挺好，然后开始讲自己。'},
+        {t:'祝你幸福，毫无波澜', ev:'TA祝你幸福，没有多问一句。'},
+        {t:'冷脸、消失，或来一句“随便你”', ev:'你一说有人追，TA冷脸消失。'},
+        {t:'开玩笑“那我是不是要排队”，但不敢认真', ev:'TA笑问要不要排队，又打哈哈。'}
+      ]},
+      {q:'你深夜发“今天好累”，TA：', o:[
+        {t:'直接打电话/问你在哪，想来找你', ev:'你说累，TA直接问你在哪。'},
+        {t:'陪你聊很久，最后变成你安慰TA', ev:'你越说累，最后越像在安慰TA。'},
+        {t:'回“早点睡”，第二天也不追问', ev:'TA只回一句早点睡，第二天没问。'},
+        {t:'不回，第二天突然发很多条解释', ev:'TA不回，第二天突然发一长串。'},
+        {t:'点个赞，私聊一句“你最近怎么了”又收回', ev:'TA点了个赞，话到一半又收回。'}
+      ]},
+      {q:'你们约好见面，TA临时放鸽子：', o:[
+        {t:'认真道歉，并立刻改约明确时间', ev:'TA放你鸽子，但立刻改约。'},
+        {t:'道歉后开始讲自己多惨，你反过来安慰TA', ev:'TA迟到，最后变成你安慰TA。'},
+        {t:'一句“下次一定”，然后没下次', ev:'TA说下次一定，然后没有下次。'},
+        {t:'直接消失，过几天当没发生', ev:'TA放鸽子后消失，回来装没事。'},
+        {t:'说“怕见了控制不住”，又打哈哈', ev:'TA说怕见了控制不住，又笑过去。'}
+      ]},
+      {q:'共同朋友问TA“你俩是不是有事”，TA：', o:[
+        {t:'不否认，甚至有点默认', ev:'朋友起哄，TA没有否认。'},
+        {t:'说“TA人很好，我什么都能跟TA说”', ev:'TA说“TA人很好，我什么都跟TA说”。'},
+        {t:'说“就朋友啊，别乱讲”', ev:'TA赶紧撇清：就朋友，别乱讲。'},
+        {t:'突然变脸/沉默/让朋友别问', ev:'一被问到你，TA突然变脸。'},
+        {t:'笑说“你猜”，然后打听你怎么说', ev:'TA笑说“你猜”，回头打听你怎么说。'}
+      ]},
+      {q:'如果明天你突然官宣恋爱，TA最可能：', o:[
+        {t:'第一时间来问“真的假的”，明显慌了', ev:'你官宣恋爱，TA第一时间来问。'},
+        {t:'祝福你，然后深夜找你倾诉自己孤独', ev:'TA祝福你，深夜却说自己也孤独。'},
+        {t:'点个赞就划走', ev:'你官宣，TA只点了个赞。'},
+        {t:'把你删了/拉黑/发疯', ev:'你官宣，TA直接把你删了。'},
+        {t:'嘴上说恭喜，之后频繁出现在你附近', ev:'TA说恭喜，之后总在你附近出现。'}
+      ]},
+      {q:'你主动停聊一周，TA会：', o:[
+        {t:'找理由约你/问你最近怎么消失', ev:'你停聊一周，TA找理由约你。'},
+        {t:'憋到情绪崩了才找你，一开口就是“我好累”', ev:'你停聊，TA憋到崩溃才出现。'},
+        {t:'等你先找他，反正你总会忍不住', ev:'TA笃定你会先忍不住。'},
+        {t:'反复点你主页，但死不联系', ev:'TA反复点你主页，却死不联系。'},
+        {t:'在共同群@你，假装只是顺便', ev:'TA在群里@你，假装只是顺便。'}
+      ]},
+      {q:'你发和其他异性合照，TA：', o:[
+        {t:'直接问“你们什么关系”', ev:'你发合照，TA直接问什么关系。'},
+        {t:'酸一句，然后开始诉苦自己没人陪', ev:'TA酸你一句，然后说自己没人陪。'},
+        {t:'点赞，毫无反应', ev:'你和别人合照，TA毫无反应。'},
+        {t:'阴阳怪气/屏蔽你/突然冷脸', ev:'你发合照，TA突然屏蔽你。'},
+        {t:'开玩笑试探“那我是不是没位置了”', ev:'TA笑问“那我是不是没位置了”。'}
+      ]},
+      {q:'TA遇到好事，第一时间：', o:[
+        {t:'告诉你，想跟你分享', ev:'TA有好事，第一个告诉你。'},
+        {t:'开心时消失，难过才找你', ev:'TA开心时消失，难过才出现。'},
+        {t:'你从朋友圈才知道', ev:'TA的好事，你是从朋友圈知道的。'},
+        {t:'故意不告诉你，怕你得意/怕你看穿', ev:'TA故意瞒着你，怕被你看穿。'},
+        {t:'拐弯抹角让你知道，等你去问', ev:'TA绕着弯让你知道，等你去问。'}
+      ]},
+      {q:'你拒绝TA一次请求，TA：', o:[
+        {t:'怕你不高兴，认真解释', ev:'你拒绝一次，TA认真解释半天。'},
+        {t:'说你变了/冷你，等你哄', ev:'你拒绝后，TA冷着你等你哄。'},
+        {t:'转头找别人，像你无所谓', ev:'你拒绝，TA转头就找了别人。'},
+        {t:'发火、翻旧账、情绪失控', ev:'你拒绝，TA翻起了所有旧账。'},
+        {t:'说没事，但明显失落，之后试探你', ev:'TA说没事，之后反复试探你。'}
+      ]},
+      {q:'你们聊天通常谁收尾：', o:[
+        {t:'TA常收尾，怕你失落', ev:'聊天总是TA收尾，怕你失落。'},
+        {t:'你收尾，TA倾诉完就消失', ev:'TA倾诉完就消失，留下你收尾。'},
+        {t:'你收尾，TA想回就回，不想回就消失', ev:'聊天总是你收尾，TA想回就回。'},
+        {t:'聊到互怼/拉黑/又加回', ev:'你们聊到互怼拉黑，又加回来。'},
+        {t:'聊到一半TA找借口逃，过几天又出现', ev:'TA聊到一半逃走，过几天又出现。'}
+      ]},
+      {q:'只能选一个，你现在最像：', o:[
+        {t:'TA会主动推进关系的人', ev:'TA是那个会主动推进的人。'},
+        {t:'TA只在需要安慰时找你的人', ev:'TA只在需要安慰时找你。'},
+        {t:'TA从不主动约你、你却总在等的人', ev:'TA从不主动约你，你总在等。'},
+        {t:'TA为你情绪失控但不敢负责的人', ev:'TA会为你失控，却不敢负责。'},
+        {t:'TA试探你却装朋友的人', ev:'TA试探你，却坚持说只是朋友。'}
+      ]}
+    ]
+  },
+
+  yi:{
+    key:'乙', name:'恋爱中/已确定关系',
+    desc:'你们在一起，但你最近有点患得患失。',
+    qs:[
+      {q:'你故意半天不回消息，TA：', o:[
+        {t:'直接问“你是不是生气了”，主动哄你', ev:'你半天不回，TA先来哄你。'},
+        {t:'连发自己今天多累，等你安慰TA', ev:'你冷着TA，TA开始讲自己多累。'},
+        {t:'也半天不回，像在比赛', ev:'你不回，TA也消失，像在比赛。'},
+        {t:'阴阳怪气/翻旧账/拿分手威胁', ev:'你不回，TA翻旧账提分手。'},
+        {t:'发表情包试探，不正面问', ev:'TA发个表情包，不正面问你。'}
+      ]},
+      {q:'你们吵架后，TA：', o:[
+        {t:'冷静后主动沟通，解决问题', ev:'吵架后，TA主动回来解决问题。'},
+        {t:'先找你倾诉委屈，最后变成你道歉', ev:'吵完架，最后道歉的是你。'},
+        {t:'冷处理，等你先低头', ev:'TA冷处理，等你先低头。'},
+        {t:'说狠话、删好友、又加回', ev:'TA说狠话删了你，又加回来。'},
+        {t:'找借口问你吃饭没，假装没吵', ev:'TA吵完假装没事，问你吃饭没。'}
+      ]},
+      {q:'TA做人生决定（工作/城市）时：', o:[
+        {t:'把你纳入规划，先问你意见', ev:'TA换城市，先问你的意见。'},
+        {t:'只在自己崩溃时找你，决定完才通知你', ev:'TA做完决定，才通知你一声。'},
+        {t:'通知你一声，没打算商量', ev:'TA只通知你，不打算商量。'},
+        {t:'故意反着来，怕被你控制', ev:'TA故意反着来，怕被你控制。'},
+        {t:'试探你“如果我走你会怎样”', ev:'TA试探你：如果我走了呢。'}
+      ]},
+      {q:'你生病时TA：', o:[
+        {t:'到场/买药/安排清楚', ev:'你生病，TA买药安排到位。'},
+        {t:'微信陪你聊，实际靠你自己扛', ev:'TA微信陪你，实际全靠你自己。'},
+        {t:'让你多喝热水', ev:'你生病，TA只说多喝热水。'},
+        {t:'怪你不照顾自己，最后吵一架', ev:'你生病，TA怪你，最后吵一架。'},
+        {t:'托朋友问你，自己不敢来', ev:'TA托朋友问你，自己没来。'}
+      ]},
+      {q:'TA手机里出现异性频繁聊天：', o:[
+        {t:'主动给你看/解释清楚，怕你误会', ev:'TA主动把手机给你看。'},
+        {t:'说“只是聊得来”，然后跟你倒苦水', ev:'TA说只是聊得来，然后开始诉苦。'},
+        {t:'说你多想，继续聊', ev:'TA说你多想，然后继续聊。'},
+        {t:'删记录/反咬你侵犯隐私', ev:'TA删了记录，反说你不信任。'},
+        {t:'半开玩笑“你吃醋了？”但不给看', ev:'TA笑问“吃醋了”，却不给看。'}
+      ]},
+      {q:'你问“我们以后怎么办”，TA：', o:[
+        {t:'认真谈计划，给时间表', ev:'你问以后，TA给出时间表。'},
+        {t:'说“走一步看一步”，然后聊自己压力', ev:'TA说走一步看一步，然后讲压力。'},
+        {t:'转移话题/说你想太多', ev:'TA转移话题，说你又想太多。'},
+        {t:'突然提分手/消失', ev:'你一问未来，TA提了分手。'},
+        {t:'说“你别逼我”，但又黏你', ev:'TA说“别逼我”，转头又黏你。'}
+      ]},
+      {q:'公开关系这件事，TA：', o:[
+        {t:'主动带你见朋友/公开，不怕别人知道', ev:'TA主动带你见朋友，不避讳。'},
+        {t:'私下好，但不公开，说低调', ev:'TA私下很好，对外说低调。'},
+        {t:'对外保持单身感', ev:'TA对外一直保持单身感。'},
+        {t:'公开又删/反复改状态', ev:'TA公开又删，反复改状态。'},
+        {t:'只让少数人知道，说“没必要人人知道”', ev:'TA只让少数人知道你们。'}
+      ]},
+      {q:'你付出时间/金钱明显更多时，TA：', o:[
+        {t:'主动回馈/分担，怕你失衡', ev:'你付出更多，TA主动补回来。'},
+        {t:'接受，并诉苦自己最近也难', ev:'TA接受你的付出，说自己也不容易。'},
+        {t:'觉得你应该，很少回馈', ev:'TA觉得你应该，很少回馈。'},
+        {t:'指责你算计/物质', ev:'你一算账，TA说你太物质。'},
+        {t:'用玩笑糊弄，行动上不改', ev:'TA笑着糊弄，行动一点没改。'}
+      ]},
+      {q:'你低谷一周，TA：', o:[
+        {t:'持续照顾，调整自己的安排', ev:'你低谷，TA调整安排陪你。'},
+        {t:'前三天热情，之后恢复自己的节奏', ev:'TA热情三天，然后回到自己节奏。'},
+        {t:'基本消失，让你自己消化', ev:'你低谷，TA基本消失。'},
+        {t:'嫌你拖累/情绪化', ev:'你低落，TA嫌你情绪化。'},
+        {t:'偶尔试探问一句，但不深入', ev:'TA偶尔问一句，不往下问。'}
+      ]},
+      {q:'冲突中你设底线，TA：', o:[
+        {t:'尊重并调整，知道这是关系规则', ev:'你设底线，TA认真调整。'},
+        {t:'说你小题大做，但后来会哄', ev:'TA说你小题大做，之后又来哄。'},
+        {t:'无视底线，继续按自己的来', ev:'TA无视你的底线，照旧。'},
+        {t:'攻击你/冷暴力/威胁离开', ev:'你设底线，TA用冷暴力回你。'},
+        {t:'嘴上答应，行动不改', ev:'TA嘴上答应，行动没变。'}
+      ]},
+      {q:'你们计划旅行/重要事，TA：', o:[
+        {t:'一起做攻略，主动承担', ev:'旅行的事，TA主动一起做。'},
+        {t:'你做完TA挑刺/临时变卦', ev:'攻略你做，TA挑刺又变卦。'},
+        {t:'经常缺席，让你自己弄', ev:'计划全是你弄，TA经常缺席。'},
+        {t:'因小事吵崩/甩手不干', ev:'一点小事，TA就吵崩甩手。'},
+        {t:'拖延不确认，最后说“都可以”', ev:'TA一直拖，最后说“都可以”。'}
+      ]},
+      {q:'只能选一个，你们现在最像：', o:[
+        {t:'TA把你放长期规划里', ev:'TA的未来规划里默认有你。'},
+        {t:'TA需要你的情绪支持多过支持你', ev:'TA需要你，多过支持你。'},
+        {t:'TA让你总在等、总在猜', ev:'你总在等，也总在猜。'},
+        {t:'TA让你痛但离不开', ev:'TA让你痛，你却离不开。'},
+        {t:'TA习惯你，但还没意识到你的重要性', ev:'TA习惯了你的好，没觉得特别。'}
+      ]}
+    ]
+  },
+
+  bing:{
+    key:'丙', name:'已分手/断联/失恋',
+    desc:'你们分开过，或者你还在意一个回不来的人。',
+    qs:[
+      {q:'分手后你发了一条正常动态，TA：', o:[
+        {t:'很快来看/点赞，甚至找理由私聊你', ev:'你发动态，TA很快出现。'},
+        {t:'深夜找你倾诉自己过得不好', ev:'TA深夜找你，说自己过得不好。'},
+        {t:'完全没反应', ev:'你发动态，TA毫无反应。'},
+        {t:'秒看但不互动，过几天发emo动态', ev:'TA秒看，过几天发了条emo。'},
+        {t:'托朋友问你近况', ev:'TA托朋友来问你的近况。'}
+      ]},
+      {q:'你突然换头像/风格，TA：', o:[
+        {t:'直接问“你怎么了”，明显还在关注', ev:'你换头像，TA直接来问。'},
+        {t:'点赞后开始说自己最近也很难', ev:'TA点了赞，说自己最近也难。'},
+        {t:'无反应', ev:'你换了风格，TA没反应。'},
+        {t:'发疯/阴阳/删你', ev:'你换头像，TA突然阴阳你。'},
+        {t:'在共同群故意提你变化', ev:'TA在共同群提你的变化。'}
+      ]},
+      {q:'共同朋友提到你有了新暧昧对象，TA：', o:[
+        {t:'追问细节，脸色变了', ev:'听说你有新暧昧，TA追问细节。'},
+        {t:'说祝福，然后喝醉找你', ev:'TA说祝福，喝醉后却找你。'},
+        {t:'说“挺好”，没下文', ev:'TA只说“挺好”，没再问。'},
+        {t:'骂你/拉黑/发朋友圈内涵', ev:'TA发朋友圈暗讽你。'},
+        {t:'假装不在意，私下打听', ev:'TA假装不在意，私下打听你。'}
+      ]},
+      {q:'你们断联一个月，TA最可能：', o:[
+        {t:'找很烂的理由联系你', ev:'TA找个很烂的理由联系你。'},
+        {t:'情绪崩了才找你，一开口就是“我好累”', ev:'TA崩溃时才来找你。'},
+        {t:'彻底安静，你找TA才回', ev:'TA彻底安静，你找才回。'},
+        {t:'反复点你主页，死不联系', ev:'TA反复点你主页，死不联系。'},
+        {t:'在共同群@你，假装顺便', ev:'TA在群里@你，假装顺便。'}
+      ]},
+      {q:'如果你们偶然见面，TA：', o:[
+        {t:'紧张、找话题、不想走', ev:'偶遇时TA紧张，找话题不想走。'},
+        {t:'拉着你讲自己最近多难', ev:'一见面，TA就开始讲自己多难。'},
+        {t:'礼貌点头，像普通认识', ev:'TA礼貌点头，像普通认识。'},
+        {t:'冷脸/躲开/手抖', ev:'偶遇你，TA冷脸躲开。'},
+        {t:'开玩笑掩饰，回头一直看你', ev:'TA笑着掩饰，回头一直看你。'}
+      ]},
+      {q:'你现在说“我们重新开始吧”，TA：', o:[
+        {t:'认真考虑，问怎么解决旧问题', ev:'你说重新开始，TA认真问旧问题。'},
+        {t:'说“只有你懂我”，但不给承诺', ev:'TA说只有你懂我，却不给承诺。'},
+        {t:'说“还是做朋友吧”', ev:'TA说，还是做朋友吧。'},
+        {t:'说“别折磨我了”但不删你', ev:'TA说别折磨我了，却没删你。'},
+        {t:'说“你认真的？”然后试探你', ev:'TA问“你认真的？”然后试探你。'}
+      ]},
+      {q:'你生日/你们纪念日，TA：', o:[
+        {t:'主动祝福/送礼，记得很清楚', ev:'你生日，TA记得很清楚。'},
+        {t:'深夜发怀念，但不直说', ev:'TA深夜发怀念，却不说破。'},
+        {t:'没动静', ev:'你的生日，TA没动静。'},
+        {t:'发内涵动态/故意刺激你', ev:'TA发内涵动态，故意刺激你。'},
+        {t:'托朋友带话/间接打听', ev:'TA托朋友带话给你。'}
+      ]},
+      {q:'TA有了新对象，TA：', o:[
+        {t:'仍会关注你/拿你比较', ev:'TA有了新人，仍拿你比较。'},
+        {t:'找你倾诉新关系不顺', ev:'TA找你，说新关系也不顺。'},
+        {t:'彻底放下，边界清楚', ev:'TA彻底放下，边界很清楚。'},
+        {t:'故意秀恩爱刺激你', ev:'TA故意秀恩爱给你看。'},
+        {t:'打听你的反应', ev:'TA到处打听你的反应。'}
+      ]},
+      {q:'你遇到大麻烦，TA：', o:[
+        {t:'第一时间帮，行动很实在', ev:'你出事，TA第一个到。'},
+        {t:'安慰你，但实际帮助有限', ev:'TA安慰你，实际帮得不多。'},
+        {t:'不出现', ev:'你遇到麻烦，TA没出现。'},
+        {t:'出现但骂你/情绪化', ev:'TA来了，却先把你骂一顿。'},
+        {t:'托朋友帮你', ev:'TA没来，托朋友帮你。'}
+      ]},
+      {q:'共同朋友聚会，TA：', o:[
+        {t:'主动坐你附近/找你说话', ev:'聚会时TA主动坐你旁边。'},
+        {t:'拉你单独诉苦', ev:'TA把你拉到一边，讲自己的苦。'},
+        {t:'正常客气，保持距离', ev:'TA对你客气，保持距离。'},
+        {t:'避开/冷脸/提前走', ev:'你一出现，TA提前走了。'},
+        {t:'开玩笑但偷看你', ev:'TA开着玩笑，却一直偷看你。'}
+      ]},
+      {q:'你删除TA，TA：', o:[
+        {t:'很快发现并加回/问你为什么', ev:'你删了TA，TA很快加回来。'},
+        {t:'通过朋友找你', ev:'你删了TA，TA托朋友找你。'},
+        {t:'没反应', ev:'你删了TA，TA没反应。'},
+        {t:'发疯/阴阳/到处说你', ev:'你删了TA，TA到处说你。'},
+        {t:'过段时间试探加回', ev:'过一阵，TA试探着加回你。'}
+      ]},
+      {q:'只能选一个，TA现在最像：', o:[
+        {t:'愿意解决旧问题再复合的人', ev:'TA愿意解决问题，但还没开口。'},
+        {t:'只在低谷需要你、不给名分的人', ev:'TA低谷找你，平时没名分。'},
+        {t:'已把你当普通认识的人', ev:'TA已经把你当普通认识。'},
+        {t:'对你有强烈未消化情绪的人', ev:'TA一提你就情绪失控。'},
+        {t:'还没意识到失去你的人', ev:'TA还没意识到已经失去你。'}
+      ]}
+    ]
+  }
+};
+
+/* =========================================================
+   五个段位与结果文案
+   ========================================================= */
+const SEGMENTS = {
+  A:{
+    tech:'系统核心', human:'不可替代的人', color:'#6EE7FF',
+    explain:'你是TA人生里很难被替换的人。',
+    quote:'你拿的是TA人生的底层代码。在TA的系统里，你不需要后台驻留，因为你本来就拥有最高权限。',
+    sub:'你对TA来说不是可替换项。',
+    blocks:{
+      jia:{
+        pos:'TA嘴上可能还没说破，但你在TA系统里不是“普通暧昧对象”，而是TA会偷偷比较、怕被别人追走的人。TA会找很烂的理由约你，会记得你随口说过的小事，会在共同朋友起哄时不否认，甚至有点默认。TA有好事会想第一时间告诉你，你停聊TA会明显不习惯，你官宣别人TA会慌。TA不是闲着撩你，是怕自己还没准备好，你就被别人拿走。',
+        inner:'“我还没敢说，但你别真的走。”',
+        unease:'你不找TA，TA会冒出来；你一冷，TA就找理由出现；TA会主动但又不承认；你发别人合照TA会酸。',
+        tag:'最高权限候选，暂未公开激活。',
+        advice:'别再反复问“TA喜不喜欢我”，看TA有没有主动约你、主动解释、主动推进；给一次明确窗口：“我有点分不清我们是朋友还是暧昧，你怎么想？”；TA认真接住就升级，TA装傻你就降档，别在原地等TA觉醒。',
+        clear:'TA的主动不是偶然，是怕你被别人追走。'
+      },
+      yi:{
+        pos:'TA把你当长期角色，不是临时陪伴。未来规划里默认有你，做工作/城市决定会先问你的意见，吵架后愿意解决问题而不是等你低头。你半天不回，TA会问“你是不是生气了”；你低谷，TA会调整自己的安排。TA不一定天天说爱，但TA的“自己人”边界很清楚：带你见朋友、让你参与决定、怕你真失望。',
+        inner:'“你不是我的选项，你是我的默认配置。”',
+        unease:'你不用反复查岗；TA做决定会找你商量；TA吵架后会回来解决；TA怕你受委屈。',
+        tag:'底层代码，最高权限常驻。',
+        advice:'别用冷战和试探验证爱，直接说需求：“我需要你主动报备/一起做决定”；把“你爱不爱我”换成“这件事我们怎么一起解决”；核心不是猜出来的，是谈出来的。',
+        clear:'当你在猜他爱不爱你时，他已经在想怎么把全世界给你了。'
+      },
+      bing:{
+        pos:'你曾经是TA的核心，甚至现在TA还没真正把你清空。TA会找很烂的理由联系你，偶遇会紧张、找话题、不想走，纪念日/生日记得很清楚。你说“重新开始”，TA不会立刻答应，但会认真问旧问题怎么解决。TA会关注你，却不一定敢打扰你；TA会拿新人和你比较，但不会承认。',
+        inner:'“我没放下，但我怕重蹈覆辙。”',
+        unease:'TA深夜出现；共同朋友说TA还提你；TA没删干净；你一提旧问题TA不躲。',
+        tag:'曾最高权限，系统残留未清。',
+        advice:'别把“TA还关注我”直接当复合信号，看TA有没有解决旧问题；复合前列出旧问题清单：沟通、边界、未来规划，缺一项都别急；只给一次明确窗口，TA不行动你就把核心权限收回。',
+        clear:'没有行动的怀念，只是系统残留。'
+      }
+    }
+  },
+  B:{
+    tech:'情绪血包', human:'急救箱和情绪垃圾桶', color:'#FF8FA3',
+    explain:'TA难过时找你，开心时容易忘了你。',
+    quote:'你是一项高频刚需功能。TA一难过就找你，一开心就找不到人。你的付出是真的，但你的权限，只在TA受伤时开放。',
+    sub:'TA的情绪系统长期占着你的带宽。',
+    blocks:{
+      jia:{
+        pos:'你是TA最安全的情绪出口。TA一丧就找你，一开心就找不到人；你安慰完TA，TA满血复活就去忙自己的。TA会说你特别、说你懂TA，但一到确认关系就装傻。TA不是不知道你好，是知道了也不打算升级你。TA把你放在“急救箱”里：需要时打开，不需要时合上。',
+        inner:'“你很好用，但我还没想为你负责。”',
+        unease:'他emo就找你，好了就消失；你难过他接不住；你停聊他崩了才来；你像客服，不像恋人。',
+        tag:'高频刚需功能，仅受伤时开放权限。',
+        advice:'停止秒回和无限共情，试一次：“我现在也难受，你能陪我吗？”；TA逃、敷衍、转移话题，就别再自我攻略；把“只有你懂我”翻译成“只有你愿意接住我”，别把被需要当被爱。',
+        clear:'血包是会被抽干的，停止做TA的客服。'
+      },
+      yi:{
+        pos:'你是TA的情绪垃圾桶和后勤。TA委屈找你，你委屈TA嫌你负能量；你付出更多，TA接受并诉苦自己最近也难；你生病TA微信陪你聊，实际靠你自己扛。TA习惯你哄、你懂事、你兜底，但很少主动问你累不累。你一设边界，TA说你计较；你一冷淡，TA说你变了。',
+        inner:'“你在，我就安心；但你的情绪我接不住。”',
+        unease:'你总在值班；你安慰TA多，TA安慰你少；你提需求TA说你多想；你越懂事TA越默认。',
+        tag:'情绪供电模块，长期过载。',
+        advice:'明确说：“我可以听，但我也需要被接住”；减少急救式付出，观察TA会不会主动关心你；恋爱不是值班，长期只有你提供情绪价值，就是失衡。',
+        clear:'你花光电量治愈TA，TA满血后去奔赴别人。'
+      },
+      bing:{
+        pos:'你是TA的止痛药。TA难过时会想起你，喝醉会找你，新关系不顺会来找你倾诉，说“只有你懂我”，第二天又退回去。TA不想负责，但享受你懂TA；TA不给你名分，但希望你一直在。你不是TA想回去的人，是TA崩溃时想找的人。',
+        inner:'“我需要你，但我不想回到关系里。”',
+        unease:'深夜消息；白天消失；你回血TA就走；TA只在低谷出现。',
+        tag:'急救止痛药，不进长期方案。',
+        advice:'深夜消息不接，情绪垃圾不退；别在TA崩溃时当免费急救，你抽干自己，TA也不会给你名分；把“TA只有难过才找我”当警报，不是深情。',
+        clear:'止痛药不会被当成家人，只会被需要时想起。'
+      }
+    }
+  },
+  C:{
+    tech:'备用插件', human:'顺手项，不是优先项', color:'#FFC46B',
+    explain:'你随时在线，但TA不会为你调整安排。',
+    quote:'你在TA那里的备注是“在吗？”。你以为你们在靠近，其实你只是TA没有更好选择时的“平替版”。',
+    sub:'你在TA的列表里一直被排在后面。',
+    blocks:{
+      jia:{
+        pos:'你是TA的顺手项，不是优先项。你秒回TA轮回，你不找TA基本不找你；你暗示有人追，TA毫无波澜；你停聊一周，TA像没发现。TA无聊时会找你，寂寞时会陪你聊两句，但不会为你调整安排。TA享受你主动、你热情、你在线，但不会推进。你在TA那里的备注，约等于“在吗？”',
+        inner:'“你人很好，但我没到非你不可。”',
+        unease:'总是你找话题；TA消失又出现；你发合照TA无感；你等TA回，TA像顺手。',
+        tag:'低优先级插件，可随时折叠。',
+        advice:'做一次“三天不主动”测试，不是赌气，是看TA会不会发现；TA没发现，就把“在吗”当通知，不秒回、不脑补；别用更懂事换重视，插件不会被升级成核心。',
+        clear:'真正在乎你的人，连洗澡都会擦干手回你消息。'
+      },
+      yi:{
+        pos:'你是TA的默认后台程序：存在，但不占内存。TA会回你消息，也会陪你吃饭，但所有安排都以TA自己的节奏为准。你提出想一起做的事，TA说“都可以”，最后往往不了了之；你需要TA的时候，TA常常“刚好在忙”。TA不是故意冷你，是根本没把你放进“需要优先处理”的列表里。你在这段关系里的位置，稳定，但随时可以被折叠。',
+        inner:'“你在，我挺习惯；但要我为你改计划，我还没准备好。”',
+        unease:'约会总是你提；TA的行程你最后知道；你生气TA说你敏感；你付出TA觉得理所当然。',
+        tag:'后台常驻程序，低优先级运行。',
+        advice:'把“我们周末干嘛”换成“周六下午我订了两张票”，看TA会不会为你挪时间；停止包办所有安排，留出空白看TA主不主动；如果每次都是你在推，这段关系就是你在单机运行。',
+        clear:'默认运行不等于重要，TA只是没关掉你。'
+      },
+      bing:{
+        pos:'你是TA列表里那个“还在，但不会点开”的人。TA不会主动联系你，你找TA，TA礼貌回复，话题三句就干。TA没有删你，也没有拉黑你，但你在TA的生活里已经变成了一个安静的图标。你发动态TA可能看到，也可能没看到；你难过TA不知道，知道了也只会说“照顾好自己”。TA不是恨你，是已经把你归档了。',
+        inner:'“我们没有矛盾，只是没有必要再靠近了。”',
+        unease:'你找TA才回；TA从不主动；聊天停在客套；你像在对着空气维护一段关系。',
+        tag:'只读文件，已归档。',
+        advice:'别再测试“TA会不会发现我消失”，答案你已经知道了；把TA从置顶和特别关心里拿下来，不是赌气，是止损；你要的不是TA的礼貌，是TA的主动，而礼貌不是主动。',
+        clear:'已归档的文件不会自己打开，别再把等待当成希望。'
+      }
+    }
+  },
+  D:{
+    tech:'木马病毒', human:'想忘忘不掉的意难平', color:'#FF6B6B',
+    explain:'你一出现，TA的情绪就容易失控。',
+    quote:'你不是TA的常驻程序，是TA删不干净的残留文件。平时不运行，一碰就报错。',
+    sub:'你们之间还有没消化完的冲突。',
+    blocks:{
+      jia:{
+        pos:'你是TA情绪里的一颗雷。TA平时可以不提你，但你一发动态、一换头像、一和别人走近，TA就会炸。TA会阴阳你、试探你、突然冷脸，也会在深夜发一些只有你看得懂的话。TA不是不想放下，是每次快要放下的时候，你的一点动静就能把TA拽回去。TA对你没有稳定的好，只有强烈的反应。',
+        inner:'“我不想承认你还在影响我，但我控制不住。”',
+        unease:'TA忽冷忽热；你一靠近TA就退；你一退TA又出现；你们的对话总以拉扯收场。',
+        tag:'高浓度残留，触发式报错。',
+        advice:'别把TA的情绪反应当成爱，反应不等于选择；减少“试探性出现”，你每次出现都在给TA续电；如果你要的是稳定关系，TA现在给不了，TA给的只有波动。',
+        clear:'让TA失控的不是你，是TA还没处理完的自己。'
+      },
+      yi:{
+        pos:'你们的关系浓度很高，但底色是消耗。TA会在意你、查你、跟你吵，也会在吵完之后用一句软话把你拉回来。TA不擅长好好爱你，但很擅长让你离不开。你在这段关系里经常觉得痛，又经常觉得“TA是爱我的”。TA用冲突证明在乎，用拉扯确认你还在。',
+        inner:'“我怕你走，但我不知道怎么好好留你。”',
+        unease:'你们总在吵；TA道歉很快但下次照旧；你越来越累；你开始怀疑是不是自己有问题。',
+        tag:'高冲突进程，占用大量情绪内存。',
+        advice:'把“TA吵架时多激动”换成“TA平时怎么对你”，冲突强度不是爱；设一条底线并执行一次，看TA是调整还是升级冲突；如果每次沟通都以你妥协收场，那不是沟通，是消耗。',
+        clear:'用痛证明重要的人，最后只会留下痛。'
+      },
+      bing:{
+        pos:'你是TA没有清空的回收站。TA不会好好联系你，但也不允许自己真的忘了你。TA会反复点你主页、看你动态、在共同朋友面前提你，却死不承认。你一出现，TA的情绪就不受控：要么冷脸，要么阴阳，要么突然发疯。TA不是想复合，是还没消化你。',
+        inner:'“我已经失去你了，但我还没失去对你的情绪。”',
+        unease:'TA反复看你但不说话；一提你就变脸；TA的新关系里还有你的影子；你出现TA就乱。',
+        tag:'未清空回收站，情绪残留。',
+        advice:'别把“TA还在意”当成“TA想回来”，情绪残留不是行动；减少可见度，不是躲，是不再给TA免费的情绪燃料；你要的是被好好选择，不是被反复想起。',
+        clear:'被想起不等于被选择，回收站里的东西不会自己回到桌面。'
+      }
+    }
+  },
+  E:{
+    tech:'隐藏彩蛋', human:'还没意识到的后劲', color:'#A78BFA',
+    explain:'TA以为你只是普通存在，失去后才会发现你很重要。',
+    quote:'你现在不在TA的常用列表里，但你是TA卸载之后才会想念的那个功能。',
+    sub:'TA可能要在失去之后才反应过来。',
+    blocks:{
+      jia:{
+        pos:'TA现在还没意识到你有多重要。TA会跟你聊天、开玩笑、偶尔约你，但态度一直停在“朋友”那一格。TA不是不喜欢你，是TA自己也没想明白。你身上有一些东西，TA当下没在意，但会在某个瞬间突然想起来：你说过的一句话、你做过的一件事、你在的时候那种不用费力的舒服。TA的后劲还没到，但已经在路上。',
+        inner:'“我现在没想那么多，但你和别人不太一样。”',
+        unease:'TA对你很好但不确定；TA说“你很重要”但不推进；你走了TA会不习惯；TA总在失去后才回头。',
+        tag:'低频高价值，尚未激活。',
+        advice:'别急着逼TA定义关系，TA现在给不出答案；但你可以设一个观察期，看TA会不会在你后退时往前一步；如果TA永远只在失去后反应，那你要考虑的不是等待，是值不值得。',
+        clear:'TA不是不在意你，是还没学会怎么在意。'
+      },
+      yi:{
+        pos:'TA习惯你在，习惯到忘了你也会累。TA不是不爱你，是把你的付出当成了背景音。你做的很多事，TA当下不会说谢谢，但一旦你停下来，TA会明显不适应。TA的在意藏在“你不在的时候”，而不是“你在的时候”。这段关系里，你不是不被爱，是被爱得太理所当然。',
+        inner:'“我知道你对我好，我好像从来没认真说过。”',
+        unease:'你付出TA习以为常；你说累TA才愣一下；你冷淡TA会慌；TA很少主动表达。',
+        tag:'后台常驻，习惯性忽略。',
+        advice:'别用消失测试TA，直接说“我最近很累，需要你多做一点”；把一次具体的付出留给TA做，看TA接不接；习惯不是爱，但愿意为你打破习惯的人，才有后劲。',
+        clear:'TA不是不爱你，是还没意识到爱需要回应。'
+      },
+      bing:{
+        pos:'你是TA失去之后才慢慢反应过来的人。分开的时候TA可能很平静，甚至觉得松了一口气；但过了一段时间，TA会开始在一些小事上想起你：路过你们去过的地方、听到你说过的歌、遇到一个像你的人。TA不会立刻回头，但TA会慢慢发现，你留下的空白比TA想象的大。TA现在还没行动，不代表你不在TA心里。',
+        inner:'“当时没觉得，现在怎么老是想起你。”',
+        unease:'TA分开时很平静；过一阵开始间接打听你；TA说不清为什么联系你；TA总在深夜出现。',
+        tag:'延迟加载，后劲未释放。',
+        advice:'别因为TA回头就立刻接住，先看TA有没有想清楚；也别为了等TA的后劲，把自己停在原地；后劲是TA的课题，不是你的期限。',
+        clear:'TA的后劲来得晚，但你的人生不用等它加载完。'
+      }
+    }
+  }
+};
+
+const COMBOS = {
+  'A+B':['核心血包','TA把你当长期角色，但你承担过多情绪劳动。'],
+  'A+C':['核心插件','TA在意你，但优先级表达不稳，你总在等。'],
+  'A+D':['核心木马','浓度高但冲突高，用痛证明重要。'],
+  'A+E':['隐藏核心','有核心潜力但未正式确认/未激活。'],
+  'B+C':['血包插件','提供情绪价值却被放在低优先级。'],
+  'B+D':['血包木马','你是急救包，但关系充满拉扯，TA需要你不负责。'],
+  'B+E':['后劲血包','TA依赖你的情绪支持，但没意识到失去你会怎样。'],
+  'C+D':['插件木马','低优先级但一靠近就拉扯，TA不推进也不放你走。'],
+  'C+E':['彩蛋插件','有后劲但被折叠，TA偶尔试探却不稳定推进。'],
+  'D+E':['木马彩蛋','情绪未消化但还没意识到你重要，一碰就乱。']
+};
+
+/* 题目权重：第12题3；第6、7、9、10题2；其余1 */
+function weightOf(i){
+  if(i === 11) return 3;
+  if([5,6,8,9].includes(i)) return 2;
+  return 1;
+}
+
+/* =========================================================
+   状态与渲染
+   ========================================================= */
+const $ = (s, el=document) => el.querySelector(s);
+const $$ = (s, el=document) => Array.from(el.querySelectorAll(s));
+const state = { branch:null, rel:null, answers:[], q:0 };
+const SEG_KEYS = ['A','B','C','D','E'];
+const SEG_COLORS = {A:'#6EE7FF',B:'#FF8FA3',C:'#FFC46B',D:'#FF6B6B',E:'#A78BFA'};
+
+function show(id){
+  ['scr-cover','scr-rel','scr-quiz','scr-result'].forEach(s=>document.getElementById(s).classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  window.scrollTo(0,0);
+}
+
+/* 关系选择 */
+function renderRel(){
+  $('#relList').innerHTML = Object.keys(BRANCHES).map(k=>{
+    const b = BRANCHES[k];
+    return `<button class="rel" data-branch="${k}">
+      <span class="rk">${b.key}</span>
+      <span class="rt"><b>${b.name}</b><span>${b.desc}</span></span>
+    </button>`;
+  }).join('');
+  $$('.rel').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      state.branch = btn.dataset.branch;
+      $$('.rel').forEach(b=>b.classList.toggle('sel', b===btn));
+      $('#relNext').disabled = false;
+    });
+  });
+}
+
+/* 答题 */
+function startQuiz(){
+  state.answers = Array(12).fill(null);
+  state.q = 0;
+  show('scr-quiz');
+  renderQ();
+}
+function renderQ(){
+  const qs = BRANCHES[state.branch].qs;
+  const i = state.q;
+  $('#qIdx').textContent = `第 ${String(i+1).padStart(2,'0')} 题 / 共 12 题`;
+  $('#qSeg').textContent = 'QUESTION ' + String(i+1).padStart(2,'0');
+  const answered = state.answers.filter(v=>v!==null).length;
+  $('#qBar').style.width = (answered / 12 * 100) + '%';
+  $('#qText').textContent = qs[i].q;
+  $('#qOpts').innerHTML = qs[i].o.map((o,idx)=>`
+    <button class="qopt ${state.answers[i]===idx?'sel':''}" data-i="${idx}">
+      <span class="ql">${'ABCDE'[idx]}</span>
+      <span>${o.t}</span>
+    </button>`).join('');
+  $$('.qopt').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      state.answers[i] = parseInt(btn.dataset.i,10);
+      $$('.qopt').forEach(b=>b.classList.toggle('sel', b===btn));
+      $('#nextBtn').disabled = false;
+      $('#qBar').style.width = (state.answers.filter(v=>v!==null).length / 12 * 100) + '%';
+    });
+  });
+  $('#prevBtn').disabled = i === 0;
+  $('#nextBtn').disabled = state.answers[i] === null;
+  $('#nextBtn').textContent = i === 11 ? '提交质检' : '下一题';
+}
+
+$('#prevBtn').addEventListener('click', ()=>{
+  if(state.q === 0) return;
+  state.q--;
+  renderQ();
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+$('#nextBtn').addEventListener('click', ()=>{
+  if(state.answers[state.q] === null) return;
+  if(state.q < 11){
+    state.q++;
+    renderQ();
+    window.scrollTo({top:0, behavior:'smooth'});
+  } else {
+    renderResult();
+  }
+});
+
+/* =========================================================
+   计分
+   ========================================================= */
+function compute(){
+  const qs = BRANCHES[state.branch].qs;
+  const scores = {A:0,B:0,C:0,D:0,E:0};
+  qs.forEach((q,i)=>{
+    const seg = SEG_KEYS[state.answers[i]];
+    scores[seg] += weightOf(i);
+  });
+
+  const total = SEG_KEYS.reduce((s,k)=>s+scores[k],0);
+  const max = Math.max(...SEG_KEYS.map(k=>scores[k]));
+  const tied = SEG_KEYS.filter(k=>scores[k]===max);
+  const q12 = SEG_KEYS[state.answers[11]];
+  let main;
+  if(tied.length === 1) main = tied[0];
+  else main = tied.includes(q12) ? q12 : tied[0];
+
+  const rest = SEG_KEYS.filter(k=>k!==main);
+  const max2 = Math.max(...rest.map(k=>scores[k]));
+  const second = rest.find(k=>scores[k]===max2);
+
+  return {scores, total, main, second};
+}
+
+function indexTags(sc){
+  const total = sc.total || 1;
+  const perm = (sc.A + 0.5*sc.E) / total;
+  const consume = (sc.B + 1.2*sc.D) / total;
+  const late = (sc.E + 0.3*sc.A) / total;
+  const lowPri = sc.C / total;
+  const conflict = sc.D / total;
+  const tags = [];
+  if(consume >= 0.40) tags.push('高消耗');
+  if(lowPri >= 0.30) tags.push('低优先级明显');
+  if(conflict >= 0.30) tags.push('高冲突');
+  if(perm >= 0.20 && perm < 0.35) tags.push('权限未激活');
+  else if(perm < 0.20) tags.push('低权限');
+  if(late >= 0.30) tags.push('高后劲');
+  else if(late >= 0.15) tags.push('有后劲未触发');
+  if(perm >= 0.35) tags.push('高权限');
+  return tags.slice(0,3);
+}
+
+function keyTags(sc){
+  const seg = i => SEG_KEYS[state.answers[i]];
+  const tags = [];
+  if(seg(11)==='A' && sc.main!=='A') tags.push('未激活核心');
+  if(seg(11)==='E') tags.push('后劲待触发');
+  if(['C','D'].includes(seg(5))) tags.push('承诺测试未通过');
+  if(['B','C'].includes(seg(8))) tags.push('支持测试不足');
+  if(seg(9)==='D') tags.push('边界高风险');
+  if(['A','E'].includes(seg(6))) tags.push('失去测试有反应');
+  else if(seg(6)==='C') tags.push('失去测试无反应');
+  return Array.from(new Set(tags)).slice(0,3);
+}
+
+function evidenceLines(main, second){
+  const qs = BRANCHES[state.branch].qs;
+  const picked = qs.map((q,i)=>({
+    seg: SEG_KEYS[state.answers[i]],
+    ev: q.o[state.answers[i]].ev
+  }));
+  const primary = picked.filter(x=>x.seg===main);
+  const secondary = picked.filter(x=>x.seg===second);
+  const others = picked.filter(x=>x.seg!==main && x.seg!==second);
+  const list = [...primary, ...secondary, ...others];
+  const out = [];
+  for(const x of list){
+    if(!out.includes(x.ev)) out.push(x.ev);
+    if(out.length === 3) break;
+  }
+  return out;
+}
+
+/* =========================================================
+   结果页
+   ========================================================= */
+function renderResult(){
+  const sc = compute();
+  const mainSeg = SEGMENTS[sc.main];
+  const secondSeg = SEGMENTS[sc.second];
+  if(sc.main === undefined || sc.second === undefined) return;
+
+  const color = mainSeg.color;
+  const glow = color + '40';
+  const comboKey = [sc.main, sc.second].sort().join('+');
+  const combo = COMBOS[comboKey] || [mainSeg.tech+'×'+secondSeg.tech, '主段位本质叠加副段位消耗。'];
+  const block = mainSeg.blocks[state.branch];
+  const idxs = indexTags(sc.scores);
+  const keys = keyTags(sc);
+  const evs = evidenceLines(sc.main, sc.second);
+  const relName = BRANCHES[state.branch].name;
+
+  document.documentElement.style.setProperty('--seg', color);
+  document.documentElement.style.setProperty('--segglow', glow);
+
+  $('#resultBody').innerHTML = `
+    <div class="report">
+      <div class="rep-top">
+        <span class="mono">QC REPORT / 权限与段位</span>
+        <span class="mono">${String(Date.now()).slice(-6)}</span>
+      </div>
+
+      <p class="rep-kicker">你的质检结果</p>
+      <h1 class="rep-title">TA把你当<em>“${mainSeg.human}”</em></h1>
+      <p class="rep-explain">${mainSeg.explain}</p>
+
+      <div class="techline">
+        <span class="lbl">段位</span>
+        <span class="tech">${mainSeg.tech}</span>
+      </div>
+
+      <div class="chips">
+        ${keys.map(t=>`<span class="chip key">${t}</span>`).join('')}
+        ${idxs.map(t=>`<span class="chip idx">${t}</span>`).join('')}
+      </div>
+
+      <p class="subline">副段位｜${secondSeg.tech}：${secondSeg.sub}</p>
+
+      <div class="card combo">
+        <span class="lbl">组合模式</span>
+        <div class="name">${combo[0]}</div>
+        <p>${combo[1]}</p>
+      </div>
+
+      <h2 class="analysis-h" style="font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--muted);margin:26px 0 12px;font-weight:400">${relName} · 深度分析</h2>
+
+      <div class="card">
+        <span class="lbl">TA真实把你放在什么位置</span>
+        <p>${block.pos}</p>
+      </div>
+      <div class="card">
+        <span class="lbl">TA没说出口的心里话</span>
+        <p>${block.inner}</p>
+      </div>
+      <div class="card">
+        <span class="lbl">你为什么会觉得不对劲</span>
+        <p>${block.unease}</p>
+      </div>
+      <div class="card">
+        <span class="lbl">你的系统标签</span>
+        <p>${block.tag}</p>
+      </div>
+      <div class="card">
+        <span class="lbl">给你的权限建议</span>
+        <p>${block.advice}</p>
+      </div>
+      <div class="card">
+        <span class="lbl">一句清醒话</span>
+        <p style="color:var(--seg)">${block.clear}</p>
+      </div>
+
+      <div class="card">
+        <span class="lbl">你的质检证据</span>
+        <ol class="ev-list">
+          ${evs.map(e=>`<li>${e}</li>`).join('')}
+        </ol>
+      </div>
+
+      <p class="subline">副段位补充｜${secondSeg.tech}：${secondSeg.explain}</p>
+
+      <p class="disclaimer">本报告基于你在这 12 题里的主观选择做推演，不是读心术，也不是对 TA 的判决。关系是两个人共同写的，这份结果只代表此刻你看到的那一面。</p>
+
+      <div class="share">
+        <div class="s-top">QC REPORT · PERMISSION &amp; RANK</div>
+        <div class="s-kicker">你在TA心里的位置</div>
+        <p class="s-human">TA把你当<em>“${mainSeg.human}”</em></p>
+        <p class="s-quote">${mainSeg.quote}</p>
+        <div class="s-foot">别猜了，你在TA心里到底算什么？</div>
+      </div>
+      <p class="share-hint">截图保存，发给最懂你的那个人</p>
+
+      <div class="restart">
+        <button class="btn btn-ghost" id="againBtn">重新测试</button>
+        <button class="btn btn-primary" id="copyBtn">复制结果文案</button>
+      </div>
+    </div>`;
+
+  $('#againBtn').addEventListener('click', reset);
+  $('#copyBtn').addEventListener('click', ()=>{
+    const text = `TA把你当“${mainSeg.human}”（${mainSeg.tech}）｜组合模式：${combo[0]}。${mainSeg.explain}`;
+    copyText(text);
+  });
+
+  show('scr-result');
+  window.scrollTo(0,0);
+}
+
+/* 复制 */
+function copyText(text){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>toast('已复制')).catch(()=>fallbackCopy(text));
+  } else fallbackCopy(text);
+}
+function fallbackCopy(text){
+  const ta = document.createElement('textarea');
+  ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+  document.body.appendChild(ta); ta.select();
+  try{document.execCommand('copy'); toast('已复制');}catch(e){}
+  document.body.removeChild(ta);
+}
+let toastTimer;
+function toast(msg){
+  let el = document.getElementById('toast');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'toast';
+    el.style.cssText = 'position:fixed;left:50%;bottom:26px;transform:translate(-50%,16px);background:#7CF5C8;color:#04130D;font:700 11px/1 var(--sans);letter-spacing:.1em;padding:11px 18px;border-radius:99px;opacity:0;transition:.22s;z-index:60;pointer-events:none';
+    document.body.appendChild(el);
+  }
+  el.textContent = msg;
+  requestAnimationFrame(()=>{ el.style.opacity='1'; el.style.transform='translate(-50%,0)'; });
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>{ el.style.opacity='0'; el.style.transform='translate(-50%,16px)'; }, 1600);
+}
+
+function reset(){
+  state.branch = null;
+  state.answers = [];
+  state.q = 0;
+  show('scr-cover');
+}
+
+/* 事件 */
+$('#startBtn').addEventListener('click', ()=>{
+  renderRel();
+  show('scr-rel');
+});
+$('#relNext').addEventListener('click', ()=>{
+  if(!state.branch) return;
+  startQuiz();
+});
+
+/* 启动 */
+renderRel();
+</script>
+</body>
+</html>
