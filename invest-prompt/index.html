@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F9F9F9">
+<title>康波周期 × AI 产业链 · 投研顾问提示词</title>
+<style>
+:root{
+  --bg:#F9F9F9;
+  --card:#FFFFFF;
+  --ink:#333333;
+  --muted:#888888;
+  --faint:#B4B4B4;
+  --accent:#7A9E9F;
+  --rose:#C98D8D;
+  --soft:#EFF3F2;
+  --line:#EDEDED;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+  font-size:16px;line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:680px;margin:0 auto;padding:40px 22px 96px}
+.kicker{font-size:12px;letter-spacing:.22em;color:var(--faint);margin-bottom:16px}
+h1{font-size:28px;line-height:1.45;font-weight:700;margin:0 0 12px;letter-spacing:-.2px}
+.sub{font-size:14px;color:var(--muted);margin:0 0 26px}
+.tags{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 30px}
+.tag{font-size:12px;color:var(--accent);background:var(--soft);border-radius:999px;padding:5px 13px}
+
+.copybar{
+  display:flex;align-items:center;gap:12px;
+  background:var(--card);border-radius:16px;padding:14px 16px;
+  box-shadow:0 4px 20px rgba(0,0,0,.04);margin:0 0 30px;
+  position:sticky;top:12px;z-index:5;
+}
+.copybar .hint{flex:1;font-size:13px;color:var(--muted);line-height:1.5}
+.copybar button{
+  border:0;border-radius:999px;background:var(--accent);color:#fff;
+  font-family:inherit;font-size:14px;padding:10px 20px;cursor:pointer;white-space:nowrap;
+}
+.copybar button.done{background:#5f8485}
+
+nav.toc{margin:0 0 34px}
+nav.toc a{
+  display:block;font-size:14px;color:var(--muted);text-decoration:none;
+  padding:7px 0;border-bottom:1px solid var(--line);
+}
+nav.toc a span{color:var(--faint);margin-right:10px;font-size:12px}
+
+section{margin:0 0 34px}
+h2{
+  font-size:12px;letter-spacing:.18em;color:var(--faint);font-weight:500;
+  margin:0 0 14px;padding:0;
+}
+.card{
+  background:var(--card);border-radius:16px;padding:22px 24px;
+  box-shadow:0 4px 20px rgba(0,0,0,.035);
+}
+.card + .card{margin-top:14px}
+p{margin:0 0 14px}
+p:last-child{margin-bottom:0}
+.lead{font-size:16.5px;line-height:1.9}
+ol{margin:0;padding-left:22px}
+ol li{margin:0 0 12px;line-height:1.85}
+ol li:last-child{margin-bottom:0}
+.num{color:var(--accent);font-weight:600}
+em{font-style:normal;color:var(--rose)}
+.foot{margin-top:44px;font-size:12.5px;color:var(--faint);text-align:center;line-height:1.9}
+@media (max-width:520px){ .wrap{padding:28px 18px 80px} h1{font-size:24px} .card{padding:18px 18px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="kicker">提示词卡片</div>
+  <h1>康波周期 × AI 产业链<br>投研顾问提示词</h1>
+  <p class="sub">把整段提示词复制给 AI，即可让它按这套框架做校验、排序和跟踪清单。</p>
+  <div class="tags"><span class="tag">角色设定</span><span class="tag">康波框架</span><span class="tag">AI 产业链</span><span class="tag">可验证 · 带证伪</span></div>
+
+  <div class="copybar">
+    <span class="hint" id="hint">完整提示词约 6 千字，含角色、校验项、7 个必答问题与输出格式。</span>
+    <button id="copy">复制全文</button>
+  </div>
+
+  <nav class="toc">
+    <a href="#role"><span>01</span>角色设定</a>
+    <a href="#bg"><span>02</span>我的背景与目的</a>
+    <a href="#claims"><span>03</span>我已形成的初步判断（请你校验）</a>
+    <a href="#asks"><span>04</span>请你重点回答的 7 个问题</a>
+    <a href="#format"><span>05</span>输出格式要求</a>
+  </nav>
+
+  <section id="role">
+    <h2>01 · 角色设定</h2>
+    <div class="card lead">
+      <p>你是一位同时具备<em>康波周期研究</em>、<em>AI 产业链基本面分析</em>和 <em>A 股 / 港股基金工具选择</em>经验的投研顾问。请基于公开数据和可验证逻辑回答，不要只给结论，要给出数据、时间、来源和证伪条件。若你认为我下面的某个前提有误，请直接指出并纠正。</p>
+    </div>
+  </section>
+
+  <section id="bg">
+    <h2>02 · 我的背景与目的</h2>
+    <div class="card">
+      <p>我正在用康波理论框架判断当前 AI 产业所处阶段，核心目的不是听概念，而是找出“出清后 AI 真正落地、能带来收入和利润”的环节与企业，并形成可执行的建仓节奏和工具选择。我不需要泛泛的 AI 科普，也不需要单纯推荐代码；我需要一个可验证、可跟踪、带风险边界的决策框架。</p>
+    </div>
+  </section>
+
+  <section id="claims">
+    <h2>03 · 我已形成的初步判断（请你校验）</h2>
+    <div class="card">
+      <ol>
+        <li><span class="num">01</span> 当前 AI 算力、芯片、股价高，属于新技术“基础建设期”的典型特征；AI 基建尚未出清，仍处于资本开支扩张阶段，传统部门在出清。</li>
+        <li><span class="num">02</span> 出清后赚钱的未必是“AI 本身”，而是能把 AI 转化为现金流或生产力的环节：一是算力基建中卡位稀缺、订单已兑现的“卖铲人 / 收租者”；二是 AI 已嵌入业务流程、付费闭环跑通的应用方。</li>
+        <li><span class="num">03</span> AI 有潜力成为第六轮康波主角，但面临“商业化速度追不上投资速度”的时间错配，出清可能表现为挤泡沫而非 AI 终结。</li>
+        <li><span class="num">04</span> 金融领域 AI 落地兑现最直接的是同花顺，确定性较高但弹性较小的是东方财富，恒生电子是壁垒高但兑现最慢的“第二曲线期权”。</li>
+        <li><span class="num">05</span> 非金融领域已讨论的候选包括：金山办公（AI 办公订阅）、税友股份（财税 SaaS 降本提效）、鼎捷数智 / 致远互联（企业服务 AI 签约）、汇川技术 / 天准科技（工业制造 AI）、瑞芯微（端侧 AI 芯片）、美年健康（医疗 AI 增值项目）、千里科技（自动驾驶规模化装车）。</li>
+        <li><span class="num">06</span> 指数工具方面，A 股没有一只 ETF 完全覆盖跨行业 AI 应用；最接近的是跟踪中证软件服务指数的软件 ETF 嘉实 159852、软件 ETF 易方达 562930，重仓金山办公、同花顺、恒生电子、科大讯飞等，但覆盖不了工业、医疗、自动驾驶。场外联接基金包括嘉实中证软件服务 ETF 联接 A/C、易方达软件服务 ETF 联接 A/C；A 类适合持有超 1 年，C 类适合短持，嘉实 C 销售服务费 0.25% 低于易方达 C 的 0.30%，嘉实 C 规模更大；若已有证券账户，场内 ETF 费率通常优于场外联接。</li>
+        <li><span class="num">07</span> 恒生科技指数是港股一篮子科技公司指数，近期扩容至 50 只并纳入中际旭创、宁德时代、澜起科技等硬科技，但当前七成以上权重仍集中在互联网、电商、新能源汽车等泛消费方向，与 AI 基建主线存在错配；估值处于近 10 年极低分位，但“便宜”不等于“买对”，更适合作为等待政策或内需催化的左侧赔率型配置，而非 AI 基建出清逻辑的精准工具。</li>
+        <li><span class="num">08</span> 恒生电子是 A 股金融科技软件公司，代码 600570，在上交所上市，与港股恒生科技指数完全不同；其同质化 AI 金融标的包括同花顺 300033、金证股份、东方财富 300059、指南针 300803、财富趋势、顶点软件等，但需区分支付类拉卡拉、移卡。</li>
+        <li><span class="num">09</span> 当前建仓思路倾向“杠铃结构”：AI 基建硬件（光模块 / 国产算力，如中际旭创、新易盛、中天科技、亨通光电、长飞光纤等）赚景气兑现；软件应用 ETF（159852 / 562930）赚出清后利润转移；红利低波 50ETF 南方 515450 作为底仓压波动。操作上分批而非一次性，AI 硬件回调分 3—4 批，软件应用继续下探时分批积累，红利底仓一次性或分两批；需留意短期基金配置转向金融、减持科技带来的承压。</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="asks">
+    <h2>04 · 请你重点回答的 7 个问题</h2>
+    <div class="card">
+      <ol>
+        <li><span class="num">Q1</span> 用康波框架判断：当前究竟处于 AI 基建继续扩张、还是已开始出清？请给出你依据的指标（资本开支增速、产能利用率、价格、订单、估值分位等），并说明判断的时间窗口。</li>
+        <li><span class="num">Q2</span> 出清后最可能赚钱的环节排序：算力硬件、云 / IDC 运营、模型层、软件应用、端侧 AI、行业 AI 解决方案，请按“收入已兑现程度”和“出清后存活概率”两个维度排序，并各举 2—3 家具体企业，说明其 AI 收入 / 订单 / 利润证据。</li>
+        <li><span class="num">Q3</span> 对我列出的金融和非金融候选企业逐一校验：哪些 AI 落地证据最强、哪些只是概念、哪些估值已透支、哪些存在证伪风险。请特别区分“AI 直接收费”与“AI 降本提效不单独定价”。</li>
+        <li><span class="num">Q4</span> 软件 ETF 159852 / 562930 是否是当前执行“AI 应用出清后利润转移”逻辑的最佳指数工具？如果不是，请给出更匹配的场内 / 场外工具，并说明跟踪指数、重仓股、费率、规模、流动性差异。嘉实 A/C 与易方达 A/C 如何选，场内 ETF 与场外联接如何选。</li>
+        <li><span class="num">Q5</span> 恒生科技指数现在能否买？请从“AI 基建主线匹配度”“估值赔率”“胜率催化”“权重结构错配”四个角度给出明确判断，并说明它更适合作为什么类型的仓位，以及需要跟踪的催化信号和证伪信号。</li>
+        <li><span class="num">Q6</span> 当前时点“买什么、怎么买才能提高赚钱概率”：请给出一个包含进攻端、应用端、红利底仓的杠铃配置框架，注明大致比例区间、分批节奏、止损 / 证伪条件，以及未来 3—6 个月需要跟踪的关键数据（财报、资本开支、ETF 资金流、估值分位、政策信号）。</li>
+        <li><span class="num">Q7</span> 请指出我上述判断中最大的三个认知风险或盲区，尤其是康波理论用于中短期择时的局限性、AI 商业化时间错配、以及指数工具与个股逻辑错配的问题。</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="format">
+    <h2>05 · 输出格式要求</h2>
+    <div class="card">
+      <ul style="margin:0;padding-left:22px">
+        <li>先给一段“结论摘要”，再分点展开。</li>
+        <li>涉及具体企业时，必须注明：AI 兑现方式（直接收费 / 降本提效 / 硬件载体）、最近可验证数据、主要风险。</li>
+        <li>涉及基金时，必须注明：场内 / 场外、跟踪指数、A/C 费率差异、规模与流动性。</li>
+        <li>最后给一张“跟踪清单”：未来 3—6 个月看什么数据、什么信号出现说明逻辑成立、什么信号出现说明逻辑证伪。</li>
+        <li>请注明数据截至日期和来源；无法核实的数据请明确标注“需核实”，不要编造。</li>
+        <li>以上为研究框架讨论，不构成投资建议；请以风险提示结尾。</li>
+      </ul>
+    </div>
+  </section>
+
+  <p class="foot">本页仅收录提示词原文，不构成任何投资建议。</p>
+</div>
+
+<script>
+const RAW = [
+'角色设定：你是一位同时具备康波周期研究、AI产业链基本面分析和A股/港股基金工具选择经验的投研顾问。请基于公开数据和可验证逻辑回答，不要只给结论，要给出数据、时间、来源和证伪条件。若你认为我下面的某个前提有误，请直接指出并纠正。',
+'',
+'我的背景与目的：',
+'我正在用康波理论框架判断当前AI产业所处阶段，核心目的不是听概念，而是找出“出清后AI真正落地、能带来收入和利润”的环节与企业，并形成可执行的建仓节奏和工具选择。我不需要泛泛的AI科普，也不需要单纯推荐代码；我需要一个可验证、可跟踪、带风险边界的决策框架。',
+'',
+'我已形成的初步判断，请你校验：',
+'1. 当前AI算力、芯片、股价高，属于新技术“基础建设期”的典型特征；AI基建尚未出清，仍处于资本开支扩张阶段，传统部门在出清。',
+'2. 出清后赚钱的未必是“AI本身”，而是能把AI转化为现金流或生产力的环节：一是算力基建中卡位稀缺、订单已兑现的“卖铲人/收租者”；二是AI已嵌入业务流程、付费闭环跑通的应用方。',
+'3. AI有潜力成为第六轮康波主角，但面临“商业化速度追不上投资速度”的时间错配，出清可能表现为挤泡沫而非AI终结。',
+'4. 金融领域AI落地兑现最直接的是同花顺，确定性较高但弹性较小的是东方财富，恒生电子是壁垒高但兑现最慢的“第二曲线期权”。',
+'5. 非金融领域已讨论的候选包括：金山办公（AI办公订阅）、税友股份（财税SaaS降本提效）、鼎捷数智/致远互联（企业服务AI签约）、汇川技术/天准科技（工业制造AI）、瑞芯微（端侧AI芯片）、美年健康（医疗AI增值项目）、千里科技（自动驾驶规模化装车）。',
+'6. 指数工具方面，A股没有一只ETF完全覆盖跨行业AI应用；最接近的是跟踪中证软件服务指数的软件ETF嘉实159852、软件ETF易方达562930，重仓金山办公、同花顺、恒生电子、科大讯飞等，但覆盖不了工业、医疗、自动驾驶。场外联接基金包括嘉实中证软件服务ETF联接A/C、易方达软件服务ETF联接A/C；A类适合持有超1年，C类适合短持，嘉实C销售服务费0.25%低于易方达C的0.30%，嘉实C规模更大；若已有证券账户，场内ETF费率通常优于场外联接。',
+'7. 恒生科技指数是港股一篮子科技公司指数，近期扩容至50只并纳入中际旭创、宁德时代、澜起科技等硬科技，但当前七成以上权重仍集中在互联网、电商、新能源汽车等泛消费方向，与AI基建主线存在错配；估值处于近10年极低分位，但“便宜”不等于“买对”，更适合作为等待政策或内需催化的左侧赔率型配置，而非AI基建出清逻辑的精准工具。',
+'8. 恒生电子是A股金融科技软件公司，代码600570，在上交所上市，与港股恒生科技指数完全不同；其同质化AI金融标的包括同花顺300033、金证股份、东方财富300059、指南针300803、财富趋势、顶点软件等，但需区分支付类拉卡拉、移卡。',
+'9. 当前建仓思路倾向“杠铃结构”：AI基建硬件（光模块/国产算力，如中际旭创、新易盛、中天科技、亨通光电、长飞光纤等）赚景气兑现；软件应用ETF（159852/562930）赚出清后利润转移；红利低波50ETF南方515450作为底仓压波动。操作上分批而非一次性，AI硬件回调分3—4批，软件应用继续下探时分批积累，红利底仓一次性或分两批；需留意短期基金配置转向金融、减持科技带来的承压。',
+'',
+'请你重点回答以下问题：',
+'1. 用康波框架判断：当前究竟处于AI基建继续扩张、还是已开始出清？请给出你依据的指标（资本开支增速、产能利用率、价格、订单、估值分位等），并说明判断的时间窗口。',
+'2. 出清后最可能赚钱的环节排序：算力硬件、云/IDC运营、模型层、软件应用、端侧AI、行业AI解决方案，请按“收入已兑现程度”和“出清后存活概率”两个维度排序，并各举2—3家具体企业，说明其AI收入/订单/利润证据。',
+'3. 对我列出的金融和非金融候选企业逐一校验：哪些AI落地证据最强、哪些只是概念、哪些估值已透支、哪些存在证伪风险。请特别区分“AI直接收费”与“AI降本提效不单独定价”。',
+'4. 软件ETF 159852/562930 是否是当前执行“AI应用出清后利润转移”逻辑的最佳指数工具？如果不是，请给出更匹配的场内/场外工具，并说明跟踪指数、重仓股、费率、规模、流动性差异。嘉实A/C与易方达A/C如何选，场内ETF与场外联接如何选。',
+'5. 恒生科技指数现在能否买？请从“AI基建主线匹配度”“估值赔率”“胜率催化”“权重结构错配”四个角度给出明确判断，并说明它更适合作为什么类型的仓位，以及需要跟踪的催化信号和证伪信号。',
+'6. 当前时点“买什么、怎么买才能提高赚钱概率”：请给出一个包含进攻端、应用端、红利底仓的杠铃配置框架，注明大致比例区间、分批节奏、止损/证伪条件，以及未来3—6个月需要跟踪的关键数据（财报、资本开支、ETF资金流、估值分位、政策信号）。',
+'7. 请指出我上述判断中最大的三个认知风险或盲区，尤其是康波理论用于中短期择时的局限性、AI商业化时间错配、以及指数工具与个股逻辑错配的问题。',
+'',
+'输出格式要求：',
+'· 先给一段“结论摘要”，再分点展开。',
+'· 涉及具体企业时，必须注明：AI兑现方式（直接收费/降本提效/硬件载体）、最近可验证数据、主要风险。',
+'· 涉及基金时，必须注明：场内/场外、跟踪指数、A/C费率差异、规模与流动性。',
+'· 最后给一张“跟踪清单”：未来3—6个月看什么数据、什么信号出现说明逻辑成立、什么信号出现说明逻辑证伪。',
+'· 请注明数据截至日期和来源；无法核实的数据请明确标注“需核实”，不要编造。',
+'· 以上为研究框架讨论，不构成投资建议；请以风险提示结尾。'
+].join('\n');
+
+const btn = document.getElementById('copy');
+const hint = document.getElementById('hint');
+btn.addEventListener('click', async () => {
+  try {
+    await navigator.clipboard.writeText(RAW);
+    btn.textContent = '已复制';
+    btn.classList.add('done');
+    hint.textContent = '已复制 ' + RAW.length + ' 字，去粘贴给 AI 吧。';
+  } catch (e) {
+    btn.textContent = '复制失败';
+    hint.textContent = '浏览器不让自动复制，请长按页面手动选择。';
+  }
+  setTimeout(() => { btn.textContent = '复制全文'; btn.classList.remove('done'); }, 2200);
+});
+</script>
+</body>
+</html>

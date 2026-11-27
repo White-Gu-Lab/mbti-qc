@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F9F9F9">
+<title>测测你在TA心里到底算什么？</title>
+<style>
+:root{
+  --bg:#F9F9F9;
+  --card:#FFFFFF;
+  --ink:#333333;
+  --muted:#888888;
+  --faint:#B4B4B4;
+  --accent:#7A9E9F;
+  --rose:#C98D8D;
+  --soft:#EFF3F2;
+  --soft2:#F6EFEF;
+  --line:#EDEDED;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+  font-size:16px;
+  line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:600px;margin:0 auto;padding:36px 22px 72px}
+.hidden{display:none!important}
+.screen{animation:fade .28s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+
+/* ---------- cover ---------- */
+.kicker{font-size:12px;letter-spacing:.22em;color:var(--faint);margin-bottom:18px}
+h1{font-size:30px;line-height:1.4;font-weight:700;margin:0 0 14px;letter-spacing:-.2px}
+.sub{font-size:14px;color:var(--muted);margin:0 0 26px}
+.lead{font-size:17px;line-height:1.9;margin:0 0 34px}
+.lead b{font-weight:600;color:var(--accent)}
+.pick-label{font-size:12px;letter-spacing:.18em;color:var(--faint);margin:0 0 14px}
+.rel{
+  background:var(--card);
+  border-radius:16px;
+  padding:20px 22px;
+  margin:0 0 14px;
+  box-shadow:0 4px 20px rgba(0,0,0,.035);
+  cursor:pointer;
+  transition:box-shadow .2s ease,transform .2s ease;
+}
+.rel:active{transform:scale(.988)}
+.rel:hover{box-shadow:0 8px 26px rgba(0,0,0,.06)}
+.rel .rt{font-size:17px;font-weight:600;margin-bottom:4px}
+.rel .rh{font-size:13px;color:var(--muted)}
+.rel .no{float:right;font-size:12px;color:var(--faint);letter-spacing:.12em;margin-top:4px}
+
+/* ---------- quiz ---------- */
+.qtop{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px}
+.qnum{font-size:12px;color:var(--faint);letter-spacing:.14em}
+.qback{font-size:13px;color:var(--muted);background:none;border:0;padding:6px 0;cursor:pointer;font-family:inherit}
+.bar{height:2px;background:var(--line);border-radius:2px;overflow:hidden;margin-bottom:34px}
+.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .3s ease}
+.qtext{font-size:20px;line-height:1.65;font-weight:600;margin:0 0 26px}
+.opt{
+  display:flex;gap:14px;align-items:flex-start;
+  background:var(--card);
+  border-radius:14px;
+  padding:16px 18px;
+  margin:0 0 12px;
+  font-size:15.5px;
+  line-height:1.65;
+  cursor:pointer;
+  box-shadow:0 3px 14px rgba(0,0,0,.028);
+  transition:background .18s ease,box-shadow .18s ease;
+}
+.opt .k{color:var(--faint);font-size:13px;line-height:1.9;min-width:14px}
+.opt.on{background:var(--soft);box-shadow:0 3px 16px rgba(122,158,159,.14)}
+.opt.on .k{color:var(--accent)}
+
+/* ---------- result ---------- */
+.rlabel{font-size:12px;letter-spacing:.2em;color:var(--faint);margin-bottom:12px}
+.rname{font-size:30px;line-height:1.35;font-weight:700;margin:0 0 14px;color:var(--accent)}
+.rtag{font-size:17px;line-height:1.85;margin:0 0 34px}
+.card{
+  background:var(--card);
+  border-radius:16px;
+  padding:22px 24px;
+  margin:0 0 16px;
+  box-shadow:0 4px 20px rgba(0,0,0,.035);
+}
+.card h3{font-size:12px;letter-spacing:.18em;color:var(--faint);font-weight:500;margin:0 0 12px}
+.card p{margin:0;font-size:15.5px;line-height:1.85}
+.card.advice{background:var(--soft2)}
+.card.advice p{color:#7d5b5b}
+.card.hide-state{background:var(--soft)}
+.card.hide-state .hname{font-size:16px;font-weight:600;margin:0 0 8px;color:var(--accent)}
+.card.hide-state p{font-size:15px}
+.lbl-sub{font-size:13px;color:var(--muted);margin:0 0 10px}
+.btn{
+  display:block;width:100%;
+  background:var(--accent);color:#fff;
+  border:0;border-radius:999px;
+  padding:16px;font-size:15px;font-family:inherit;
+  letter-spacing:.06em;cursor:pointer;
+  margin:30px 0 0;
+}
+.btn.ghost{background:transparent;color:var(--muted);border:1px solid var(--line);margin-top:12px}
+.foot{margin-top:34px;font-size:12.5px;color:var(--faint);text-align:center;line-height:1.9}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- 封面 -->
+  <section id="cover" class="screen">
+    <div class="kicker">情感自测</div>
+    <h1>测测你在TA心里<br>到底算什么？</h1>
+    <p class="sub">暗恋、恋爱、失恋、拉扯都能测，15题看清你的真实位置。</p>
+    <p class="lead">别猜了，选第一直觉，<br>看看你在TA那里<b>到底排第几</b>。</p>
+    <p class="pick-label">先选一个，你们现在的关系</p>
+    <div id="rels"></div>
+    <p class="foot">测试仅供娱乐。爱自己，才是终身浪漫的开始。</p>
+  </section>
+
+  <!-- 答题 -->
+  <section id="quiz" class="screen hidden">
+    <div class="qtop">
+      <span class="qnum" id="qnum">01 / 15</span>
+      <button class="qback" id="qback">上一题</button>
+    </div>
+    <div class="bar"><i id="barfill"></i></div>
+    <h2 class="qtext" id="qtext"></h2>
+    <div id="opts"></div>
+  </section>
+
+  <!-- 结果 -->
+  <section id="result" class="screen hidden">
+    <div class="rlabel">你的结果</div>
+    <h2 class="rname" id="rname"></h2>
+    <p class="rtag" id="rtag"></p>
+    <div class="card"><h3>TA 的真实心理</h3><p id="rpsy"></p></div>
+    <div class="card"><h3>你的现状</h3><p id="rself"></p></div>
+    <div class="card hide-state hidden" id="hcard">
+      <h3>你的隐藏状态</h3>
+      <p class="hname" id="hname"></p>
+      <p class="lbl-sub" id="htag"></p>
+      <p id="hpsy"></p>
+    </div>
+    <div class="card advice"><h3>写在最后</h3><p id="radvice"></p></div>
+    <button class="btn" id="again">再测一次</button>
+    <button class="btn ghost" id="copy">复制结果</button>
+    <p class="foot">测试仅供娱乐。爱自己，才是终身浪漫的开始。</p>
+  </section>
+
+</div>
+
+<script>
+const DATA = {"branches":{"甲":{"label":"暗恋/暧昧未确定","qs":[{"q":"你连续两天没主动找TA，TA最可能：","o":["主动来找你，问你怎么了，或找理由约你","等自己情绪上来才找你，一开口就倒苦水","完全没发现，等你再找TA时像没事发生","突然发一句阴阳怪气/试探的话，又撤回","在共同群@你，私聊却装没事"]},{"q":"你暗示“最近有人追你”，TA反应：","o":["明显紧张，追问细节，甚至吃醋","说“那挺好啊”，转头跟你聊自己的烦恼","祝你幸福，毫无波澜","冷脸、消失，或来一句“随便你”","开玩笑“那我是不是要排队”，但不敢认真"]},{"q":"你深夜发“今天好累”，TA：","o":["直接打电话/问你在哪，想来找你","陪你聊很久，最后变成你安慰TA","回“早点睡”，第二天也不追问","不回，第二天突然发很多条解释","点个赞，私聊一句“你最近怎么了”又收回"]},{"q":"你们约好见面，TA临时放鸽子：","o":["认真道歉，并立刻改约明确时间","道歉后开始讲自己多惨，你反过来安慰TA","一句“下次一定”，然后没下次","直接消失，过几天当没发生","说“怕见了控制不住”，又打哈哈"]},{"q":"共同朋友问TA“你俩是不是有事”，TA：","o":["不否认，甚至有点默认","说“TA人很好，我什么都能跟TA说”","说“就朋友啊，别乱讲”","突然变脸/沉默/让朋友别问","笑说“你猜”，然后打听你怎么说"]},{"q":"如果明天你突然官宣恋爱，TA最可能：","o":["第一时间来问“真的假的”，明显慌了","祝福你，然后深夜找你倾诉自己孤独","点个赞就划走","把你删了/拉黑/发疯","嘴上说恭喜，之后频繁出现在你附近"]},{"q":"你主动停聊一周，TA会：","o":["找理由约你/问你最近怎么消失","憋到情绪崩了才找你，一开口就是“我好累”","等你先找他，反正你总会忍不住","反复点你主页，但死不联系","在共同群@你，假装只是顺便"]},{"q":"你发和其他异性合照，TA：","o":["直接问“你们什么关系”","酸一句，然后开始诉苦自己没人陪","点赞，毫无反应","阴阳怪气/屏蔽你/突然冷脸","开玩笑试探“那我是不是没位置了”"]},{"q":"TA遇到好事，第一时间：","o":["告诉你，想跟你分享","开心时消失，难过才找你","你从朋友圈才知道","故意不告诉你，怕你得意/怕你看穿","拐弯抹角让你知道，等你去问"]},{"q":"你拒绝TA一次请求，TA：","o":["怕你不高兴，认真解释","说你变了/冷你，等你哄","转头找别人，像你无所谓","发火、翻旧账、情绪失控","说没事，但明显失落，之后试探你"]},{"q":"你们聊天通常谁收尾：","o":["TA常收尾，怕你失落","你收尾，TA倾诉完就消失","你收尾，TA想回就回，不想回就消失","聊到互怼/拉黑/又加回","聊到一半TA找借口逃，过几天又出现"]},{"q":"你们如果单独相处，TA的身体语言：","o":["不由自主靠近你，眼神经常落在你身上","各种抱怨自己的生活，把你当倾诉对象","手机不离手，或者经常看别人消息","靠得很近，但故意表现得很傲娇或防备","手足无措，找话题掩饰紧张，不敢直视"]},{"q":"当你和其他人发生争执时，TA：","o":["毫不犹豫站你这边，哪怕是得罪别人","表面上帮你说话，私下跟你抱怨你太冲动","装没看见，不想掺和","帮理不帮亲，甚至为了避嫌故意指责你","默默帮你把问题解决了，却不告诉你"]},{"q":"TA和身边人提起你时，通常会说：","o":["“TA是我非常重要的人”","“TA人特别好，特别懂我”","“就一个普通朋友/同事”","“TA那个人啊，挺有意思的（带点调侃）”","“我也不知道我们算什么”"]},{"q":"只能选一个，你现在最像：","o":["TA会主动推进关系的人","TA只在需要安慰时找你的人","TA从不主动约你、你却总在等的人","TA为你情绪失控但不敢负责的人","TA试探你却装朋友的人"]}]},"乙":{"label":"恋爱中/已确定关系","qs":[{"q":"你故意半天不回消息，TA：","o":["直接问“你是不是生气了”，主动哄你","连发自己今天多累，等你安慰TA","也半天不回，像在比赛","阴阳怪气/翻旧账/拿分手威胁","发表情包试探，不正面问"]},{"q":"你们吵架后，TA：","o":["冷静后主动沟通，解决问题","先找你倾诉委屈，最后变成你道歉","冷处理，等你先低头","说狠话、删好友、又加回","找借口问你吃饭没，假装没吵"]},{"q":"TA做人生决定（工作/城市）时：","o":["把你纳入规划，先问你意见","只在自己崩溃时找你，决定完才通知你","通知你一声，没打算商量","故意反着来，怕被你控制","试探你“如果我走你会怎样”"]},{"q":"你生病时TA：","o":["到场/买药/安排清楚","微信陪你聊，实际靠你自己扛","让你多喝热水","怪你不照顾自己，最后吵一架","托朋友问你，自己不敢来"]},{"q":"TA手机里出现异性频繁聊天：","o":["主动给你看/解释清楚，怕你误会","说“只是聊得来”，然后跟你倒苦水","说你多想，继续聊","删记录/反咬你侵犯隐私","半开玩笑“你吃醋了？”但不给看"]},{"q":"你问“我们以后怎么办”，TA：","o":["认真谈计划，给时间表","说“走一步看一步”，然后聊自己压力","转移话题/说你想太多","突然提分手/消失","说“你别逼我”，但又黏你"]},{"q":"公开关系这件事，TA：","o":["主动带你见朋友/公开，不怕别人知道","私下好，但不公开，说低调","对外保持单身感","公开又删/反复改状态","只让少数人知道，说“没必要人人知道”"]},{"q":"你付出时间/金钱明显更多时，TA：","o":["主动回馈/分担，怕你失衡","接受，并诉苦自己最近也难","觉得你应该，很少回馈","指责你算计/物质","用玩笑糊弄，行动上不改"]},{"q":"你低谷一周，TA：","o":["持续照顾，调整自己的安排","前三天热情，之后恢复自己的节奏","基本消失，让你自己消化","嫌你拖累/情绪化","偶尔试探问一句，但不深入"]},{"q":"冲突中你设底线，TA：","o":["尊重并调整，知道这是关系规则","说你小题大做，但后来会哄","无视底线，继续按自己的来","攻击你/冷暴力/威胁离开","嘴上答应，行动不改"]},{"q":"你们计划旅行/重要事，TA：","o":["一起做攻略，主动承担","你做完TA挑刺/临时变卦","经常缺席，让你自己弄","因小事吵崩/甩手不干","拖延不确认，最后说“都可以”"]},{"q":"TA的密码或手机，对你：","o":["完全公开，甚至主动录你的面容/指纹","知道密码，但TA偶尔会切小号防着你","绝不透露，说这是个人隐私","经常改密码，被你发现过猫腻","给看，但只给看一部分，核心的藏着"]},{"q":"你们吵架后，TA的朋友通常：","o":["会来劝和，因为TA在朋友面前很维护你","只知道TA受委屈了，来指责你","根本不知道你们吵架了","觉得你们天天吵，都习惯了","知道TA在冷战，但TA在等台阶下"]},{"q":"TA怎么看待你的事业/未来：","o":["全力支持，甚至愿意为你调整TA的步伐","觉得你开心就好，不太上心","觉得这不关TA的事，只管自己","会打压你，怕你太优秀了管不住","默默帮你铺路，但嘴上不说"]},{"q":"只能选一个，你们现在最像：","o":["TA把你放长期规划里","TA需要你的情绪支持多过支持你","TA让你总在等、总在猜","TA让你痛但离不开","TA习惯你，但还没意识到你的重要性"]}]},"丙":{"label":"已分手/断联/失恋","qs":[{"q":"分手后你发了一条正常动态，TA：","o":["很快来看/点赞，甚至找理由私聊你","深夜找你倾诉自己过得不好","完全没反应","秒看但不互动，过几天发emo动态","托朋友问你近况"]},{"q":"你突然换头像/风格，TA：","o":["直接问“你怎么了”，明显还在关注","点赞后开始说自己最近也很难","无反应","发疯/阴阳/删你","在共同群故意提你变化"]},{"q":"共同朋友提到你有了新暧昧对象，TA：","o":["追问细节，脸色变了","说祝福，然后喝醉找你","说“挺好”，没下文","骂你/拉黑/发朋友圈内涵","假装不在意，私下打听"]},{"q":"你们断联一个月，TA最可能：","o":["找很烂的理由联系你","情绪崩了才找你，一开口就是“我好累”","彻底安静，你找TA才回","反复点你主页，死不联系","在共同群@你，假装顺便"]},{"q":"如果你们偶然见面，TA：","o":["紧张、找话题、不想走","拉着你讲自己最近多难","礼貌点头，像普通认识","冷脸/躲开/手抖","开玩笑掩饰，回头一直看你"]},{"q":"你现在说“我们重新开始吧”，TA：","o":["认真考虑，问怎么解决旧问题","说“只有你懂我”，但不给承诺","说“还是做朋友吧”","说“别折磨我了”但不删你","说“你认真的？”然后试探你"]},{"q":"你生日/你们纪念日，TA：","o":["主动祝福/送礼，记得很清楚","深夜发怀念，但不直说","没动静","发内涵动态/故意刺激你","托朋友带话/间接打听"]},{"q":"TA有了新对象，TA：","o":["仍会关注你/拿你比较","找你倾诉新关系不顺","彻底放下，边界清楚","故意秀恩爱刺激你","打听你的反应"]},{"q":"你遇到大麻烦，TA：","o":["第一时间帮，行动很实在","安慰你，但实际帮助有限","不出现","出现但骂你/情绪化","托朋友帮你"]},{"q":"共同朋友聚会，TA：","o":["主动坐你附近/找你说话","拉你单独诉苦","正常客气，保持距离","避开/冷脸/提前走","开玩笑但偷看你"]},{"q":"你删除TA，TA：","o":["很快发现并加回/问你为什么","通过朋友找你","没反应","发疯/阴阳/到处说你","过段时间试探加回"]},{"q":"分手时，TA最让你觉得无语的是：","o":["虽然分了，但TA还是习惯性管你的事","把责任都推给你，自己扮受害者","迅速抽身，好像没爱过","撕破脸，到处说你的不好","分得不明不白，也没有个正式告别"]},{"q":"如果你发了一条非常难过的朋友圈，然后秒删：","o":["TA绝对能看到，甚至会直接打电话问你","TA会点赞，或者发消息说“别难过了”","TA根本不会发现","TA会截图发给别人讨论","TA会发一条类似的朋友圈，引起你注意"]},{"q":"TA现在怎么称呼你：","o":["还是习惯性叫以前亲昵的称呼，改不掉","只有有事相求的时候，才叫得亲热","全名或者礼貌称呼，像陌生人","带着恨意或者讽刺的称呼","避开称呼，直接说事"]},{"q":"只能选一个，TA现在最像：","o":["愿意解决旧问题再复合的人","只在低谷需要你、不给名分的人","已把你当普通认识的人","对你有强烈未消化情绪的人","还没意识到失去你的人"]}]},"丁":{"label":"拉扯中/复合边缘/纠缠不清","qs":[{"q":"你们现在的聊天频率：","o":["每天都会聊，像没分手/没断联一样","只有TA遇到问题、难受时才找你","忽冷忽热，经常隔几天才回","聊得不多，但一聊就吵或者阴阳怪气","偶尔互相点赞，或者节假日群发试探"]},{"q":"当你试图拉开距离，说“别联系了”，TA：","o":["彻底慌了，死缠烂打求你","过两天又带着个新麻烦来找你","顺水推舟说“好”，然后消失","发脾气，说你想抛弃TA就直说","装死，但过阵子又在共同群里找你"]},{"q":"你们单独见面的氛围：","o":["像没分开过一样自然，甚至有肢体接触","TA全程在抱怨现在的生活多糟糕","尴尬、客套，匆匆吃完饭就走","充满了火药味和拉扯，不欢而散","互相试探，谁也不肯先低头"]},{"q":"TA身边的异性朋友，对你来说是：","o":["TA会主动带你认识，给你安全感","TA的烦心事都跟异性朋友说，把你当后勤","你完全不知道TA身边有什么人","你知道，并且经常因为这些人跟TA吵架","TA故意让你知道，想看你吃醋"]},{"q":"你生病了，TA得知后：","o":["立刻跑来照顾你，哪怕没名分","微信上嘘寒问暖，但行动上没有任何表示","只回一句“注意身体”，继续过自己的","骂你不照顾自己，然后跟你冷战","托朋友给你送药，自己死活不露面"]},{"q":"你们现在的状态，谁更占据主动权：","o":["只要你想，随时能复合","TA需要你时就主动，你找TA时TA就不在","TA完全掌控节奏，你一直在等","互相折磨，谁也不肯退让半步","TA在等你开口，你却不敢再赌一次"]},{"q":"TA在朋友圈发的内容，通常：","o":["有你的痕迹，或者只对你可见的暗示","各种emo求安慰的动态，只有你会上钩","精彩的生活，完全没有你的存在","阴阳怪气的语录，你知道是在内涵你","纯风景/无病呻吟，等你主动去问"]},{"q":"如果明天你官宣有了新欢：","o":["TA会疯了一样来找你，甚至质问新欢","TA会发一条更难过/更凄惨的动态，等你心疼","TA会点个赞，然后彻底消失","TA会直接把你和新欢都骂一遍","TA会在心里默默给你扣分，但不会发作"]},{"q":"关于你们的过去，TA的态度：","o":["经常怀念，觉得以前很好","只在遇到挫折时怀念，觉得当时你真好","闭口不提，就像没发生过","充满抱怨，全是你的错","避重就轻，只要聊感情就转移话题"]},{"q":"遇到跨年/情人节这种日子，TA：","o":["主动给你发消息/买礼物，顺其自然待在一起","找你诉苦，说自己多孤独","毫无动静，像不知道这个日子","故意发朋友圈内涵你，刺激你","拐弯抹角给你发个祝福，试探你的态度"]},{"q":"你们因为同一件事（比如某个误会）吵架时：","o":["TA会主动退让，怕你彻底离开","TA先发火，然后冷着你，等你去哄","TA直接说“算了，我们不合适”，甩手走人","互爆粗口，然后拉黑，过几天又加回","不吵，直接装死逃避"]},{"q":"TA对“我们复合吧”这句话的第一反应：","o":["认真考虑，问你“那我们以后遇到这问题怎么办”","说“现在这样不好吗”，不拒绝也不答应","说“别提了，回不去了”","说“你再找一个吧”，但眼里全是不甘心","说“你认真想好了吗”，反问你"]},{"q":"TA和现在的朋友聚会，会提起你吗：","o":["大方承认你的存在，甚至为你说话","心情不好时拿你当借口喝酒","对外默认自己单身","为了避嫌，故意骂你几句","绝口不提，但别人一提就沉默"]},{"q":"如果你们彻底断联，最可能的结局：","o":["TA会忍不住来找你","TA过段时间就会慢慢忘了你","你们会彻底成为陌生人","你们会在某个深夜互撕一次，然后终于死心","你们在未来某天偶然重逢，又重新纠缠"]},{"q":"只能选一个，你现在最像：","o":["TA依然把你当最在乎的人","TA只是在消耗你最后的剩余价值","TA已经把你放在可有可无的边缘","TA对你还有很深的执念，只是不肯低头","TA把你当备选项，等自己理清再决定"]}]}},"results":{"A":{"name":"不可替代的唯一","tag":"你不需要患得患失，因为TA的未来里，全都有你。","b":{"甲":{"psy":"TA表面上跟你打打闹闹，在朋友面前装酷说不急，但潜意识里早把你划进了自己的领地。看到你和其他异性互动，TA心里会瞬间拉响警报，但又不敢表现得太明显。TA遇到麻烦时，脑子里闪过的第一个名字就是你。TA把你藏得很深，不在朋友圈，但在心尖上。TA不是不想跟你在一起，而是怕太着急把你吓跑，一直在等一个最合适的时机，把你名正言顺地牵走。","self":"你总觉得你们之间差一层窗户纸，但每次你觉得要凉的时候，TA又会找很烂的借口来约你。你发一条朋友圈，TA能拐弯抹角地问你半天。你其实心里有底，知道TA对你是不一样的，只是这种\"不上不下\"的状态，偶尔会让你抓狂。"},"乙":{"psy":"TA其实很少说肉麻情话，但在潜意识里，你早就是生活的默认选项。看到好笑的梗第一个发你，吃到好吃的想着下次带你来。遇到麻烦、面临低谷，脑子里闪过的第一个名字就是你。TA把你藏得很深，不在朋友圈，但在心尖上。TA的人生规划（工作、城市、未来生活）里，你是默认的配置。","self":"你很少因为回消息慢跟TA吵架，因为你心里有底。你们在同一个空间各玩各的手机，空气也很舒服。你偶尔会疑神疑鬼做测试，但其实你心里很清楚，只要你不放手，TA就不会走。"},"丙":{"psy":"TA嘴上不说，甚至分手时云淡风轻，但你在TA心里的位置至今没被拔掉。TA会偷偷看你社交软件，你和别人出去玩TA会烦躁。TA不是不想复合，是太怕重蹈覆辙，怕自己还没改好又让你失望。TA把你当成心里的一道坎，跨不过去，也舍不得绕开。","self":"你总能捕捉到TA还在意你的蛛丝马迹，比如共同朋友不经意的一句话，或TA深夜突然访问你的主页。你不敢往前走，因为总觉得一回头TA还在。"},"丁":{"psy":"TA根本没有放下你，你们就像两根缠在一起的线。TA在别人面前可以装作不在乎，但只要你一退缩，TA就会立刻慌神。TA没有给你名分，是因为TA自己也没理清，但TA内心深知，你是TA绝对不能失去的底牌。TA不怕你闹，就怕你真的消失。","self":"你们在互相试探，谁都不肯先说那句软话。你会故意气TA，TA也会冷着你，但你们都知道，只要对方一低头，这段关系就还能继续。你虽然也累，但你内心是有安全感的，因为你确信自己随时能拿捏TA。"}},"advice":"别测了！你感受到的偏爱就是真的。好好享受这份出厂顶配的爱吧。别用无端的试探，去消耗一个真正把你放在核心位置的人。"},"B":{"name":"随叫随到的情绪垃圾桶","tag":"你花光了自己的电量去治愈TA，TA满血复活后，却转身去奔赴了别人。","b":{"甲":{"psy":"TA一遇到烦心事，第一个想到的就是你。因为TA知道你会温柔安慰TA。TA极度依赖你提供的情绪价值，但只要涉及到\"确认关系\"或\"现实付出\"，TA就开始装死。TA不是不知道你有多好，只是觉得把你当个免费的情感树洞，比真正跟你谈恋爱、对你负责，要划算太多了。","self":"你像个24小时待命的心理医生。TA深夜一个电话你陪聊到凌晨，第二天TA像没事人一样，而你顶着黑眼圈。你难过时TA只敷衍一句\"早点睡\"，然后消失。你总在反思是不是自己不够好，其实只是你给得太满了，把TA惯坏了。"},"乙":{"psy":"在TA心里你是个很好的\"妈/爹\"。你懂事、包容，能接住TA所有负能量。但一旦你表现出脆弱、需要安慰，TA就觉得你\"太作了\"。TA习惯了你的兜底和付出，不是不爱你，只是TA的爱极度自私，只想享受你的滋养，却不愿意为你提供情绪价值。","self":"你们的恋爱像在养孩子。你付出了大量金钱、时间和精力，TA心安理得接受。你生病TA只回句多喝热水；你受委屈想倾诉，TA不耐烦。你越懂事，TA越觉得理所当然。"},"丙":{"psy":"TA清楚你们不可能了，但TA寂寞、新欢不够好时，还是会来找你。只要你稍微卖个惨，你就立刻心软。你在TA眼里是最廉价、最安全的止痛药。TA找你，不是因为多爱你，而是在外面受挫后，需要在你这里找回存在感和优越感。","self":"你们断联了很久，但每到深夜或TA喝醉，就会发来一句\"在吗\"。你本已平复的心又被打乱，你心软回了，聊两句TA又人间蒸发。你陷在这个循环里，反复被消耗。"},"丁":{"psy":"TA把你当成了兜底的安全网。TA在外面玩累了、受伤了，就会回来找你汲取能量，说几句好听的让你心软。但只要TA恢复状态，就又会对你若即若离。TA不是不知道这样伤害你，只是TA太贪恋你无条件包容TA的感觉了。","self":"你们断不干净，每次你下决心要拉黑TA，TA就带着脆弱和难过来找你，你立刻又心软了。你在这段关系里不断降低底线，感觉自己像个随时待命的后勤部长，只分到TA的残羹冷炙。"}},"advice":"停止做TA的免费客服！深夜消息直接静音，悲伤倒苦水不要秒回。把你的共情能力留给懂你辛苦的人。你自己都没电了，拿什么照亮别人？"},"C":{"name":"打发时间的平替","tag":"你以为你们在慢慢靠近，其实你只是TA没有更好选择时的\"平替版\"。","b":{"甲":{"psy":"TA不是不知道你的心意，只是你不是TA的\"第一顺位\"。无聊了找你聊两句，有人陪了就根本想不起你。TA享受你的秒回带来的虚荣感，享受你随叫随到的便利。TA没有故意要吊着你，只是觉得你像个随手可拿的消遣：你回得越快，TA越觉得你本来就一直在。等那个真正让TA上心的人出现，你会被很自然地放进背景里。","self":"你手机从不静音，生怕错过TA一句\"在干嘛\"。可你翻聊天记录会发现，每次都是你先开口，TA的回复永远停在你最后一个句号后面。你不是TA的第一顺位，只是TA无聊时最先想起的那个人。"},"乙":{"psy":"在TA心里，你合格，但不唯一。TA会陪你吃饭、看电影、过节，可这些事换成谁都行。TA很少为你破例：不为你改计划，不为你推掉局，不为你跟谁翻脸。你在这段关系里最大的作用，是让TA看起来不像一个人。","self":"你们的约会像例行公事，吃饭、散步、各自刷手机。你提过想去的城市，TA说\"以后吧\"；你在意的小事，TA转头就忘。你不是被讨厌，你是被将就。"},"丙":{"psy":"分手后TA偶尔还会点赞、问一句\"最近怎么样\"，那不是舍不得，是顺手。TA需要确认你还在原地，好让自己走得安心一点。你过得好，TA有点不是滋味；你过得不好，TA反而松了口气。","self":"你总在等一条真正有分量的消息，等来的都是\"哈哈哈\"\"在吗\"\"最近忙啥\"。你以为那是藕断丝连，其实那是TA的社交惯性。"},"丁":{"psy":"TA不急着复合，也不舍得放你走。你在TA那儿是\"先留着\"的选项——不确定要不要，但先别让别人拿走。TA嘴上说\"再想想\"，其实是在等一个更好的选择出现。","self":"你被吊在一个不上不下的位置，进不去也退不出。你问\"我们算什么\"，TA说\"别急\"；你说\"那我走了\"，TA又说\"你怎么这样\"。你不是TA的答案，你是TA的备选答案。"}},"advice":"别再替TA占着这个位置了。一个人如果只在无聊时才想起你，那你就不是他的想念，只是他的消遣。把你留给那个会主动想起你的人。"},"D":{"name":"想忘忘不掉的意难平","tag":"你们之间没有坏人，只有一段谁都没能好好收尾的遗憾。","b":{"甲":{"psy":"TA不是没感觉，TA只是不敢。TA怕自己给不了你想要的，怕一旦开始就要负责，所以宁可停在\"朋友\"这个安全距离里。TA心里给你留了一个位置，那个位置一直空着，TA也没打算让别人坐。","self":"你反复回想每一次对话的细节，试图找出\"它本来可以不一样\"的证据。你嘴上说算了，可TA一发动态你就点进去。你不是放不下TA，你是放不下那个\"如果当初\"。"},"乙":{"psy":"TA承认你重要，但TA表达得太少。很多话TA想说没说出口，很多次TA想留住你却用了最笨的方式。分开之后，TA才慢慢明白你那些沉默背后的意思，可那时候已经晚了。","self":"你记得TA所有的好，也记得TA所有的不会说话。你知道TA不是坏，可你也知道自己被磨得太累。你走了，但你没有真的走出来。"},"丙":{"psy":"分开的时候TA没有走得很干脆。TA会想起你，会在某些夜里翻到你们以前的照片，然后又关掉。TA不是不想回头，是回不了头——两个人之间积了太多没说的话，太多没道过的歉。","self":"你以为分手就能结束，结果只是把\"在一起\"换成了\"在心里\"。你会在某个瞬间突然想起TA的口头禅、TA爱点的菜，然后愣很久。你恨的从来不是失去，是没能好好告别。"},"丁":{"psy":"TA心里有气，也有不甘。TA觉得你欠TA一个解释，你也觉得TA欠你一句对不起。你们两个谁都不肯先低头，于是把一段本来还能救的关系，耗成了一场拉锯。","self":"你们互相折磨，又互相舍不得。你知道这样下去没有结果，可每次你决定放手，TA就会冒出来给你一点希望。你被这一点希望困住了很久。"}},"advice":"意难平的意思是，它难在过去，不在未来。把那些没说出口的话写下来，然后合上。你要的不是TA回来，是那个终于被好好对待的自己。"},"E":{"name":"后知后觉的白月光","tag":"你在的时候，TA觉得理所当然；你走了以后，TA才发现你有多难被替代。","b":{"甲":{"psy":"TA一直把你当成\"不会走的人\"。你随时都回消息，TA就以为你本来就闲；你总是体谅TA，TA就以为你没有情绪。直到你不再出现，TA才发现那个总在原地的人，原来也是会离开的。","self":"你慢慢收回了热情。不是不爱了，是终于不想再一个人使劲。你走得很安静，可TA开始频繁地\"偶然\"找你。你不是输了，你只是先醒了。"},"乙":{"psy":"你们在一起的时候，TA把你的付出当成背景音。分开后，TA开始在一些小事上想起你：没人提醒TA带伞，没人记得TA不吃香菜，没人再问一句\"今天怎么样\"。TA这时候才明白，你给的那些不是应该的。","self":"你早就不吵不闹了，你只是安静地把自己收回来。TA说你\"变了\"，可你只是不再用尽全力去证明自己值得被爱。"},"丙":{"psy":"刚分开时TA以为解脱了，过了一阵子才发现不对劲。新认识的人都不如你懂TA，新关系里TA总在比较。TA开始明白，有些人是失去之后，才知道自己失去的是什么。","self":"你已经不恨TA了，你只是偶尔会想，如果早一点被珍惜，是不是就不用走到这一步。你往前走的时候，TA还在原地回头。"},"丁":{"psy":"TA嘴上说着\"随便\"\"都行\"，心里却越来越离不开你。TA享受你给的松弛感，却没意识到那是你让出来的空间。等你想收回的时候，TA比谁都慌。","self":"你不再追问\"我们算什么\"，因为你知道问不出答案。你把重心一点点挪回自己身上，而TA开始不习惯——你终于长成了TA高攀不起的样子。"}},"advice":"白月光不是你停在原地等来的，是你走远了，TA才回头看见的光。别为了成为谁的遗憾，而错过成为自己的主角。"}},"rel":[{"key":"甲","title":"暗恋 / 暧昧未确定","hint":"还没捅破那层窗户纸"},{"key":"乙","title":"恋爱中 / 已确定关系","hint":"在一起了，但心里没底"},{"key":"丙","title":"已分手 / 断联 / 失恋","hint":"结束了，可还没走出来"},{"key":"丁","title":"拉扯中 / 复合边缘","hint":"纠缠不清，进退两难"}]};
+const LETTERS = ['A','B','C','D','E'];
+const KEYS = ['A','B','C','D','E'];
+const WEIGHT = i => i === 14 ? 3 : ([1,5,6,7,9].indexOf(i) >= 0 ? 2 : 1);
+
+let branch = null, idx = 0, answers = [];
+
+const $ = id => document.getElementById(id);
+const show = id => {
+  ['cover','quiz','result'].forEach(s => $(s).classList.toggle('hidden', s !== id));
+  window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+};
+
+function renderRels() {
+  $('rels').innerHTML = DATA.rel.map((r, i) =>
+    '<div class="rel" data-k="' + r.key + '"><span class="no">0' + (i+1) + '</span>' +
+    '<div class="rt">' + r.title + '</div><div class="rh">' + r.hint + '</div></div>'
+  ).join('');
+  document.querySelectorAll('.rel').forEach(el => el.addEventListener('click', () => start(el.dataset.k)));
+}
+
+function start(k) {
+  branch = k; idx = 0; answers = [];
+  show('quiz');
+  renderQ();
+}
+
+function renderQ() {
+  const qs = DATA.branches[branch].qs;
+  const q = qs[idx];
+  $('qnum').textContent = String(idx + 1).padStart(2, '0') + ' / ' + qs.length;
+  $('barfill').style.width = ((idx) / qs.length * 100) + '%';
+  $('qtext').textContent = q.q;
+  $('qback').style.visibility = idx === 0 ? 'hidden' : 'visible';
+  const chosen = answers[idx];
+  $('opts').innerHTML = q.o.map((t, i) =>
+    '<div class="opt' + (chosen === i ? ' on' : '') + '" data-i="' + i + '">' +
+    '<span class="k">' + LETTERS[i] + '</span><span>' + t + '</span></div>'
+  ).join('');
+  document.querySelectorAll('.opt').forEach(el => el.addEventListener('click', () => pick(+el.dataset.i)));
+}
+
+function pick(i) {
+  answers[idx] = i;
+  document.querySelectorAll('.opt').forEach(el => el.classList.toggle('on', +el.dataset.i === i));
+  setTimeout(() => {
+    if (idx < DATA.branches[branch].qs.length - 1) { idx++; renderQ(); window.scrollTo(0, 0); }
+    else finish();
+  }, 230);
+}
+
+function finish() {
+  const score = { A: 0, B: 0, C: 0, D: 0, E: 0 };
+  answers.forEach((a, i) => { if (a >= 0) score[KEYS[a]] += WEIGHT(i); });
+  const list = Object.keys(score).map(k => ({ k, s: score[k] })).sort((x, y) => y.s - x.s);
+  const top = list[0].s, second = list[1].s;
+  const tied = list.filter(x => x.s === top);
+  const winner = tied.length > 1 ? KEYS[answers[14]] : list[0].k;
+  const runner = list.find(x => x.k !== winner);
+
+  const R = DATA.results[winner];
+  $('rname').textContent = R.name;
+  $('rtag').textContent = R.tag;
+  $('rpsy').textContent = R.b[branch].psy;
+  $('rself').textContent = R.b[branch].self;
+  $('radvice').textContent = R.advice;
+
+  if (second !== undefined && (top - second) <= 3 && runner) {
+    const S = DATA.results[runner.k];
+    $('hcard').classList.remove('hidden');
+    $('hname').textContent = S.name;
+    $('htag').textContent = S.tag;
+    $('hpsy').textContent = S.b[branch].psy;
+  } else {
+    $('hcard').classList.add('hidden');
+  }
+  window.__lastResult = R.name + '\n' + R.tag + '\n\n' + R.b[branch].psy + '\n\n' + R.b[branch].self;
+  show('result');
+}
+
+renderRels();
+$('qback').addEventListener('click', () => {
+  if (idx > 0) { idx--; renderQ(); window.scrollTo(0, 0); }
+});
+$('again').addEventListener('click', () => { branch = null; idx = 0; answers = []; show('cover'); });
+$('copy').addEventListener('click', async () => {
+  const text = (window.__lastResult || '') + '\n\n—— 测测你在TA心里到底算什么？';
+  try { await navigator.clipboard.writeText(text); $('copy').textContent = '已复制'; }
+  catch (e) { $('copy').textContent = '复制失败'; }
+  setTimeout(() => $('copy').textContent = '复制结果', 1600);
+});
+</script>
+</body>
+</html>
